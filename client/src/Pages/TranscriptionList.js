@@ -23,7 +23,7 @@ function TranscriptionList() {
         const fetchTests = async () => {
             try {
                 const res = await axios.get("http://localhost:5000/api/tests");
-                const filtered = res.data.filter(t => t.type === "transcription");
+                const filtered = res.data.filter(t => t.type?.toLowerCase().trim() === "transcription");
                 setTests(filtered);
             } catch (err) {
                 console.log(err);

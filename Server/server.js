@@ -52,10 +52,7 @@ app.use("/api/auth", authRoutes);
 //test Routes
 app.use("/api/tests", testRoutes);
 
-
-app.use("/uploads", express.static);
-
-app.use("/api/auth", authRoutes);
+app.use("/uploads", express.static("uploads"));
 
 // Start server after DB connect
 const startServer = async () => {

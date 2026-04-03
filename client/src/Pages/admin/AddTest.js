@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function AddTest() {
 
-    const navigate = useNavigate(); // ✅ added
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         title: "",
@@ -36,40 +36,43 @@ function AddTest() {
 
             if (!token || user?.role !== "admin") {
                 setMsg("❌ Admin login required");
+                setLoading(false);
+                return;
+            }
+
+            // 🔥 AUDIO VALIDATION
+            if (form.type === "dictation" && !audio) {
+                setMsg("❌ Please upload audio file");
+                setLoading(false);
                 return;
             }
 
             const data = new FormData();
 
-            // ✅ FILTER DATA BASED ON TYPE
+            //  ADD FORM DATA
             Object.keys(form).forEach((key) => {
-
-                // ❌ remove duration & difficulty for dictation
-                if (form.type === "dictation" && (key === "duration" || key === "difficulty")) {
-                    return;
-                }
-
                 data.append(key, form[key]);
             });
 
-            if (form.type === "dictation" && audio) {
+            // ADD AUDIO
+            if (form.type === "dictation") {
                 data.append("audio", audio);
             }
 
+            // 🔥 FIX: DON'T SET Content-Type manually
             await axios.post(
                 "http://localhost:5000/api/tests",
                 data,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data"
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
 
             setMsg("✅ Test Created Successfully 🚀");
 
-            // ✅ RESET
+            // RESET
             setForm({
                 title: "",
                 type: "transcription",
@@ -82,13 +85,13 @@ function AddTest() {
 
             setAudio(null);
 
-            // ✅ REDIRECT AFTER SUCCESS
+            // REDIRECT
             setTimeout(() => {
                 navigate("/admin/tests");
             }, 1000);
 
         } catch (err) {
-            console.log(err);
+            console.log("ERROR:", err);
             setMsg(err.response?.data?.message || "❌ Error creating test");
         } finally {
             setLoading(false);
@@ -164,13 +167,14 @@ function AddTest() {
                         {audio ? audio.name : "Upload Audio"}
                         <input
                             type="file"
+                            accept="audio/*"
                             hidden
                             onChange={(e) => setAudio(e.target.files[0])}
                         />
                     </label>
                 )}
 
-                {/* ROW (ONLY FOR TRANSCRIPTION) */}
+                {/* TRANSCRIPTION OPTIONS */}
                 {form.type === "transcription" && (
                     <div className="grid grid-cols-2 gap-4">
 
@@ -208,7 +212,7 @@ function AddTest() {
                 {/* TAGS */}
                 <input
                     name="tags"
-                    placeholder="Tags"
+                    placeholder="Tags (comma separated)"
                     value={form.tags}
                     onChange={handleChange}
                     className="w-full p-3 mt-4 bg-white/10 rounded-lg"

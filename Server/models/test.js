@@ -21,7 +21,10 @@ const testSchema = new mongoose.Schema({
     type: Number,
     default: 5
   },
-
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
   difficulty: {
     type: String,
     default: "medium"
@@ -37,7 +40,7 @@ const testSchema = new mongoose.Schema({
     }
   ],
 
-  audio: {
+  audioURL: {
     type: String
   }
 

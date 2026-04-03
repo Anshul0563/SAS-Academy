@@ -1,23 +1,41 @@
 const express = require("express");
 const router = express.Router();
 
-const upload = require("../middleware/upload"); // ✅ IMPORTANT
-
+// Middleware
+const upload = require("../middleware/upload");
 const { protect, isAdmin } = require("../middleware/authMiddleware");
 
-const {
-    createTest,
-    getTests,
-    getTestById,
-} = require("../controllers/testController");
+// Controller
+const testController = require("../controllers/testController");
 
-// ✅ CREATE
-router.post("/", protect, isAdmin, upload.single("audio"), createTest);
+//   Safe destructuring (debug friendly)
+const createTest = testController.createTest;
+const getTests = testController.getTests;
+const getTestById = testController.getTestById;
 
-// ✅ GET ALL
+console.log("Routes Loaded:", {
+    createTest: typeof createTest,
+    getTests: typeof getTests,
+    getTestById: typeof getTestById,
+});
+
+// ================= ROUTES =================
+
+//   CREATE TEST (Admin only)
+router.post(
+    "/",
+    protect,
+    isAdmin,
+    upload.single("audio"),
+    createTest
+);
+
+//   GET ALL TESTS
 router.get("/", getTests);
 
-// ✅ GET BY ID
+//   GET SINGLE TEST
 router.get("/:id", getTestById);
+
+router.post("/", protect, isAdmin, upload.single("audio"), createTest);
 
 module.exports = router;

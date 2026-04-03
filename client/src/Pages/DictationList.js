@@ -27,7 +27,7 @@ function DictationList() {
                 const res = await axios.get("http://localhost:5000/api/tests");
 
                 const filtered = res.data
-                    .filter((t) => t.type === "dictation")
+                    .filter((t) => t.type?.toLowerCase() === "dictation")
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 setTests(filtered);

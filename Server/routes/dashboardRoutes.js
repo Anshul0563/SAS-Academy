@@ -4,10 +4,9 @@ const router = express.Router();
 const { protect, isAdmin } = require("../middleware/authMiddleware");
 const { getAdminDashboard } = require("../controllers/dashboardControllers");
 
-// 🔐 ADMIN DASHBOARD
-router.get("/admin-dashboard", protect, isAdmin, getAdminDashboard);
-
-// ✅ USER DASHBOARD
+//  ADMIN DASHBOARD
+router.get("/admin-dashboard", protect, isAdmin, adminDashboard);
+//  USER DASHBOARD
 router.get("/dashboard", protect, (req, res) => {
 
     const mockData = {

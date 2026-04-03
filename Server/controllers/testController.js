@@ -1,70 +1,72 @@
 const Test = require("../models/test");
+const cloudinary = require("../config/cloudinary");
 
-// ✅ CREATE TEST
+// ================= CREATE TEST =================
 exports.createTest = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
-        console.log("FILE:", req.file); // 🔥 DEBUG
-
         const { title, type, duration, passage, category, tags } = req.body;
 
-        if (!title || !duration) {
-            return res.status(400).json({ message: "Missing title or duration" });
+        if (!title) {
+            return res.status(400).json({ message: "Missing title" });
         }
 
-        if (type === "transcription" && !passage) {
-            return res.status(400).json({ message: "Passage required" });
-        }
+        let audioUrl = "";
 
-        if (type === "dictation" && !req.file) {
-            return res.status(400).json({ message: "Audio required" });
+        // CLOUDINARY UPLOAD
+        if (type === "dictation") {
+            if (!req.file) {
+                return res.status(400).json({ message: "Audio required" });
+            }
+
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                resource_type: "video"
+            });
+
+            audioUrl = result.secure_url;
         }
 
         const test = await Test.create({
             title,
             type,
-            duration: Number(duration),
-
-            // ✅ TRANSCRIPTION
+            duration: Number(duration) || 5,
             passage: type === "transcription" ? passage : undefined,
-
-            // ✅ DICTATION AUDIO FIX (IMPORTANT)
-            audioUrl:
-                type === "dictation"
-                    ? req.file.path.replace(/\\/g, "/")
-                    : undefined,
-
+            audioUrl,
             category,
             tags: tags ? tags.split(",") : [],
             createdBy: req.user.id,
         });
 
         res.json({ message: "Test created ✅", test });
+
     } catch (error) {
         console.log("CREATE ERROR:", error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// ✅ GET ALL
+// ================= GET ALL =================
 exports.getTests = async (req, res) => {
     try {
         const tests = await Test.find().sort({ createdAt: -1 });
         res.json(tests);
     } catch (error) {
+        console.log("GET TESTS ERROR:", error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// ✅ GET BY ID
+// ================= GET BY ID =================
 exports.getTestById = async (req, res) => {
     try {
         const test = await Test.findById(req.params.id);
+
         if (!test) {
             return res.status(404).json({ message: "Test not found" });
         }
+
         res.json(test);
     } catch (error) {
+        console.log("GET BY ID ERROR:", error);
         res.status(500).json({ message: error.message });
     }
 };

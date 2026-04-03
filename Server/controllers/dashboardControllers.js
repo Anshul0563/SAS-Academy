@@ -6,8 +6,13 @@ exports.getAdminDashboard = async (req, res) => {
         const totalTests = await Test.countDocuments();
         const totalUsers = await User.countDocuments();
 
-        const dictationTests = await Test.countDocuments({ type: "dictation" });
-        const transcriptionTests = await Test.countDocuments({ type: "transcription" });
+        const dictationTests = await Test.countDocuments({
+            type: { $regex: "^dictation$", $options: "i" }
+        });
+
+        const transcriptionTests = await Test.countDocuments({
+            type: { $regex: "^transcription$", $options: "i" }
+        });
 
         const recentTests = await Test.find()
             .sort({ createdAt: -1 })

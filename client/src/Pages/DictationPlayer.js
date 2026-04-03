@@ -12,11 +12,11 @@ function DictationPlayer() {
     const [speed, setSpeed] = useState(90);
     const [text, setText] = useState("");
     const [time, setTime] = useState(0);
-    const [ready, setReady] = useState(false); // ✅ NEW
+    const [ready, setReady] = useState(false); //  NEW
 
     const audioRef = useRef(null);
 
-    // ✅ FETCH TEST
+    //  FETCH TEST
     useEffect(() => {
         const fetchTest = async () => {
             try {
@@ -31,21 +31,17 @@ function DictationPlayer() {
         fetchTest();
     }, [id]);
 
-    // ✅ DEBUG
+    //   DEBUG
     useEffect(() => {
         if (test) {
             console.log("AUDIO URL:", test.audioUrl);
         }
     }, [test]);
 
-    // ✅ SAFE AUDIO SRC (FIXED)
-    const audioSrc = test?.audioUrl
-        ? test.audioUrl.startsWith("http")
-            ? test.audioUrl
-            : `http://localhost:5000/${test.audioUrl}`
-        : "";
+    //  SAFE AUDIO SRC (FIXED)
+    const audioSrc = test?.audioUrl || "";
 
-    // ✅ LOAD AUDIO
+    //  LOAD AUDIO
     useEffect(() => {
         if (audioRef.current && audioSrc) {
             audioRef.current.load();
@@ -53,7 +49,7 @@ function DictationPlayer() {
         }
     }, [audioSrc]);
 
-    // ✅ TIMER
+    //  TIMER
     useEffect(() => {
         let interval;
         if (playing) {
@@ -62,7 +58,7 @@ function DictationPlayer() {
         return () => clearInterval(interval);
     }, [playing]);
 
-    // ✅ PLAY FIX (NO ABORT ERROR)
+    //  PLAY FIX (NO ABORT ERROR)
     const handlePlay = async () => {
         const audio = audioRef.current;
 
@@ -81,7 +77,7 @@ function DictationPlayer() {
         }
     };
 
-    // ✅ SPEED
+    //  SPEED
     const handleSpeed = (e) => {
         const value = Number(e.target.value);
         setSpeed(value);
@@ -90,8 +86,11 @@ function DictationPlayer() {
             audioRef.current.playbackRate = value / 90;
         }
     };
+    useEffect(() => {
+        console.log("FINAL AUDIO SRC:", audioSrc);
+    }, [audioSrc]);
 
-    // ✅ AUTO STOP WHEN ENDED
+    // AUTO STOP WHEN ENDED
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
@@ -123,7 +122,7 @@ function DictationPlayer() {
                         ref={audioRef}
                         src={audioSrc}
                         controls
-                        onCanPlay={() => setReady(true)} // ✅ IMPORTANT
+                        onCanPlay={() => setReady(true)} //  IMPORTANT
                         onError={() => console.log("❌ Audio failed:", audioSrc)}
                     />
 
