@@ -1,159 +1,139 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import AdminLayout from "../../components/AdminLayout";
-import { useNavigate, useLocation } from "react-router-dom";
 
 function AdminTests() {
 
     const [tests, setTests] = useState([]);
-    const [loading, setLoading] = useState(true); // 🔥 added
-    const [error, setError] = useState(""); // 🔥 added
-
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const queryType = new URLSearchParams(location.search).get("type");
-    const [type, setType] = useState(queryType || "transcription");
-
-    const fetchTests = useCallback(async () => {
-        try {
-            setLoading(true);
-            setError("");
-
-            const token = localStorage.getItem("token");
-
-            if (!token) {
-                navigate("/login");
-                return;
-            }
-
-            const res = await axios.get("http://localhost:5000/api/tests", {
-                headers: {
-                    Authorization: "Bearer " + token
-                },
-                params: { t: Date.now() }
-            });
-
-            console.log("TESTS:", res.data); // 🔥 debug
-
-            setTests(Array.isArray(res.data) ? res.data : []);
-
-        } catch (err) {
-            console.error("Fetch Error:", err);
-            setError("❌ Failed to load tests");
-        } finally {
-            setLoading(false);
-        }
-    }, [navigate]);
-
-    const deleteTest = async (id) => {
-        if (!window.confirm("Delete this test?")) return;
-
-        await axios.delete(`http://localhost:5000/api/tests/${id}`, {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("token")
-            }
-        });
-
-        fetchTests();
-    };
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
+        const fetchTests = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                const res = await axios.get(
+                    "http://localhost:5000/api/tests",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = res.data.tests || res.data;
+                setTests(Array.isArray(data) ? data : []);
+
+            } catch (err) {
+                console.error(err);
+                setError("Failed to load tests");
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchTests();
-    }, [fetchTests]);
+    }, []);
 
-    useEffect(() => {
-        if (queryType) {
-            setType(queryType);
-        }
-    }, [queryType]);
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen bg-[#020617]">
+                <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
-    const filteredTests = tests.filter(
-        t => t.type?.toLowerCase() === type
-    );
+    if (error) {
+        return (
+            <div className="text-center text-red-400 mt-20 text-lg">
+                {error}
+            </div>
+        );
+    }
 
     return (
-        <AdminLayout>
+        <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a] text-white p-6">
 
-            <h1 className="text-2xl mb-6 font-bold text-white">Manage Tests</h1>
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-10">
+                <h1 className="text-3xl font-bold tracking-wide bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    🚀 Admin Dashboard
+                </h1>
 
-            {/* 🔥 LOADING */}
-            {loading && (
-                <p className="text-gray-400">Loading tests...</p>
-            )}
+                <button className="bg-gradient-to-r from-indigo-500 to-purple-500 px-5 py-2 rounded-xl text-sm font-semibold shadow-lg hover:scale-105 transition">
+                    + Create Test
+                </button>
+            </div>
 
-            {/* 🔥 ERROR */}
-            {error && (
-                <p className="text-red-400">{error}</p>
-            )}
+            {/* GRID */}
+            {tests.length === 0 ? (
+                <p className="text-gray-400">No tests found</p>
+            ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            {/* 🔥 TOGGLE */}
-            {!loading && (
-                <div className="flex gap-4 mb-6">
-                    <button
-                        onClick={() => {
-                            setType("transcription");
-                            navigate("/admin/tests?type=transcription");
-                        }}
-                        className={`px-4 py-2 rounded ${type === "transcription" ? "bg-indigo-500" : "bg-white/10"
-                            }`}
-                    >
-                        📝 Transcription
-                    </button>
+                    {tests.map((test) => (
+                        <div
+                            key={test._id}
+                            className="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-xl hover:shadow-indigo-500/20 hover:scale-[1.03] transition duration-300"
+                        >
 
-                    <button
-                        onClick={() => {
-                            setType("dictation");
-                            navigate("/admin/tests?type=dictation");
-                        }}
-                        className={`px-4 py-2 rounded ${type === "dictation" ? "bg-indigo-500" : "bg-white/10"
-                            }`}
-                    >
-                        🎤 Dictation
-                    </button>
+                            {/* GLOW BORDER EFFECT */}
+                            <div className="absolute inset-0 rounded-2xl border border-transparent hover:border-indigo-500/40 transition pointer-events-none"></div>
+
+                            {/* TYPE BADGE */}
+                            <span className={`absolute top-3 right-3 text-xs px-2 py-1 rounded-full font-medium
+                                ${test.type === "dictation"
+                                    ? "bg-indigo-500/20 text-indigo-300"
+                                    : "bg-pink-500/20 text-pink-300"
+                                }`}
+                            >
+                                {test.type}
+                            </span>
+
+                            {/* TITLE */}
+                            <h2 className="text-lg font-semibold mb-2">
+                                {test.title}
+                            </h2>
+
+                            {/* DETAILS */}
+                            <div className="text-sm text-gray-400 space-y-1">
+                                <p>⏱ {test.duration} min</p>
+                                <p>🎯 {test.difficulty}</p>
+                                <p>📂 {test.category}</p>
+                            </div>
+
+                            {/* TAGS */}
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                {test.tags?.map((tag, i) => (
+                                    <span
+                                        key={i}
+                                        className="text-xs bg-white/10 px-2 py-1 rounded-md border border-white/10"
+                                    >
+                                        #{tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            {/* ACTIONS */}
+                            <div className="flex justify-between mt-6 text-sm">
+
+                                <button className="text-indigo-400 hover:text-indigo-300 transition">
+                                    ✏️ Edit
+                                </button>
+
+                                <button className="text-red-400 hover:text-red-300 transition">
+                                    🗑 Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+                    ))}
+
                 </div>
             )}
 
-            {/* 🔥 LIST */}
-            {!loading && (
-                filteredTests.length === 0 ? (
-                    <p className="text-gray-400">No tests found</p>
-                ) : (
-                    filteredTests.map((test) => (
-                        <div
-                            key={test._id}
-                            className="bg-[#1e293b] p-4 mb-4 rounded flex justify-between items-center"
-                        >
-                            <div>
-                                <h2 className="font-semibold">{test.title}</h2>
-                                <p className="text-sm text-gray-400">
-                                    ⏱ {test.duration} min
-                                </p>
-                            </div>
-
-                            <div className="flex gap-3">
-
-                                <button
-                                    onClick={() => navigate(`/admin/edit-test/${test._id}`)}
-                                    className="bg-yellow-500 px-3 py-1 rounded text-sm"
-                                >
-                                    Update
-                                </button>
-
-                                <button
-                                    onClick={() => deleteTest(test._id)}
-                                    className="bg-red-500 px-3 py-1 rounded text-sm"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-                        </div>
-                    ))
-                )
-            )}
-
-        </AdminLayout>
+        </div>
     );
 }
 
