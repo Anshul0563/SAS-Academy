@@ -15,6 +15,7 @@ import TranscriptionList from "./Pages/TranscriptionList";
 import DictationPlayer from "./Pages/DictationPlayer";
 import TestSettings from "./Pages/TestSettings";
 import TranscriptionView from "./Pages/TranscriptionView";
+import AdminUsers from "./Pages/admin/adminUsers";
 
 // Admin Pages
 import AdminDashboard from "./Pages/admin/AdminDashboard";
@@ -152,6 +153,11 @@ function App() {
                 </AdminRoute>
               </PrivateRoute>
             }
+          />
+
+          <Route
+            path="/admin/users"
+            element={<adminUsers />}
           />
 
           <Route path="/forgot-password" element={<ForgotPassword />} />

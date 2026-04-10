@@ -40,7 +40,7 @@ function AddTest() {
                 return;
             }
 
-            // 🔥 AUDIO VALIDATION
+            //  AUDIO VALIDATION
             if (form.type === "dictation" && !audio) {
                 setMsg("❌ Please upload audio file");
                 setLoading(false);
@@ -59,7 +59,7 @@ function AddTest() {
                 data.append("audio", audio);
             }
 
-            // 🔥 FIX: DON'T SET Content-Type manually
+            //  FIX: DON'T SET Content-Type manually
             await axios.post(
                 "http://localhost:5000/api/tests",
                 data,
@@ -70,7 +70,7 @@ function AddTest() {
                 }
             );
 
-            setMsg("✅ Test Created Successfully 🚀");
+            setMsg(" Test Created Successfully 🚀");
 
             // RESET
             setForm({
@@ -87,7 +87,7 @@ function AddTest() {
 
             // REDIRECT
             setTimeout(() => {
-                navigate("/admin/tests");
+                navigate("/admin");
             }, 1000);
 
         } catch (err) {

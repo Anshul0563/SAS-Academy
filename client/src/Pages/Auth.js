@@ -51,14 +51,19 @@ function Auth() {
             }
 
         } catch (err) {
-            setError(
-                err.response?.data?.message ||
-                err.message ||
-                "Something went wrong"
-            );
+            if (err.response) {
+                const msg = err.response.data.message;
+
+                if (msg && msg.toLowerCase().includes("already")) {
+                    setError("User Already Exists")
+                } else {
+                    setError("Something Went Wrong")
+                }
+            }
+        } finally {
+            setLoading(false);
         }
 
-        setLoading(false);
     };
 
     return (

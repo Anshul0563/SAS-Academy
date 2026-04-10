@@ -22,7 +22,6 @@ function Layout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const dropdownRef = useRef();
 
-    // ✅ SAFE USER PARSE
     const userData = JSON.parse(localStorage.getItem("user") || "{}");
 
     const menu = [
@@ -36,60 +35,40 @@ function Layout() {
         navigate("/");
     };
 
-    // ✅ CLOSE DROPDOWN OUTSIDE CLICK
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setOpen(false);
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
-        <div className="flex min-h-screen bg-[#020617] text-white">
+        <div className="flex min-h-screen bg-[#030712] text-white">
 
-            {/* MOBILE OVERLAY */}
-            {sidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                    onClick={() => setSidebarOpen(false)}
-                />
-            )}
+            {/* 🔥 BACKGROUND GLOW */}
+            <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_#1e293b,_#020617)]"></div>
 
-            {/* SIDEBAR */}
+            {/* 🔥 SIDEBAR */}
             {!examMode && (
                 <div
-                    className={`
-                        fixed md:static z-50 w-64 h-full 
-                        bg-gradient-to-b from-[#020617] to-[#0f172a]
-                        border-r border-white/10 p-5
-                        transform transition-transform duration-300
-                        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-                        md:translate-x-0
-                    `}
+                    className={`fixed md:static z-50 w-64 h-full
+                    bg-white/5 backdrop-blur-2xl
+                    border-r border-white/10
+                    shadow-[0_0_40px_rgba(0,0,0,0.6)]
+                    transition-transform duration-300
+                    ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
                 >
 
-                    {/* MOBILE HEADER */}
-                    <div className="flex justify-between items-center mb-6 md:hidden">
-                        <h2 className="text-lg font-bold text-indigo-400">
-                            ⚡ SAS Academy
-                        </h2>
-                        <X
-                            className="cursor-pointer"
-                            onClick={() => setSidebarOpen(false)}
-                        />
+                    {/* LOGO */}
+                    <div className="px-6 py-6 text-xl font-semibold tracking-wide text-indigo-400">
+                        ⚡ SAS Academy
                     </div>
 
-                    {/* DESKTOP LOGO */}
-                    <h2 className="text-2xl font-bold mb-8 text-indigo-400 hidden md:block">
-                        ⚡ SAS Academy
-                    </h2>
-
                     {/* MENU */}
-                    <div className="space-y-3">
+                    <div className="px-3 space-y-2">
                         {menu.map((item, i) => {
                             const Icon = item.icon;
                             const active = location.pathname === item.path;
@@ -101,10 +80,10 @@ function Layout() {
                                         navigate(item.path);
                                         setSidebarOpen(false);
                                     }}
-                                    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-300
                                     ${active
-                                            ? "bg-indigo-500 text-white shadow-lg"
-                                            : "hover:bg-white/10 text-gray-300"
+                                            ? "bg-indigo-500/20 text-indigo-400 shadow-inner"
+                                            : "text-gray-400 hover:bg-white/10 hover:text-white hover:translate-x-1"
                                         }`}
                                 >
                                     <Icon size={18} />
@@ -117,66 +96,55 @@ function Layout() {
                 </div>
             )}
 
-            {/* MAIN */}
+            {/* 🔥 MAIN */}
             <div className="flex-1 flex flex-col">
 
-                {/* NAVBAR */}
+                {/* 🔥 FLOATING TOPBAR */}
                 {!examMode && (
-                    <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-white/10 bg-[#020617]">
+                    <div className="sticky top-0 z-40 mx-4 mt-4 rounded-xl
+                        bg-white/5 backdrop-blur-xl border border-white/10
+                        shadow-lg px-6 py-3 flex justify-between items-center">
 
                         {/* LEFT */}
                         <div className="flex items-center gap-3">
-
                             <Menu
-                                className="md:hidden cursor-pointer"
+                                className="cursor-pointer md:hidden"
                                 onClick={() => setSidebarOpen(true)}
                             />
-
-                            <h1 className="text-sm sm:text-lg font-semibold">
-                                {location.pathname.replace("/", "").toUpperCase() || "DASHBOARD"}
+                            <h1 className="text-sm text-gray-300 capitalize">
+                                {location.pathname.replace("/", "") || "dashboard"}
                             </h1>
-
                         </div>
 
                         {/* RIGHT */}
                         <div className="flex items-center gap-4 relative" ref={dropdownRef}>
 
                             {/* 🔔 */}
-                            <Bell className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
+                            <div className="p-2 rounded-full bg-white/10 hover:bg-white/20 cursor-pointer transition">
+                                <Bell size={16} />
+                            </div>
 
-                            {/* 👤 PROFILE */}
+                            {/* 👤 USER */}
                             <div
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpen(!open);
-                                }}
-                                className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full cursor-pointer hover:bg-white/20 transition"
+                                onClick={() => setOpen(!open)}
+                                className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center cursor-pointer shadow-lg"
                             >
-
-                                <User className="w-4 h-4" />
-
-                                {/* ✅ NAME FIX */}
-                                <span className="text-xs sm:text-sm">
-                                    {userData.name
-                                        ? userData.name.split(" ")[0]
-                                        : "User"}
-                                </span>
-
+                                {userData.name ? userData.name[0] : "U"}
                             </div>
 
                             {/* DROPDOWN */}
                             {open && (
-                                <div className="absolute right-0 top-12 w-40 bg-[#020617] border border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
+                                <div className="absolute right-0 top-12 w-48 bg-[#020617]/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
 
-                                    <div className="px-4 py-2 text-xs text-gray-400 border-b border-white/10">
+                                    <div className="px-4 py-3 text-xs text-gray-400 border-b border-white/10">
                                         {userData.email || "No email"}
                                     </div>
 
                                     <div
                                         onClick={handleLogout}
-                                        className="px-4 py-2 text-sm hover:bg-red-500/20 cursor-pointer text-red-400"
+                                        className="px-4 py-3 text-red-400 cursor-pointer hover:bg-red-500/10 transition"
                                     >
-                                        🚪 Logout
+                                        Logout
                                     </div>
 
                                 </div>
@@ -188,7 +156,7 @@ function Layout() {
                 )}
 
                 {/* CONTENT */}
-                <div className="flex-1 p-4 sm:p-6">
+                <div className="p-6 mt-2">
                     <Outlet />
                 </div>
 

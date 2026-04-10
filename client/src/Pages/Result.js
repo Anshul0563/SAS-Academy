@@ -50,7 +50,7 @@ function Result() {
                 totalWords: data.total,
                 correctWords: data.correct,
                 timeUsed: parseFloat(data.time) * 60,
-                errors: data.mistakes,
+                errorsDetails: data.mistakes,
                 breakdown,
                 createdAt: new Date().toISOString()
             };

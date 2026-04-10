@@ -24,7 +24,7 @@ function AdminRegister() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // ✅ Validation
+        //  Validation
         if (!form.name || !form.email || !form.password) {
             return setError("All fields are required");
         }
@@ -33,7 +33,7 @@ function AdminRegister() {
             setLoading(true);
             setError("");
 
-            console.log("Sending data:", form); // 🔥 DEBUG
+            console.log("Sending data:", form); //  DEBUG
 
             const res = await axios.post(
                 "http://localhost:5000/api/auth/admin-register",
@@ -45,14 +45,14 @@ function AdminRegister() {
                 }
             );
 
-            console.log("Response:", res.data); // 🔥 DEBUG
+            console.log("Response:", res.data); //  DEBUG
 
             navigate("/admin-login");
 
         } catch (err) {
-            console.log("FULL ERROR:", err); // 🔥 DEBUG
+            console.log("FULL ERROR:", err); //  DEBUG
 
-            // ✅ Better error handling
+            //  Better error handling
             if (err.response) {
                 setError(err.response.data.message || "Server Error");
             } else if (err.request) {

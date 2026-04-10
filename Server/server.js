@@ -2,28 +2,40 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const dns = require("dns");
+const path = require("path");
+
 const connectDB = require("./config/db");
+
+//  Routes
 const authRoutes = require("./routes/authRoutes");
-const { protect } = require("./middleware/authMiddleware");
-const testRoutes = require("./routes/testRoutes")
+const testRoutes = require("./routes/testRoutes");
 const resultRoutes = require("./routes/resultRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
-const dns = require("dns");
 
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
+const { protect } = require("./middleware/authMiddleware");
 
+//  Models (register once)
 require("./models/user");
 require("./models/test");
 require("./models/result");
 require("./models/attempt");
 
-const app = express();
-const path = require("path");
+// DNS fix
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
+const app = express();
 const PORT = process.env.PORT || 5000;
 
-//Token protection
+//  IMPORTANT: Middleware FIRST
+app.use(cors());
+app.use(express.json());
+
+//  Static
+app.use("/uploads", express.static("uploads"));
+
+//  Protected test route
 app.get("/api/protected", protect, (req, res) => {
     res.json({
         message: "access granted",
@@ -31,30 +43,19 @@ app.get("/api/protected", protect, (req, res) => {
     });
 });
 
-
-app.use("/uploads", express.static("uploads"));
-
+//  Routes (AFTER middleware)
+app.use("/api/auth", authRoutes);
+app.use("/api/tests", testRoutes);
+app.use("/api/results", resultRoutes);
+app.use("/api/upload", uploadRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+//  Root
+app.get("/", (req, res) => {
+    res.send("API running...");
+});
 
-//upload Routes
-app.use("/api/upload", uploadRoutes);
-
-//result Routes
-app.use("/api/results", resultRoutes);
-
-// Routes
-app.use("/api/auth", authRoutes);
-
-//test Routes
-app.use("/api/tests", testRoutes);
-
-app.use("/uploads", express.static("uploads"));
-
-// Start server after DB connect
+//  Start server
 const startServer = async () => {
     try {
         await connectDB();

@@ -19,7 +19,7 @@ const resultSchema = new mongoose.Schema({
   netWPM: Number,
 
   accuracy: Number,
-  errors: Number,
+  errorsDetails: Number,
 
   //breakdown
   omissions: Number,
