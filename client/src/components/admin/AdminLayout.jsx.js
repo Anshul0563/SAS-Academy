@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import API from '../../api/axios';
-import { getAdminAuthToken } from '../../utils/authStorage';
+import { clearAdminAuth, getAdminAuthToken } from '../../utils/authStorage';
 import { 
   LayoutDashboard, 
   Users, 
@@ -95,15 +95,7 @@ const AdminLayout = () => {
 
 
   const logout = () => {
-    // Clear admin storage only (user login remains separate)
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUser");
-
-    // Clear shared/fallback keys to avoid any guard confusion
-    localStorage.removeItem("token");
-    localStorage.removeItem("userToken");
-    localStorage.removeItem("user");
-
+    clearAdminAuth();
     navigate('/admin-login');
   };
 

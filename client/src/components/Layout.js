@@ -1,6 +1,7 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useExam } from "../context/ExamContext";
 import { useState, useEffect, useRef } from "react";
+import { clearUserAuth } from "../utils/authStorage";
 
 import {
     LayoutDashboard,
@@ -31,7 +32,7 @@ function Layout() {
     ];
 
     const handleLogout = () => {
-        localStorage.clear();
+        clearUserAuth();
         navigate("/");
     };
 

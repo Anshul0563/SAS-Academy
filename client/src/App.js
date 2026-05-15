@@ -33,12 +33,12 @@ import Layout from "./components/Layout";
 
 // Context
 import { ExamProvider } from "./context/ExamContext";
-import { getAdminAuthToken, getStoredAdminUser } from "./utils/authStorage";
+import { getAdminAuthToken, getStoredAdminUser, getUserAuthToken } from "./utils/authStorage";
 
 
 // 🔐 USER PROTECT - Separate token
 const UserPrivateRoute = ({ children }) => {
-  const userToken = localStorage.getItem("userToken");
+  const userToken = getUserAuthToken();
   return userToken ? children : <Navigate to="/" />;
 };
 

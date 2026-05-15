@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import { storeUserAuth } from "../utils/authStorage";
 
 
 function Auth() {
@@ -25,20 +26,10 @@ function Auth() {
         const res = await API.post("/auth/login", { email, password });
 
 
-        // IMPORTANT: Keep user/admin login separated.
-        // Even if backend returns role=admin, do NOT auto-redirect to admin login here.
-        localStorage.removeItem("adminToken");
-        localStorage.removeItem("adminUser");
-
-        // Student auth token (must match UserPrivateRoute)
-        localStorage.setItem("userToken", res.data.token);
-
-        // Backward-compatible storage
-        localStorage.setItem("token", res.data.token);
-
-        if (res.data.user) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-        }
+        storeUserAuth({
+          token: res.data.token,
+          user: res.data.user
+        });
 
         navigate("/dashboard");
       } else {
