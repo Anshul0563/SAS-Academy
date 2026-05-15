@@ -7,7 +7,8 @@ import {
     Headphones,
     FileText,
     Bell,
-    Menu
+    Menu,
+    Settings
 } from "lucide-react";
 
 function Layout() {
@@ -26,6 +27,7 @@ function Layout() {
         { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
         { name: "Dictation", icon: Headphones, path: "/dictations" },
         { name: "Transcription", icon: FileText, path: "/transcription" },
+        { name: "Settings", icon: Settings, path: "/settings" },
     ];
 
     const handleLogout = () => {
@@ -143,6 +145,16 @@ function Layout() {
 
                                     <div className="px-4 py-3 text-xs text-gray-400 border-b border-white/10">
                                         {userData.email || "No email"}
+                                    </div>
+
+                                    <div
+                                        onClick={() => {
+                                            navigate("/settings");
+                                            setOpen(false);
+                                        }}
+                                        className="px-4 py-3 text-slate-300 cursor-pointer hover:bg-white/10 transition"
+                                    >
+                                        Settings
                                     </div>
 
                                     <div

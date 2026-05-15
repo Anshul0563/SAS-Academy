@@ -17,6 +17,7 @@ import { motion } from 'framer-motion';
 import StatsCard from '../../components/admin/StatsCard';
 import RecentActivity from '../../components/admin/RecentActivity';
 import TestPerformanceChart from '../../components/admin/TestPerformanceChart';
+import { getAdminSettings } from '../../utils/settingsStorage';
 
 const emptyDashboard = {
   totalStudents: 0,
@@ -77,7 +78,8 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
-    const interval = setInterval(fetchDashboardData, 30000); // Refresh every 30s
+    const refreshMs = Math.max(10, Number(getAdminSettings().dashboardRefreshSeconds) || 30) * 1000;
+    const interval = setInterval(fetchDashboardData, refreshMs);
     return () => clearInterval(interval);
   }, [fetchDashboardData]);
 

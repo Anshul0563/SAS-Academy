@@ -15,6 +15,7 @@ import {
     SpellCheck,
     Type
 } from "lucide-react";
+import { getUserSettings } from "../utils/settingsStorage";
 
 const SETTINGS_VERSION = 2;
 
@@ -58,12 +59,23 @@ function TestSettings() {
 
     const [settings, setSettings] = useState(() => {
         try {
+            const userSettings = getUserSettings();
+            const userDefaults = {
+                ...defaultSettings,
+                backspace: userSettings.defaultExamType === "ssc" ? false : userSettings.defaultBackspace,
+                spelling: userSettings.defaultExamType === "ssc" ? "full" : userSettings.defaultSpelling,
+                caps: userSettings.defaultCaps,
+                punctuation: userSettings.defaultPunctuation,
+                fontSize: userSettings.defaultFontSize,
+                time: userSettings.defaultTimer,
+                examType: userSettings.defaultExamType,
+            };
             const savedSettings = JSON.parse(localStorage.getItem("testSettings")) || {};
             if (savedSettings.version !== SETTINGS_VERSION) {
-                return defaultSettings;
+                return userDefaults;
             }
 
-            return { ...defaultSettings, ...savedSettings };
+            return { ...userDefaults, ...savedSettings };
         } catch {
             return defaultSettings;
         }

@@ -4,8 +4,14 @@ import { motion } from "framer-motion";
 import { UploadCloud, FileText, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getAdminAuthToken } from "../../utils/authStorage";
+import { getAdminSettings } from "../../utils/settingsStorage";
 
-const getDefaultDuration = (type) => (type === "dictation" ? 10 : 50);
+const getDefaultDuration = (type) => {
+    const settings = getAdminSettings();
+    return type === "dictation" ? settings.dictationDuration : settings.transcriptionDuration;
+};
+
+const getDefaultDifficulty = () => getAdminSettings().defaultDifficulty;
 
 function AddTest() {
 
@@ -16,7 +22,7 @@ function AddTest() {
         type: "transcription",
         passage: "",
         duration: getDefaultDuration("transcription"),
-        difficulty: "medium",
+        difficulty: getDefaultDifficulty(),
         category: "",
         tags: ""
     });
@@ -107,7 +113,7 @@ function AddTest() {
                 type: "transcription",
                 passage: "",
                 duration: getDefaultDuration("transcription"),
-                difficulty: "medium",
+                difficulty: getDefaultDifficulty(),
                 category: "",
                 tags: ""
             });

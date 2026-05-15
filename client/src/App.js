@@ -15,6 +15,7 @@ import TranscriptionList from "./Pages/TranscriptionList";
 import DictationPlayer from "./Pages/DictationPlayer";
 import TestSettings from "./Pages/TestSettings";
 import TranscriptionView from "./Pages/TranscriptionView";
+import Settings from "./Pages/Settings";
 import AdminLayout from "./components/admin/AdminLayout.jsx.js";
 
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx.js";
@@ -70,6 +71,7 @@ function App() {
             <Route path="/transcription" element={<TranscriptionList />} />
             <Route path="/typing-settings/:id" element={<TestSettings />} />
             <Route path="/transcription-view/:id" element={<TranscriptionView />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
 
           {/* TYPING TEST */}

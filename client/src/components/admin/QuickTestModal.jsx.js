@@ -3,8 +3,14 @@ import { motion } from 'framer-motion';
 import API from '../../api/axios';
 import { FileText, Headphones, UploadCloud, X, Plus } from 'lucide-react';
 import { getAdminAuthToken } from '../../utils/authStorage';
+import { getAdminSettings } from '../../utils/settingsStorage';
 
-const getDefaultDuration = (type) => (type === 'dictation' ? 10 : 50);
+const getDefaultDuration = (type) => {
+  const settings = getAdminSettings();
+  return type === 'dictation' ? settings.dictationDuration : settings.transcriptionDuration;
+};
+
+const getDefaultDifficulty = () => getAdminSettings().defaultDifficulty;
 
 const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
   const [form, setForm] = useState({
@@ -12,6 +18,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
     type: 'transcription',
     passage: '',
     duration: getDefaultDuration('transcription'),
+    difficulty: getDefaultDifficulty(),
     category: ''
   });
   const [audio, setAudio] = useState(null);
@@ -69,6 +76,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
       data.append('type', form.type);
       data.append('passage', form.type === 'transcription' ? passage : '');
       data.append('duration', form.duration);
+      data.append('difficulty', form.difficulty);
       data.append('category', form.category.trim());
 
       if (form.type === 'dictation' && audio) {
@@ -83,7 +91,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
       onSuccess();
       setTimeout(() => {
         onClose();
-        setForm({ title: '', type: 'transcription', passage: '', duration: getDefaultDuration('transcription'), category: '' });
+        setForm({ title: '', type: 'transcription', passage: '', duration: getDefaultDuration('transcription'), difficulty: getDefaultDifficulty(), category: '' });
         setAudio(null);
       }, 1500);
     } catch (error) {
