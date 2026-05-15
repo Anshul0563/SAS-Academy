@@ -27,13 +27,26 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const defaultClientUrls = [
+  "http://localhost:3000",
+  "http://localhost:3002",
+  "http://localhost:5173",
+  "http://127.0.0.1:3000",
+  "https://sas-academy-eta.vercel.app",
+];
 const allowedOrigins = (
-  process.env.CLIENT_URLS ||
-  "http://localhost:3000,http://localhost:3002,http://localhost:5173,http://127.0.0.1:3000, http://localhost:5000,https://sas-academy-1ruh.onrender.com"
+  process.env.CLIENT_URLS || defaultClientUrls.join(",")
 )
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+
+  return /^https:\/\/sas-academy-[a-z0-9-]+\.vercel\.app$/.test(origin);
+};
 
 const requiredEnv = ["MONGO_URI", "JWT_SECRET"];
 const missingEnv = requiredEnv.filter((key) => !process.env[key]);
@@ -47,11 +60,11 @@ const corsOptions = {
   origin(origin, callback) {
     console.log("Request Origin:", origin);
 
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
 
-    return callback(new Error("Not allowed by CORS"));
+    return callback(null, false);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
