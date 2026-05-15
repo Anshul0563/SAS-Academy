@@ -3,12 +3,14 @@ import { motion } from 'framer-motion';
 import API from '../../api/axios';
 import { FileText, Headphones, UploadCloud, X, Plus } from 'lucide-react';
 
+const getDefaultDuration = (type) => (type === 'dictation' ? 10 : 50);
+
 const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
   const [form, setForm] = useState({
     title: '',
     type: 'transcription',
     passage: '',
-    duration: 5,
+    duration: getDefaultDuration('transcription'),
     category: ''
   });
   const [audio, setAudio] = useState(null);
@@ -17,6 +19,19 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setMessage('');
+  };
+
+  const handleTypeChange = (type) => {
+    setForm((prev) => ({
+      ...prev,
+      type,
+      duration: getDefaultDuration(type),
+      passage: type === 'dictation' ? '' : prev.passage
+    }));
+    if (type === 'transcription') {
+      setAudio(null);
+    }
     setMessage('');
   };
 
@@ -62,7 +77,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
       onSuccess();
       setTimeout(() => {
         onClose();
-        setForm({ title: '', type: 'transcription', passage: '', duration: 5, category: '' });
+        setForm({ title: '', type: 'transcription', passage: '', duration: getDefaultDuration('transcription'), category: '' });
         setAudio(null);
       }, 1500);
     } catch (error) {
@@ -108,7 +123,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
         {/* Type Toggle */}
         <div className="flex gap-3 mb-6">
           <button
-            onClick={() => setForm({ ...form, type: 'transcription' })}
+            onClick={() => handleTypeChange('transcription')}
             className={`flex-1 p-3 rounded-xl flex items-center justify-center gap-2 font-semibold transition-all ${
               form.type === 'transcription'
                 ? 'bg-indigo-500/20 text-indigo-300 border-2 border-indigo-500/40 shadow-lg'
@@ -119,7 +134,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
             Transcription
           </button>
           <button
-            onClick={() => setForm({ ...form, type: 'dictation' })}
+            onClick={() => handleTypeChange('dictation')}
             className={`flex-1 p-3 rounded-xl flex items-center justify-center gap-2 font-semibold transition-all ${
               form.type === 'dictation'
                 ? 'bg-indigo-500/20 text-indigo-300 border-2 border-indigo-500/40 shadow-lg'
@@ -178,7 +193,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
               onChange={handleChange}
               className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl focus:border-indigo-500 focus:outline-none transition"
               min={1}
-              max={30}
+              max={60}
             />
             <input
               name="category"

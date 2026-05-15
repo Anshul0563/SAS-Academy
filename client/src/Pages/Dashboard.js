@@ -26,6 +26,8 @@ const formatDate = () => new Date().toLocaleDateString(undefined, {
     day: "numeric"
 });
 
+const getDisplayDuration = (test) => Number(test?.duration) || (test?.type === "dictation" ? 10 : 50);
+
 function Dashboard() {
     const navigate = useNavigate();
     const [tests, setTests] = useState([]);
@@ -52,7 +54,7 @@ function Dashboard() {
         const dictation = tests.filter((test) => test.type === "dictation").length;
         const categories = new Set(tests.map((test) => test.category).filter(Boolean)).size;
         const averageTime = tests.length
-            ? Math.round(tests.reduce((total, test) => total + (Number(test.duration) || 5), 0) / tests.length)
+            ? Math.round(tests.reduce((total, test) => total + getDisplayDuration(test), 0) / tests.length)
             : 0;
 
         return [
@@ -153,7 +155,7 @@ function Dashboard() {
                             <div className="mt-4">
                                 <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
                                     <span className="rounded bg-white/10 px-2 py-1 capitalize">{featuredTest.type || "practice"}</span>
-                                    <span>{featuredTest.duration || 5} min</span>
+                                    <span>{getDisplayDuration(featuredTest)} min</span>
                                 </div>
                                 <h2 className="mt-3 line-clamp-2 text-xl font-semibold">{featuredTest.title}</h2>
                                 <p className="mt-2 text-sm text-slate-400">{featuredTest.category || "General"} practice set</p>
@@ -238,7 +240,7 @@ function Dashboard() {
                                         <span className="block truncate text-sm font-semibold text-white">{test.title}</span>
                                         <span className="mt-0.5 block text-xs capitalize text-slate-400">{test.type || "test"} / {test.category || "General"}</span>
                                     </span>
-                                    <span className="shrink-0 text-xs text-slate-400">{test.duration || 5}m</span>
+                                    <span className="shrink-0 text-xs text-slate-400">{getDisplayDuration(test)}m</span>
                                 </button>
                             ))}
                         </div>

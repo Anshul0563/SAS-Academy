@@ -25,6 +25,8 @@ const cleanupFile = async (filePath) => {
     }
 };
 
+const getDefaultDuration = (type) => (type === "dictation" ? 10 : 50);
+
 // ================= CREATE TEST =================
 exports.createTest = async (req, res) => {
     try {
@@ -50,7 +52,7 @@ exports.createTest = async (req, res) => {
         const test = await Test.create({
             title,
             type,
-            duration: Number(duration) || 5,
+            duration: Number(duration) || getDefaultDuration(type),
             passage: type === "transcription" ? passage : undefined,
             audioURL: audioUrl,
             category,
@@ -98,7 +100,7 @@ exports.updateTest = async (req, res) => {
         const update = {
             title,
             type,
-            duration: Number(duration) || 5,
+            duration: Number(duration) || getDefaultDuration(type),
             passage: type === "transcription" ? passage : undefined,
             category,
             difficulty,

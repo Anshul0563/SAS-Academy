@@ -21,7 +21,7 @@ const testSchema = new mongoose.Schema({
 
   duration: {
     type: Number,
-    default: 5
+    default: 50
   },
 
   createdBy: {

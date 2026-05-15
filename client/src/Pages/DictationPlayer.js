@@ -22,6 +22,8 @@ const formatTime = (seconds = 0) => {
     return `${mins}:${String(secs).padStart(2, "0")}`;
 };
 
+const getDisplayDuration = (test) => Number(test?.duration) || 10;
+
 function DictationPlayer() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -166,7 +168,7 @@ function DictationPlayer() {
                             <div>
                                 <h1 className="text-xl font-bold sm:text-2xl">{test?.title || "Dictation"}</h1>
                                 <p className="mt-1 text-sm text-slate-400">
-                                    {test?.category || "Practice"} · {test?.duration || 5} min
+                                    {test?.category || "Practice"} · {getDisplayDuration(test)} min
                                 </p>
                             </div>
                         </div>

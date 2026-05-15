@@ -16,36 +16,41 @@ import {
     Type
 } from "lucide-react";
 
+const SETTINGS_VERSION = 2;
+
 const defaultSettings = {
     backspace: true,
     spelling: "half",
     caps: "none",
     punctuation: "none",
     fontSize: 20,
-    time: 5,
-    examType: "custom"
+    time: 50,
+    examType: "custom",
+    version: SETTINGS_VERSION
 };
 
 const presets = [
     {
         id: "practice",
         title: "Practice",
-        detail: "Forgiving rules for daily typing drills",
-        values: { backspace: true, spelling: "half", caps: "none", punctuation: "none", fontSize: 20, time: 5, examType: "custom" }
+        detail: "50-minute daily typing drill with forgiving review",
+        values: { backspace: true, spelling: "half", caps: "none", punctuation: "none", fontSize: 20, time: 50, examType: "custom", version: SETTINGS_VERSION }
     },
     {
         id: "ssc",
         title: "SSC Mode",
-        detail: "Backspace blocked with stricter exam behavior",
-        values: { backspace: false, spelling: "full", caps: "none", punctuation: "none", fontSize: 20, time: 10, examType: "ssc" }
+        detail: "50-minute SSC setup with backspace blocked",
+        values: { backspace: false, spelling: "full", caps: "none", punctuation: "none", fontSize: 20, time: 50, examType: "ssc", version: SETTINGS_VERSION }
     },
     {
         id: "strict",
         title: "Strict Review",
         detail: "Case and punctuation both count",
-        values: { backspace: true, spelling: "full", caps: "full", punctuation: "full", fontSize: 22, time: 15, examType: "custom" }
+        values: { backspace: true, spelling: "full", caps: "full", punctuation: "full", fontSize: 22, time: 50, examType: "custom", version: SETTINGS_VERSION }
     }
 ];
+
+const quickTimers = [10, 15, 30, 50, 60];
 
 function TestSettings() {
     const navigate = useNavigate();
@@ -53,7 +58,12 @@ function TestSettings() {
 
     const [settings, setSettings] = useState(() => {
         try {
-            return { ...defaultSettings, ...(JSON.parse(localStorage.getItem("testSettings")) || {}) };
+            const savedSettings = JSON.parse(localStorage.getItem("testSettings")) || {};
+            if (savedSettings.version !== SETTINGS_VERSION) {
+                return defaultSettings;
+            }
+
+            return { ...defaultSettings, ...savedSettings };
         } catch {
             return defaultSettings;
         }
@@ -66,6 +76,7 @@ function TestSettings() {
             if (key === "examType" && value === "ssc") {
                 next.backspace = false;
                 next.spelling = "full";
+                next.time = 50;
             }
 
             if (key === "backspace" && prev.examType === "ssc") {
@@ -83,6 +94,7 @@ function TestSettings() {
     const handleStart = () => {
         const finalSettings = {
             ...settings,
+            version: SETTINGS_VERSION,
             time: Math.max(1, Math.min(60, Number(settings.time) || defaultSettings.time)),
             fontSize: Math.max(16, Math.min(34, Number(settings.fontSize) || defaultSettings.fontSize))
         };
@@ -264,6 +276,25 @@ function TestSettings() {
                                 suffix="min"
                                 onChange={(value) => updateSetting("time", value)}
                             />
+
+                            <div>
+                                <p className="mb-2 text-sm font-medium text-slate-300">Quick timer</p>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {quickTimers.map((minutes) => (
+                                        <button
+                                            key={minutes}
+                                            onClick={() => updateSetting("time", minutes)}
+                                            className={`rounded-md border px-2 py-2 text-sm font-semibold transition ${
+                                                Number(settings.time) === minutes
+                                                    ? "border-emerald-300 bg-emerald-300 text-slate-950"
+                                                    : "border-white/10 bg-slate-950/60 text-slate-300 hover:bg-white/10"
+                                            }`}
+                                        >
+                                            {minutes}m
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
                             <RangeControl
                                 label="Typing font size"

@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { UploadCloud, FileText, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const getDefaultDuration = (type) => (type === "dictation" ? 10 : 50);
+
 function AddTest() {
 
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ function AddTest() {
         title: "",
         type: "transcription",
         passage: "",
-        duration: "",
+        duration: getDefaultDuration("transcription"),
         difficulty: "medium",
         category: "",
         tags: ""
@@ -24,6 +26,18 @@ function AddTest() {
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const handleTypeChange = (type) => {
+        setForm((prev) => ({
+            ...prev,
+            type,
+            duration: getDefaultDuration(type),
+            passage: type === "dictation" ? "" : prev.passage
+        }));
+        if (type === "transcription") {
+            setAudio(null);
+        }
     };
 
     const handleSubmit = async () => {
@@ -90,7 +104,7 @@ function AddTest() {
                 title: "",
                 type: "transcription",
                 passage: "",
-                duration: "",
+                duration: getDefaultDuration("transcription"),
                 difficulty: "medium",
                 category: "",
                 tags: ""
@@ -134,7 +148,7 @@ function AddTest() {
                 <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
 
                     <button
-                        onClick={() => setForm({ ...form, type: "transcription" })}
+                        onClick={() => handleTypeChange("transcription")}
                         className={`flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl p-3 text-sm font-medium sm:text-base
                         ${form.type === "transcription" ? "bg-indigo-500 text-white shadow-lg" : "bg-white/10 hover:bg-white/20 text-gray-300"} transition-all`}
                     >
@@ -143,7 +157,7 @@ function AddTest() {
                     </button>
 
                     <button
-                        onClick={() => setForm({ ...form, type: "dictation" })}
+                        onClick={() => handleTypeChange("dictation")}
                         className={`flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl p-3 text-sm font-medium sm:text-base
                         ${form.type === "dictation" ? "bg-indigo-500 text-white shadow-lg" : "bg-white/10 hover:bg-white/20 text-gray-300"} transition-all`}
                     >
@@ -211,6 +225,8 @@ function AddTest() {
                             placeholder="Duration (minutes)"
                             value={form.duration}
                             onChange={handleChange}
+                            min={1}
+                            max={60}
                             className="p-4 bg-white/10 border border-white/20 rounded-xl focus:border-indigo-400"
                         />
                         <select

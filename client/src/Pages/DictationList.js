@@ -12,6 +12,8 @@ import {
     Loader2
 } from "lucide-react";
 
+const getDisplayDuration = (test) => Number(test?.duration) || 10;
+
 function DictationList() {
 
     const [tests, setTests] = useState([]);
@@ -104,12 +106,10 @@ function DictationList() {
                             {/* META */}
                             <div className="text-xs sm:text-sm text-gray-400 space-y-1 mb-3">
 
-                                {test.duration && (
-                                    <div className="flex items-center gap-2">
-                                        <Clock size={14} />
-                                        {test.duration} min
-                                    </div>
-                                )}
+                                <div className="flex items-center gap-2">
+                                    <Clock size={14} />
+                                    {getDisplayDuration(test)} min
+                                </div>
 
                                 {test.category && (
                                     <div className="flex items-center gap-2">

@@ -3,6 +3,8 @@ import API from "../../api/axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Clock, Edit3, FileText, Headphones, Plus, Search, Trash2 } from "lucide-react";
 
+const getDisplayDuration = (test) => Number(test?.duration) || (test?.type === "dictation" ? 10 : 50);
+
 function AdminTests() {
     const [tests, setTests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -158,7 +160,7 @@ function AdminTests() {
                                 <div className="mt-5 grid grid-cols-1 gap-3 text-sm text-slate-300 sm:grid-cols-2">
                                     <div className="flex items-center gap-2 rounded-xl bg-slate-800/70 p-3">
                                         <Clock size={16} className="text-slate-400" />
-                                        {test.duration || 5} min
+                                        {getDisplayDuration(test)} min
                                     </div>
                                     <div className="rounded-xl bg-slate-800/70 p-3 truncate">
                                         {test.category || "General"}

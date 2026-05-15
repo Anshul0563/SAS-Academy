@@ -13,6 +13,8 @@ import {
     Loader2
 } from "lucide-react";
 
+const getDisplayDuration = (test) => Number(test?.duration) || 50;
+
 function TranscriptionList() {
 
     const [tests, setTests] = useState([]);
@@ -133,7 +135,7 @@ function TranscriptionList() {
 
                                     <div className="flex items-center gap-2">
                                         <Clock size={14} />
-                                        {test.duration} min
+                                        {getDisplayDuration(test)} min
                                     </div>
 
                                     {test.category && (

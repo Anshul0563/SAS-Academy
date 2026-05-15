@@ -16,7 +16,7 @@ function TypingTest() {
             return {};
         }
     }, []);
-    const totalMinutes = Number(settings.time) || 5;
+    const totalMinutes = Number(settings.time) || 50;
     const totalSeconds = totalMinutes * 60;
 
     const [time, setTime] = useState(totalSeconds);
