@@ -41,7 +41,7 @@ const presets = [
         id: "ssc",
         title: "SSC Mode",
         detail: "50-minute SSC setup with backspace blocked",
-        values: { backspace: false, spelling: "full", caps: "none", punctuation: "none", fontSize: 20, time: 50, examType: "ssc", version: SETTINGS_VERSION }
+        values: { backspace: false, spelling: "full", caps: "full", punctuation: "full", fontSize: 20, time: 50, examType: "ssc", version: SETTINGS_VERSION }
     },
     {
         id: "strict",
