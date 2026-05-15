@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api/axios";
+
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,7 +23,8 @@ function DictationList() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("/api/tests?type=dictation");
+                const res = await API.get("/api/tests?type=dictation");
+
 
                 const filtered = res.data
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
+
 import {
     ArrowRight,
     Award,
@@ -34,7 +35,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("/api/tests");
+                const res = await API.get("/api/tests");
                 setTests(Array.isArray(res.data) ? res.data : []);
             } catch (err) {
                 console.error("Dashboard tests error:", err);

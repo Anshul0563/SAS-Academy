@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,7 +23,8 @@ function TranscriptionList() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("/api/tests?type=transcription");
+                const res = await API.get("/api/tests?type=transcription");
+
                 setTests(Array.isArray(res.data) ? res.data : []);
             } catch (err) {
                 console.log(err);
