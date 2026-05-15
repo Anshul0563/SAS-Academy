@@ -1,5 +1,29 @@
 const Test = require("../models/test");
 const cloudinary = require("../config/cloudinary");
+const fs = require("fs/promises");
+
+const uploadAudioToCloudinary = async (filePath) => {
+    cloudinary.assertCloudinaryConfig();
+
+    const result = await cloudinary.uploader.upload(filePath, {
+        resource_type: "video",
+        folder: "sas-academy/dictations"
+    });
+
+    return result.secure_url;
+};
+
+const cleanupFile = async (filePath) => {
+    if (!filePath) return;
+
+    try {
+        await fs.unlink(filePath);
+    } catch (error) {
+        if (error.code !== "ENOENT") {
+            console.warn("Temporary upload cleanup failed:", error.message);
+        }
+    }
+};
 
 // ================= CREATE TEST =================
 exports.createTest = async (req, res) => {
@@ -18,11 +42,8 @@ exports.createTest = async (req, res) => {
                 return res.status(400).json({ message: "Audio required" });
             }
 
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                resource_type: "video"
-            });
-
-            audioUrl = result.secure_url;
+            audioUrl = await uploadAudioToCloudinary(req.file.path);
+            await cleanupFile(req.file.path);
         }
 
         // NOTE: model uses audioURL (capital URL)
@@ -42,6 +63,7 @@ exports.createTest = async (req, res) => {
         res.json({ message: "Test created ✅", test });
 
     } catch (error) {
+        await cleanupFile(req.file?.path);
         console.log("CREATE ERROR:", error);
         res.status(500).json({ message: error.message });
     }
@@ -84,10 +106,8 @@ exports.updateTest = async (req, res) => {
         };
 
         if (type === "dictation" && req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                resource_type: "video"
-            });
-            update.audioURL = result.secure_url;
+            update.audioURL = await uploadAudioToCloudinary(req.file.path);
+            await cleanupFile(req.file.path);
         }
 
         const test = await Test.findByIdAndUpdate(req.params.id, update, {
@@ -101,6 +121,7 @@ exports.updateTest = async (req, res) => {
 
         res.json({ message: "Test updated", test });
     } catch (error) {
+        await cleanupFile(req.file?.path);
         console.log("UPDATE TEST ERROR:", error);
         res.status(500).json({ message: error.message });
     }

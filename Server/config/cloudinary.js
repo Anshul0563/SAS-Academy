@@ -9,20 +9,28 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Validate config on startup
-const validateConfig = () => {
-    if (!process.env.CLOUDINARY_CLOUD_NAME) {
-        console.warn('⚠️  CLOUDINARY_CLOUD_NAME missing in .env');
-    }
-    if (!process.env.CLOUDINARY_API_KEY) {
-        console.warn('⚠️  CLOUDINARY_API_KEY missing in .env'); 
-    }
-    if (!process.env.CLOUDINARY_API_SECRET) {
-        console.warn('⚠️  CLOUDINARY_API_SECRET missing in .env');
+const requiredKeys = [
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET"
+];
+
+const getMissingCloudinaryKeys = () => requiredKeys.filter((key) => !process.env[key]);
+
+const assertCloudinaryConfig = () => {
+    const missing = getMissingCloudinaryKeys();
+    if (missing.length > 0) {
+        const error = new Error(`Cloudinary is not configured. Missing: ${missing.join(", ")}`);
+        error.statusCode = 500;
+        throw error;
     }
 };
 
-validateConfig();
+const missing = getMissingCloudinaryKeys();
+if (missing.length > 0) {
+    console.warn(`Cloudinary config missing: ${missing.join(", ")}`);
+}
 
 
 module.exports = cloudinary;
+module.exports.assertCloudinaryConfig = assertCloudinaryConfig;

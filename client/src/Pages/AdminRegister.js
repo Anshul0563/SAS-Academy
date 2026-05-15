@@ -62,14 +62,14 @@ function AdminRegister() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] text-white">
+        <div className="flex min-h-dvh items-center justify-center bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] px-3 py-5 text-white">
 
             <form
                 onSubmit={handleSubmit}
-                className="bg-white/10 backdrop-blur-xl p-8 rounded-3xl w-[380px] border border-white/10 shadow-2xl"
+                className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/10 p-5 shadow-2xl backdrop-blur-xl sm:p-8"
             >
 
-                <h2 className="text-3xl font-bold mb-6 text-center">
+                <h2 className="mb-6 text-center text-2xl font-bold sm:text-3xl">
                     Admin Register
                 </h2>
 

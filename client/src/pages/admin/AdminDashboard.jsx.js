@@ -82,7 +82,7 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 to-slate-900">
+      <div className="flex min-h-[50vh] items-center justify-center">
         <motion.div 
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 lg:p-8 space-y-8">
+    <div className="space-y-5 sm:space-y-6 lg:space-y-8">
       
       {/* Header */}
       <motion.div 
@@ -102,16 +102,16 @@ const AdminDashboard = () => {
         className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
       >
         <div>
-          <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white via-indigo-100 to-slate-200 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-indigo-100 to-slate-200 bg-clip-text text-transparent sm:text-3xl lg:text-4xl">
             Welcome back, {dashboardData.adminName} 👋
           </h1>
           <p className="text-slate-400 mt-2">Your academy overview at a glance</p>
         </div>
         
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl shadow-xl transition-all flex items-center gap-2"
+            className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-medium text-white shadow-xl transition-all hover:bg-emerald-700 sm:px-6"
             onClick={() => navigate('/admin/add-test')}
           >
             <Plus className="w-4 h-4" />
@@ -120,7 +120,7 @@ const AdminDashboard = () => {
           
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="px-6 py-3 border border-slate-600 hover:bg-slate-800 text-slate-300 hover:text-white font-medium rounded-2xl transition-all flex items-center gap-2"
+            className="flex items-center justify-center gap-2 rounded-xl border border-slate-600 px-4 py-3 text-sm font-medium text-slate-300 transition-all hover:bg-slate-800 hover:text-white sm:px-6"
           >
             <Download className="w-4 h-4" />
             Export Report
@@ -132,7 +132,7 @@ const AdminDashboard = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
       >
         <StatsCard 
           title="Total Students" 
@@ -168,12 +168,12 @@ const AdminDashboard = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 xl:grid-cols-2 gap-8"
+        className="grid grid-cols-1 gap-5 xl:grid-cols-2 lg:gap-8"
       >
         {/* Performance Chart */}
-        <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col shadow-2xl">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">Performance Trend</h2>
+        <div className="flex flex-col rounded-2xl border border-slate-700/50 bg-slate-900/50 p-4 shadow-2xl backdrop-blur-xl sm:p-6 lg:p-8">
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-lg font-bold text-white sm:text-xl">Performance Trend</h2>
             <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">
               +{dashboardData.testGrowth || 12.4}% growth
             </span>
@@ -182,9 +182,9 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col shadow-2xl">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">Recent Activity</h2>
+        <div className="flex flex-col rounded-2xl border border-slate-700/50 bg-slate-900/50 p-4 shadow-2xl backdrop-blur-xl sm:p-6 lg:p-8">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-white sm:text-xl">Recent Activity</h2>
             <span className="text-xs text-slate-400">Live updates</span>
           </div>
           <RecentActivity activities={dashboardData.recentTests || []} />
@@ -195,11 +195,11 @@ const AdminDashboard = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="grid grid-cols-1 gap-4 md:grid-cols-3"
       >
-        <div className="bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 border border-emerald-500/30 p-8 rounded-3xl">
+        <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 p-5 sm:p-6 lg:p-8">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 sm:h-16 sm:w-16">
               <TrendingUp className="w-8 h-8 text-emerald-400" />
             </div>
             <div>
@@ -209,9 +209,9 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/10 border border-blue-500/30 p-8 rounded-3xl">
+        <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-500/10 to-blue-600/10 p-5 sm:p-6 lg:p-8">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/20 sm:h-16 sm:w-16">
               <Clock className="w-8 h-8 text-blue-400" />
             </div>
             <div>
@@ -222,9 +222,9 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-purple-500/10 to-purple-600/10 border border-purple-500/30 p-8 rounded-3xl">
+        <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/10 to-purple-600/10 p-5 sm:p-6 lg:p-8">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-500/20 sm:h-16 sm:w-16">
               <Users className="w-8 h-8 text-purple-400" />
             </div>
             <div>

@@ -45,10 +45,10 @@ function TranscriptionView() {
     }, [id]);
 
     return (
-        <div className="min-h-screen bg-[#020617] text-white px-4 sm:px-6">
+        <div className="min-h-dvh bg-[#020617] px-3 text-white sm:px-6">
 
             {/* HEADER */}
-            <div className="max-w-6xl mx-auto py-4 flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between items-start sm:items-center">
+            <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 py-4 sm:flex-row sm:items-center">
 
                 {/* BACK */}
                 <button
@@ -60,7 +60,7 @@ function TranscriptionView() {
                 </button>
 
                 {/* TITLE */}
-                <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                     <FileText className="text-indigo-400" size={18} />
                     <h1 className="text-base sm:text-xl font-bold">
                         Transcription Preview
@@ -104,7 +104,7 @@ function TranscriptionView() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-10 shadow-xl overflow-y-auto max-h-[65vh] sm:max-h-[70vh]"
+                        className="max-h-[65vh] overflow-y-auto rounded-xl border border-white/10 bg-white/5 p-4 shadow-xl sm:max-h-[70vh] sm:rounded-2xl sm:p-6 md:p-8 lg:p-10"
                         style={{
                             fontSize: `${fontSize}px`,
                             lineHeight: 1.8,

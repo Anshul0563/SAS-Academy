@@ -74,23 +74,23 @@ function AdminTests() {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Tests</h1>
+                    <h1 className="text-2xl font-bold text-white sm:text-3xl">Tests</h1>
                     <p className="text-slate-400">Create, review, and manage all academy tests.</p>
                 </div>
 
                 <button
                     onClick={() => navigate("/admin/add-test")}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500 sm:w-auto"
                 >
                     <Plus size={18} />
                     Create Test
                 </button>
             </div>
 
-            <div className="grid gap-4 rounded-2xl border border-slate-700/60 bg-slate-900/50 p-4 md:grid-cols-[1fr_auto]">
+            <div className="grid gap-3 rounded-2xl border border-slate-700/60 bg-slate-900/50 p-3 sm:p-4 md:grid-cols-[1fr_auto]">
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                     <input
@@ -101,12 +101,12 @@ function AdminTests() {
                     />
                 </div>
 
-                <div className="flex rounded-xl border border-slate-700 bg-slate-800/70 p-1">
+                <div className="flex overflow-x-auto rounded-xl border border-slate-700 bg-slate-800/70 p-1">
                     {["all", "transcription", "dictation"].map((type) => (
                         <button
                             key={type}
                             onClick={() => setTypeFilter(type)}
-                            className={`rounded-lg px-3 py-2 text-sm capitalize transition ${
+                            className={`shrink-0 rounded-lg px-3 py-2 text-sm capitalize transition ${
                                 typeFilter === type ? "bg-indigo-600 text-white" : "text-slate-300 hover:bg-slate-700"
                             }`}
                         >
@@ -127,18 +127,18 @@ function AdminTests() {
                     <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
                 </div>
             ) : filteredTests.length === 0 ? (
-                <div className="rounded-2xl border border-slate-700/60 bg-slate-900/50 p-12 text-center text-slate-400">
+                <div className="rounded-2xl border border-slate-700/60 bg-slate-900/50 p-8 text-center text-slate-400 sm:p-12">
                     No tests found.
                 </div>
             ) : (
-                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {filteredTests.map((test) => {
                         const Icon = test.type === "dictation" ? Headphones : FileText;
 
                         return (
                             <div
                                 key={test._id}
-                                className="rounded-2xl border border-slate-700/60 bg-slate-900/70 p-5 shadow-xl transition hover:border-indigo-500/50"
+                                className="rounded-2xl border border-slate-700/60 bg-slate-900/70 p-4 shadow-xl transition hover:border-indigo-500/50 sm:p-5"
                             >
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="flex min-w-0 items-start gap-3">
@@ -155,7 +155,7 @@ function AdminTests() {
                                     </span>
                                 </div>
 
-                                <div className="mt-5 grid grid-cols-2 gap-3 text-sm text-slate-300">
+                                <div className="mt-5 grid grid-cols-1 gap-3 text-sm text-slate-300 sm:grid-cols-2">
                                     <div className="flex items-center gap-2 rounded-xl bg-slate-800/70 p-3">
                                         <Clock size={16} className="text-slate-400" />
                                         {test.duration || 5} min

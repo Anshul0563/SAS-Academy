@@ -55,13 +55,13 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="space-y-8 p-6 lg:p-8 max-w-4xl mx-auto">
-      <div className="flex items-center gap-4">
+    <div className="mx-auto max-w-4xl space-y-5 sm:space-y-8">
+      <div className="flex items-center gap-3 sm:gap-4">
         <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
           <Settings className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent sm:text-3xl">
             ⚙️ Admin Settings
           </h1>
           <p className="text-slate-400">Configure academy settings</p>
@@ -82,12 +82,12 @@ const AdminSettings = () => {
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-8">
         {/* General Settings */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 space-y-6"
+          className="space-y-5 rounded-2xl border border-slate-700/50 bg-slate-900/50 p-4 backdrop-blur-xl sm:p-6 lg:p-8"
         >
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Globe className="w-5 h-5" />
@@ -148,7 +148,7 @@ const AdminSettings = () => {
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 space-y-6"
+          className="space-y-5 rounded-2xl border border-slate-700/50 bg-slate-900/50 p-4 backdrop-blur-xl sm:p-6 lg:p-8"
         >
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Database className="w-5 h-5" />

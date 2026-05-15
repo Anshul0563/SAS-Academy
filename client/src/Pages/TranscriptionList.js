@@ -22,9 +22,8 @@ function TranscriptionList() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/tests");
-                const filtered = res.data.filter(t => t.type?.toLowerCase().trim() === "transcription");
-                setTests(filtered);
+                const res = await axios.get("/api/tests?type=transcription");
+                setTests(Array.isArray(res.data) ? res.data : []);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -39,19 +38,19 @@ function TranscriptionList() {
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-indigo-900/30 text-white px-4 sm:px-6 lg:px-10 py-6">
+        <div className="text-white">
 
             {/* HEADER */}
             <motion.div
                 initial={{ opacity: 0, y: -40 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 mb-8 sm:mb-12 shadow-xl"
+                className="mb-5 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-xl backdrop-blur-xl sm:mb-8 sm:p-6 lg:p-8"
             >
 
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 sm:gap-6">
+                <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
 
                     <div>
-                        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        <h1 className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-2xl font-black text-transparent sm:text-3xl lg:text-4xl">
                             📝 Transcription
                         </h1>
 
@@ -109,7 +108,7 @@ function TranscriptionList() {
 
                 ) : (
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
 
                         {filteredTests.map((test, i) => (
 
@@ -119,7 +118,7 @@ function TranscriptionList() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.05 }}
                                 whileHover={{ scale: 1.02 }}
-                                className="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-6 flex flex-col"
+                                className="flex flex-col rounded-xl border border-white/10 bg-white/5 p-4 sm:p-5"
                             >
 
                                 {/* TITLE */}
@@ -174,13 +173,6 @@ function TranscriptionList() {
             </AnimatePresence>
 
             {/* FLOAT BUTTON */}
-            <button
-                onClick={() => navigate("/typing-settings/new-quick")}
-                className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-indigo-500 p-3 sm:p-4 rounded-full shadow-lg"
-            >
-                <Play size={18} />
-            </button>
-
         </div>
     );
 }

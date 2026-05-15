@@ -16,26 +16,26 @@ const StatsCard = ({ title, value, change, icon: Icon, route, color = 'indigo' }
     <motion.div
       whileHover={{ scale: 1.02 }}
       onClick={() => route && navigate(route)}
-      className={`group relative bg-gradient-to-br ${colors[color].bg} p-6 rounded-2xl shadow-xl cursor-pointer border border-white/20 hover:shadow-2xl transition-all duration-300 ${colors[color].hover}`}
+      className={`group relative rounded-2xl border border-white/20 bg-gradient-to-br ${colors[color].bg} p-5 pt-7 shadow-xl transition-all duration-300 hover:shadow-2xl sm:p-6 ${route ? "cursor-pointer" : ""} ${colors[color].hover}`}
     >
       {/* Icon */}
-      <div className="absolute -top-4 left-4 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+      <div className="absolute -top-3 left-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm transition-transform group-hover:scale-110 sm:-top-4 sm:h-12 sm:w-12 sm:rounded-2xl">
         <Icon className="w-6 h-6 text-white" />
       </div>
 
       {/* Content */}
       <div>
-        <p className="text-white/80 text-sm font-medium uppercase tracking-wide mb-1">
+        <p className="mb-1 text-xs font-medium uppercase tracking-wide text-white/80 sm:text-sm">
           {title}
         </p>
-        <p className="text-3xl font-bold text-white mb-2">
+        <p className="mb-2 text-2xl font-bold text-white sm:text-3xl">
 {(() => {
   const val = value ?? 0;
   return typeof val === 'number' ? val.toLocaleString() : String(val);
 })()}
         </p>
         {change !== undefined && (
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex flex-wrap items-center gap-1 text-xs sm:text-sm">
             <ArrowUp className={`w-3 h-3 ${change >= 0 ? 'text-emerald-400' : 'text-red-400'}`} />
             <span className={`font-medium ${change >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
               {change > 0 ? `+${change}%` : `${change}%`}

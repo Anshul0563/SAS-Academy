@@ -2,19 +2,30 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import {
-    Phone,
-    Mail,
+    ArrowRight,
     Award,
-    Target,
     BarChart3,
-    TrendingUp,
+    BookOpenText,
+    Clock3,
+    FileText,
+    Headphones,
+    Mail,
+    Phone,
     Play,
-    Star
+    Search,
+    ShieldCheck,
+    Target,
+    TrendingUp
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function Dashboard() {
+const formatDate = () => new Date().toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "short",
+    day: "numeric"
+});
 
+function Dashboard() {
     const navigate = useNavigate();
     const [tests, setTests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -35,187 +46,248 @@ function Dashboard() {
         fetchTests();
     }, []);
 
-    const dashboardStats = useMemo(() => {
+    const metrics = useMemo(() => {
         const transcription = tests.filter((test) => test.type === "transcription").length;
         const dictation = tests.filter((test) => test.type === "dictation").length;
         const categories = new Set(tests.map((test) => test.category).filter(Boolean)).size;
+        const averageTime = tests.length
+            ? Math.round(tests.reduce((total, test) => total + (Number(test.duration) || 5), 0) / tests.length)
+            : 0;
 
         return [
-            { num: tests.length, label: "Tests", icon: BarChart3 },
-            { num: transcription, label: "Transcription", icon: TrendingUp },
-            { num: dictation, label: "Dictation", icon: Target },
-            { num: categories, label: "Categories", icon: Award }
+            { label: "Available Tests", value: tests.length, icon: BarChart3, tone: "text-emerald-300", bg: "bg-emerald-400/10" },
+            { label: "Transcription", value: transcription, icon: FileText, tone: "text-sky-300", bg: "bg-sky-400/10" },
+            { label: "Dictation", value: dictation, icon: Headphones, tone: "text-amber-200", bg: "bg-amber-400/10" },
+            { label: "Avg Duration", value: averageTime ? `${averageTime}m` : "0m", icon: Clock3, tone: "text-violet-200", bg: "bg-violet-400/10" },
+            { label: "Categories", value: categories, icon: Award, tone: "text-rose-200", bg: "bg-rose-400/10" }
         ];
     }, [tests]);
 
-    const recentTests = tests.slice(0, 3);
+    const recentTests = tests.slice(0, 5);
+    const featuredTest = tests[0];
+    const topCategories = useMemo(() => {
+        const counts = tests.reduce((acc, test) => {
+            const key = test.category || "General";
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+
+        return Object.entries(counts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 4);
+    }, [tests]);
+
+    const quickActions = [
+        {
+            title: "Start Speed Test",
+            detail: "Quick timed transcription practice",
+            icon: Play,
+            to: "/typing-settings/new-quick",
+            accent: "bg-emerald-500"
+        },
+        {
+            title: "Transcription Library",
+            detail: "Browse typing passages by exam type",
+            icon: BookOpenText,
+            to: "/transcription",
+            accent: "bg-sky-500"
+        },
+        {
+            title: "Dictation Practice",
+            detail: "Train listening and typing together",
+            icon: Headphones,
+            to: "/dictations",
+            accent: "bg-amber-500"
+        }
+    ];
 
     return (
-        <div className="min-h-screen text-white">
+        <div className="text-white">
+            <div className="mx-auto max-w-7xl space-y-5">
+                <section className="grid gap-4 lg:grid-cols-[1.45fr_0.85fr]">
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6"
+                    >
+                        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+                            <div>
+                                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">{formatDate()}</p>
+                                <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                                    {user.name ? `Welcome back, ${user.name}` : "Typing Practice Dashboard"}
+                                </h1>
+                                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+                                    Choose a test, configure exam rules, and track a clean scoring flow built around speed, accuracy, and consistency.
+                                </p>
+                            </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-8">
+                            <div className="rounded-md border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+                                <div className="flex items-center gap-2 font-semibold">
+                                    <ShieldCheck size={16} />
+                                    Exam Mode Ready
+                                </div>
+                                <p className="mt-1 text-xs text-emerald-100/75">Backspace, timer, font, punctuation, and case rules are configurable before each test.</p>
+                            </div>
+                        </div>
 
-                {/* HEADER */}
-                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 sm:p-6 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-3 shadow-lg">
-
-                    <div>
-                        <h1 className="text-lg sm:text-xl font-bold">SAS Academy</h1>
-                        <p className="text-xs sm:text-sm opacity-80">
-                            {user.name ? `Welcome, ${user.name}` : "Typing Dashboard"}
-                        </p>
-                    </div>
-
-                    <div className="text-center sm:text-right text-xs sm:text-sm opacity-80">
-                        {new Date().toLocaleTimeString()} <br />
-                        {new Date().toDateString()}
-                    </div>
-
-                </div>
-
-                {/* HERO */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/5 border border-white/10 rounded-xl p-6 sm:p-10 text-center"
-                >
-                    <h2 className="text-xl sm:text-3xl font-bold mb-3">
-                        Master Your Typing Skills
-                    </h2>
-
-                    <p className="text-gray-400 mb-6 text-sm sm:text-base">
-                        Improve speed, accuracy & consistency with real exam simulation
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row justify-center gap-3">
-
-                        <button
-                            onClick={() => navigate("/typing-settings/new-quick")}
-                            className="bg-indigo-500 px-5 py-2 rounded-lg font-semibold hover:bg-indigo-600 transition flex items-center justify-center gap-2"
-                        >
-                            <Play size={18} /> Start Test
-                        </button>
-
-                        <button
-                            onClick={() => navigate("/transcription")}
-                            className="border border-white/20 px-5 py-2 rounded-lg hover:bg-white/10 transition"
-                        >
-                            Explore Tests
-                        </button>
-
-                    </div>
-                </motion.div>
-
-                {/* STATS */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-
-                    {dashboardStats.map((item, i) => {
-                        const Icon = item.icon;
-
-                        return (
-                            <div
-                                key={i}
-                                className="bg-white/5 border border-white/10 p-4 rounded-xl text-center hover:bg-white/10 transition"
+                        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                            <button
+                                onClick={() => navigate("/typing-settings/new-quick")}
+                                className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
                             >
-                                <Icon className="mx-auto mb-2 text-indigo-400" size={20} />
-                                <h3 className="text-lg sm:text-2xl font-bold">{loading ? "..." : item.num}</h3>
-                                <p className="text-xs sm:text-sm text-gray-400">{item.label}</p>
+                                <Play size={18} /> Start Practice
+                            </button>
+                            <button
+                                onClick={() => navigate("/transcription")}
+                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-semibold transition hover:bg-white/10"
+                            >
+                                <Search size={18} /> Browse Library
+                            </button>
+                        </div>
+                    </motion.div>
+
+                    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+                        <p className="text-sm font-semibold text-slate-200">Recommended Next</p>
+                        {featuredTest ? (
+                            <div className="mt-4">
+                                <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
+                                    <span className="rounded bg-white/10 px-2 py-1 capitalize">{featuredTest.type || "practice"}</span>
+                                    <span>{featuredTest.duration || 5} min</span>
+                                </div>
+                                <h2 className="mt-3 line-clamp-2 text-xl font-semibold">{featuredTest.title}</h2>
+                                <p className="mt-2 text-sm text-slate-400">{featuredTest.category || "General"} practice set</p>
+                                <button
+                                    onClick={() => navigate(featuredTest.type === "dictation" ? `/dictation/${featuredTest._id}` : `/typing-settings/${featuredTest._id}`)}
+                                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
+                                >
+                                    Continue <ArrowRight size={16} />
+                                </button>
+                            </div>
+                        ) : (
+                            <p className="mt-4 text-sm text-slate-400">{loading ? "Loading tests..." : "No practice tests are available yet."}</p>
+                        )}
+                    </div>
+                </section>
+
+                <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                    {metrics.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                            <div key={item.label} className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+                                <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-md ${item.bg}`}>
+                                    <Icon className={item.tone} size={19} />
+                                </div>
+                                <p className="text-2xl font-bold">{loading ? "..." : item.value}</p>
+                                <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400">{item.label}</p>
                             </div>
                         );
                     })}
+                </section>
 
-                </div>
+                <section className="grid gap-4 lg:grid-cols-[0.9fr_1.2fr_0.9fr]">
+                    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+                        <h2 className="text-lg font-semibold">Quick Actions</h2>
+                        <div className="mt-4 space-y-3">
+                            {quickActions.map((action) => {
+                                const Icon = action.icon;
+                                return (
+                                    <button
+                                        key={action.title}
+                                        onClick={() => navigate(action.to)}
+                                        className="group flex w-full items-center gap-3 rounded-md border border-white/10 bg-slate-950/40 p-3 text-left transition hover:border-white/20 hover:bg-white/[0.07]"
+                                    >
+                                        <span className={`flex h-9 w-9 items-center justify-center rounded ${action.accent}`}>
+                                            <Icon size={18} className="text-slate-950" />
+                                        </span>
+                                        <span className="min-w-0 flex-1">
+                                            <span className="block text-sm font-semibold text-white">{action.title}</span>
+                                            <span className="mt-0.5 block text-xs text-slate-400">{action.detail}</span>
+                                        </span>
+                                        <ArrowRight size={16} className="text-slate-500 transition group-hover:translate-x-0.5 group-hover:text-white" />
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
 
-                {/* AVAILABLE PRACTICE */}
-                <div className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 p-6 sm:p-8 rounded-xl text-center">
-
-                    <Star className="mx-auto mb-3 text-emerald-400" size={32} />
-
-                    <h2 className="text-lg sm:text-2xl font-bold mb-2">Practice Library</h2>
-
-                    <h1 className="text-3xl sm:text-4xl font-bold text-emerald-400">
-                        {loading ? "..." : tests.length}
-                    </h1>
-
-                    <p className="text-gray-400 mt-2 text-sm">
-                        Live tests available for practice
-                    </p>
-
-                    <button
-                        onClick={() => navigate("/transcription")}
-                        className="mt-4 bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20 transition"
-                    >
-                        Browse Tests
-                    </button>
-
-                </div>
-
-                {/* RECENT TESTS */}
-                <div className="bg-white/5 border border-white/10 p-6 rounded-xl">
-
-                    <h2 className="text-lg sm:text-xl font-bold mb-4">Recent Tests</h2>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-
-                        {recentTests.length === 0 ? (
-                            <div className="col-span-full text-sm text-gray-400">
-                                No tests available yet.
-                            </div>
-                        ) : recentTests.map((t) => (
-
-                            <div
-                                key={t._id}
-                                className="bg-white/5 p-4 rounded-lg border border-white/10 hover:bg-white/10 transition cursor-pointer"
-                                onClick={() => navigate(t.type === "dictation" ? `/dictation/${t._id}` : `/typing-settings/${t._id}`)}
+                    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+                        <div className="flex items-center justify-between gap-3">
+                            <h2 className="text-lg font-semibold">Recent Tests</h2>
+                            <button
+                                onClick={() => navigate("/transcription")}
+                                className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
                             >
-                                <h3 className="text-lg font-bold">{t.title}</h3>
-                                <p className="text-gray-400 text-sm capitalize">{t.type}</p>
-                                <p className="text-xs text-gray-500 mt-1">{t.duration || 5} min</p>
+                                View all
+                            </button>
+                        </div>
+
+                        <div className="mt-4 divide-y divide-white/10 rounded-md border border-white/10 bg-slate-950/35">
+                            {recentTests.length === 0 ? (
+                                <div className="p-4 text-sm text-slate-400">{loading ? "Loading tests..." : "No tests available yet."}</div>
+                            ) : recentTests.map((test) => (
+                                <button
+                                    key={test._id}
+                                    onClick={() => navigate(test.type === "dictation" ? `/dictation/${test._id}` : `/typing-settings/${test._id}`)}
+                                    className="flex w-full items-center gap-3 p-3 text-left transition hover:bg-white/[0.06]"
+                                >
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
+                                        {test.type === "dictation" ? <Headphones size={18} /> : <FileText size={18} />}
+                                    </span>
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block truncate text-sm font-semibold text-white">{test.title}</span>
+                                        <span className="mt-0.5 block text-xs capitalize text-slate-400">{test.type || "test"} / {test.category || "General"}</span>
+                                    </span>
+                                    <span className="shrink-0 text-xs text-slate-400">{test.duration || 5}m</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+                        <h2 className="text-lg font-semibold">Focus Areas</h2>
+                        <div className="mt-4 space-y-3">
+                            {topCategories.length ? topCategories.map(([category, count]) => (
+                                <div key={category}>
+                                    <div className="mb-1 flex items-center justify-between text-sm">
+                                        <span className="truncate text-slate-300">{category}</span>
+                                        <span className="text-slate-500">{count}</span>
+                                    </div>
+                                    <div className="h-2 rounded-full bg-white/10">
+                                        <div
+                                            className="h-2 rounded-full bg-emerald-400"
+                                            style={{ width: `${Math.max(14, Math.min(100, (count / Math.max(1, tests.length)) * 100))}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            )) : (
+                                <p className="text-sm text-slate-400">{loading ? "Loading categories..." : "Categories will appear after tests are added."}</p>
+                            )}
+                        </div>
+
+                        <div className="mt-5 rounded-md bg-slate-950/50 p-3 text-sm text-slate-300">
+                            <div className="flex items-center gap-2 font-semibold text-white">
+                                <Target size={16} className="text-emerald-300" />
+                                Daily target
                             </div>
-
-                        ))}
-
+                            <p className="mt-2 text-xs leading-5 text-slate-400">Complete one timed transcription and review every highlighted mistake on the result page.</p>
+                        </div>
                     </div>
+                </section>
 
-                </div>
-
-                {/* ACTION CARDS */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-
-                    {[
-                        { title: "Transcription", to: "/transcription" },
-                        { title: "Dictation", to: "/dictations" },
-                        { title: "Speed Test", to: "/typing-settings/new-quick" }
-                    ].map((c, i) => (
-
-                        <div
-                            key={i}
-                            onClick={() => navigate(c.to)}
-                            className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-white/10 p-6 rounded-xl text-center cursor-pointer hover:scale-105 transition"
-                        >
-                            <h3 className="text-lg font-bold">{c.title}</h3>
-                        </div>
-
-                    ))}
-
-                </div>
-
-                {/* CONTACT FOOTER */}
-                <div className="bg-white/5 border border-white/10 p-4 rounded-xl text-center">
-
-                    <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 text-sm">
-
-                        <div className="flex items-center justify-center gap-2">
-                            <Phone size={14} /> +91 8178844795
-                        </div>
-
-                        <div className="flex items-center justify-center gap-2">
-                            <Mail size={14} /> support@sasacademy.in
-                        </div>
-
+                <section className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 text-sm text-slate-300 sm:grid-cols-3">
+                    <div className="flex items-center gap-2">
+                        <TrendingUp size={16} className="text-emerald-300" />
+                        Net WPM rewards correct strokes.
                     </div>
-
-                </div>
-
+                    <div className="flex items-center gap-2">
+                        <Phone size={16} className="text-sky-300" />
+                        +91 8178844795
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Mail size={16} className="text-amber-200" />
+                        support@sasacademy.in
+                    </div>
+                </section>
             </div>
         </div>
     );

@@ -21,7 +21,7 @@ const TestPerformanceChart = ({ trendData = [] }) => {
   }, [trendData]);
   
   return (
-    <div style={{ width: '100%', height: '400px', minHeight: '400px' }}>
+    <div className="h-72 min-h-72 w-full sm:h-80 lg:h-[400px]">
       {data.length === 0 ? (
         <div className="flex h-full items-center justify-center text-slate-400">
           No performance data yet

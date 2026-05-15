@@ -6,10 +6,8 @@ import {
     LayoutDashboard,
     Headphones,
     FileText,
-    User,
     Bell,
-    Menu,
-    X
+    Menu
 } from "lucide-react";
 
 function Layout() {
@@ -46,7 +44,7 @@ function Layout() {
     }, []);
 
     return (
-        <div className="flex min-h-screen bg-[#030712] text-white">
+        <div className="flex min-h-dvh bg-[#030712] text-white overflow-x-hidden">
 
             {/* 🔥 BACKGROUND GLOW */}
             <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_#1e293b,_#020617)]"></div>
@@ -54,7 +52,7 @@ function Layout() {
             {/* 🔥 SIDEBAR */}
             {!examMode && (
                 <div
-                    className={`fixed md:static z-50 w-64 h-full
+                    className={`fixed inset-y-0 left-0 md:sticky md:top-0 z-50 w-[min(80vw,16rem)] md:w-64 h-dvh
                     bg-white/5 backdrop-blur-2xl
                     border-r border-white/10
                     shadow-[0_0_40px_rgba(0,0,0,0.6)]
@@ -97,13 +95,20 @@ function Layout() {
             )}
 
             {/* 🔥 MAIN */}
-            <div className="flex-1 flex flex-col">
+            {sidebarOpen && !examMode && (
+                <div
+                    className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
+            <div className="flex-1 flex min-w-0 flex-col">
 
                 {/* 🔥 FLOATING TOPBAR */}
                 {!examMode && (
-                    <div className="sticky top-0 z-40 mx-4 mt-4 rounded-xl
+                    <div className="sticky top-0 z-30 mx-3 mt-3 rounded-xl
                         bg-white/5 backdrop-blur-xl border border-white/10
-                        shadow-lg px-6 py-3 flex justify-between items-center">
+                        shadow-lg px-3 py-3 sm:mx-4 sm:px-5 flex justify-between items-center">
 
                         {/* LEFT */}
                         <div className="flex items-center gap-3">
@@ -111,13 +116,13 @@ function Layout() {
                                 className="cursor-pointer md:hidden"
                                 onClick={() => setSidebarOpen(true)}
                             />
-                            <h1 className="text-sm text-gray-300 capitalize">
+                            <h1 className="truncate text-sm text-gray-300 capitalize">
                                 {location.pathname.replace("/", "") || "dashboard"}
                             </h1>
                         </div>
 
                         {/* RIGHT */}
-                        <div className="flex items-center gap-4 relative" ref={dropdownRef}>
+                        <div className="flex shrink-0 items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
 
                             {/* 🔔 */}
                             <div className="p-2 rounded-full bg-white/10 hover:bg-white/20 cursor-pointer transition">
@@ -156,9 +161,9 @@ function Layout() {
                 )}
 
                 {/* CONTENT */}
-                <div className="p-6 mt-2">
+                <main className="min-w-0 flex-1 p-3 pt-4 sm:p-5 lg:p-6">
                     <Outlet />
-                </div>
+                </main>
 
             </div>
 

@@ -42,11 +42,11 @@ const AdminResults = () => {
   };
 
   return (
-    <div className="space-y-6 p-6 lg:p-8">
+    <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent sm:text-3xl">
             📊 Results Analytics
           </h1>
           <p className="text-slate-400">Student performance overview and insights</p>
@@ -54,7 +54,7 @@ const AdminResults = () => {
         <div className="flex gap-3">
           <motion.button 
             whileHover={{ scale: 1.05 }}
-            className="px-4 py-2 border border-slate-600 text-slate-300 hover:bg-slate-800 hover:border-slate-500 rounded-xl transition"
+            className="inline-flex items-center justify-center rounded-xl border border-slate-600 px-4 py-2 text-sm text-slate-300 transition hover:border-slate-500 hover:bg-slate-800"
           >
             <Download className="w-4 h-4 inline mr-1" />
             Export CSV
@@ -63,8 +63,8 @@ const AdminResults = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <motion.div className="bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 border border-emerald-500/30 p-6 rounded-2xl">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <motion.div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 p-4 sm:p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
               <TrendingUp className="w-6 h-6 text-emerald-400" />
@@ -76,7 +76,7 @@ const AdminResults = () => {
           </div>
         </motion.div>
 
-        <motion.div className="bg-gradient-to-r from-indigo-500/10 to-indigo-600/10 border border-indigo-500/30 p-6 rounded-2xl">
+        <motion.div className="rounded-2xl border border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 to-indigo-600/10 p-4 sm:p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
               <Award className="w-6 h-6 text-indigo-400" />
@@ -88,7 +88,7 @@ const AdminResults = () => {
           </div>
         </motion.div>
 
-        <motion.div className="bg-gradient-to-r from-purple-500/10 to-purple-600/10 border border-purple-500/30 p-6 rounded-2xl">
+        <motion.div className="rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/10 to-purple-600/10 p-4 sm:p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
               <Calendar className="w-6 h-6 text-purple-400" />
@@ -100,7 +100,7 @@ const AdminResults = () => {
           </div>
         </motion.div>
 
-        <motion.div className="bg-gradient-to-r from-orange-500/10 to-orange-600/10 border border-orange-500/30 p-6 rounded-2xl">
+        <motion.div className="rounded-2xl border border-orange-500/30 bg-gradient-to-r from-orange-500/10 to-orange-600/10 p-4 sm:p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
               <BarChart3 className="w-6 h-6 text-orange-400" />
@@ -114,12 +114,12 @@ const AdminResults = () => {
       </div>
 
       {/* Filter */}
-      <div className="flex items-center gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-4">
+      <div className="flex flex-col gap-3 rounded-2xl border border-slate-700/50 bg-slate-900/50 p-3 backdrop-blur-xl sm:flex-row sm:items-center sm:p-4">
         <Filter className="w-5 h-5 text-slate-400" />
         <select
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
-          className="px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-xl focus:border-indigo-500 focus:outline-none text-slate-300"
+          className="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-slate-300 focus:border-indigo-500 focus:outline-none sm:w-auto"
         >
           <option value="all">All Time</option>
           <option value="week">Last 7 Days</option>
@@ -131,10 +131,10 @@ const AdminResults = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl overflow-hidden shadow-2xl"
+        className="overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/50 shadow-2xl backdrop-blur-xl"
       >
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[760px]">
             <thead className="bg-slate-800/50">
               <tr>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Student</th>

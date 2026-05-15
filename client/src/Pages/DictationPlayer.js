@@ -1,74 +1,93 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { Play, Pause, Volume2 } from "lucide-react";
+import {
+    AlertCircle,
+    ArrowLeft,
+    Clock,
+    Headphones,
+    Loader2,
+    Pause,
+    Play,
+    RotateCcw,
+    RotateCw,
+    Volume2
+} from "lucide-react";
+
+const formatTime = (seconds = 0) => {
+    const safeSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
+    const mins = Math.floor(safeSeconds / 60);
+    const secs = Math.floor(safeSeconds % 60);
+    return `${mins}:${String(secs).padStart(2, "0")}`;
+};
 
 function DictationPlayer() {
     const { id } = useParams();
-
-    const [test, setTest] = useState(null);
-    const [playing, setPlaying] = useState(false);
-    const [speed, setSpeed] = useState(90);
-    const [text, setText] = useState("");
-    const [time, setTime] = useState(0);
-    const [ready, setReady] = useState(false); //  NEW
-
+    const navigate = useNavigate();
     const audioRef = useRef(null);
 
-    //  FETCH TEST
+    const [test, setTest] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [playing, setPlaying] = useState(false);
+    const [ready, setReady] = useState(false);
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [playbackRate, setPlaybackRate] = useState(1);
+    const [volume, setVolume] = useState(0.9);
+
     useEffect(() => {
         const fetchTest = async () => {
             try {
-                const res = await axios.get(
-                    `http://localhost:5000/api/tests/${id}`
-                );
+                setLoading(true);
+                setError("");
+                const res = await axios.get(`/api/tests/${id}`);
                 setTest(res.data);
             } catch (err) {
-                console.log(err);
+                console.error("Dictation fetch error:", err);
+                setError(err.response?.data?.message || "Failed to load dictation");
+            } finally {
+                setLoading(false);
             }
         };
+
         fetchTest();
     }, [id]);
 
-    //   DEBUG
+    const audioSrc = useMemo(() => test?.audioURL || test?.audioUrl || "", [test]);
+
     useEffect(() => {
-        if (test) {
-            console.log("AUDIO URL:", test.audioUrl);
-        }
-    }, [test]);
+        const audio = audioRef.current;
+        if (!audio || !audioSrc) return;
 
-    //  SAFE AUDIO SRC
-    // Backend test model uses `audioURL` (capital URL)
-    const audioSrc = test?.audioURL || test?.audioUrl || "";
-
-
-    //  LOAD AUDIO
-    useEffect(() => {
-        if (audioRef.current && audioSrc) {
-            audioRef.current.load();
-            setReady(false);
-        }
+        setReady(false);
+        setPlaying(false);
+        setCurrentTime(0);
+        audio.pause();
+        audio.load();
     }, [audioSrc]);
 
-    //  TIMER
     useEffect(() => {
-        let interval;
-        if (playing) {
-            interval = setInterval(() => setTime((prev) => prev + 1), 1000);
-        }
-        return () => clearInterval(interval);
-    }, [playing]);
-
-    //  PLAY FIX (NO ABORT ERROR)
-    const handlePlay = async () => {
         const audio = audioRef.current;
+        if (!audio) return;
 
+        audio.playbackRate = playbackRate;
+    }, [playbackRate]);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        audio.volume = volume;
+    }, [volume]);
+
+    const togglePlay = async () => {
+        const audio = audioRef.current;
         if (!audio || !ready) return;
 
         try {
-            if (!playing) {
+            if (audio.paused) {
                 await audio.play();
                 setPlaying(true);
             } else {
@@ -76,82 +95,194 @@ function DictationPlayer() {
                 setPlaying(false);
             }
         } catch (err) {
-            console.log("Audio play error:", err.message);
+            console.error("Audio play error:", err);
+            setError("Browser blocked audio playback. Try pressing play again.");
         }
     };
 
-    //  SPEED
-    const handleSpeed = (e) => {
-        const value = Number(e.target.value);
-        setSpeed(value);
-
-        if (audioRef.current) {
-            audioRef.current.playbackRate = value / 90;
-        }
-    };
-    useEffect(() => {
-        console.log("FINAL AUDIO SRC:", audioSrc);
-    }, [audioSrc]);
-
-    // AUTO STOP WHEN ENDED
-    useEffect(() => {
+    const seekBy = (seconds) => {
         const audio = audioRef.current;
         if (!audio) return;
 
-        const onEnd = () => setPlaying(false);
+        audio.currentTime = Math.min(Math.max(0, audio.currentTime + seconds), duration || audio.duration || 0);
+        setCurrentTime(audio.currentTime);
+    };
 
-        audio.addEventListener("ended", onEnd);
+    const seekTo = (event) => {
+        const audio = audioRef.current;
+        const nextTime = Number(event.target.value);
+        if (!audio) return;
 
-        return () => {
-            audio.removeEventListener("ended", onEnd);
-        };
-    }, []);
+        audio.currentTime = nextTime;
+        setCurrentTime(nextTime);
+    };
 
-    if (!test)
-        return <p className="text-center mt-10 text-gray-400">Loading...</p>;
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
+                <Loader2 className="animate-spin text-indigo-400" size={34} />
+            </div>
+        );
+    }
+
+    if (error && !test) {
+        return (
+            <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center px-4">
+                <div className="max-w-md rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-center">
+                    <AlertCircle className="mx-auto mb-3 text-red-300" />
+                    <p className="text-red-200">{error}</p>
+                    <button
+                        onClick={() => navigate("/dictations")}
+                        className="mt-5 rounded-xl bg-white/10 px-4 py-2 text-sm hover:bg-white/20"
+                    >
+                        Back to dictations
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="min-h-screen bg-black text-white px-4 py-6">
-            <motion.div className="max-w-4xl mx-auto bg-[#0f172a] p-6 rounded-2xl">
+        <div className="min-h-screen bg-[#020617] text-white px-4 py-6">
+            <div className="mx-auto max-w-4xl space-y-5">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"
+                >
+                    <ArrowLeft size={16} />
+                    Back
+                </button>
 
-                <h2 className="text-xl text-center mb-6">
-                    🎧 {test.title}
-                </h2>
+                <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border border-white/10 bg-slate-900/70 p-5 shadow-2xl sm:p-8"
+                >
+                    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex items-start gap-3">
+                            <div className="rounded-xl bg-indigo-500/15 p-3 text-indigo-300">
+                                <Headphones />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-bold sm:text-2xl">{test?.title || "Dictation"}</h1>
+                                <p className="mt-1 text-sm text-slate-400">
+                                    {test?.category || "Practice"} · {test?.duration || 5} min
+                                </p>
+                            </div>
+                        </div>
 
-                <div className="flex flex-col items-center gap-4">
+                        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-300">
+                            <Clock size={16} />
+                            {formatTime(currentTime)} / {formatTime(duration)}
+                        </div>
+                    </div>
 
-                    {/* AUDIO */}
-                    <audio
-                        ref={audioRef}
-                        src={audioSrc}
-                        controls
-                        onCanPlay={() => setReady(true)} //  IMPORTANT
-                        onError={() => console.log("❌ Audio failed:", audioSrc)}
-                    />
+                    {!audioSrc ? (
+                        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-200">
+                            No audio file is attached to this dictation.
+                        </div>
+                    ) : (
+                        <>
+                            <audio
+                                ref={audioRef}
+                                src={audioSrc}
+                                preload="metadata"
+                                onCanPlay={() => setReady(true)}
+                                onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || 0)}
+                                onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+                                onPause={() => setPlaying(false)}
+                                onPlay={() => setPlaying(true)}
+                                onEnded={() => setPlaying(false)}
+                                onError={() => {
+                                    setReady(false);
+                                    setPlaying(false);
+                                    setError("Audio failed to load. Please check the Cloudinary file URL.");
+                                }}
+                                className="hidden"
+                            />
 
-                    {/* PLAY BUTTON */}
-                    <button
-                        disabled={!ready}
-                        onClick={handlePlay}
-                        className="bg-indigo-500 p-3 rounded-full disabled:opacity-50"
-                    >
-                        {playing ? <Pause /> : <Play />}
-                    </button>
+                            {error && (
+                                <div className="mb-5 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-200">
+                                    {error}
+                                </div>
+                            )}
 
-                    <Volume2 className="text-gray-400" />
+                            <div className="space-y-6">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={duration || 0}
+                                    step="0.1"
+                                    value={currentTime}
+                                    onChange={seekTo}
+                                    disabled={!ready}
+                                    className="w-full accent-indigo-500"
+                                />
 
-                </div>
+                                <div className="flex items-center justify-center gap-3">
+                                    <button
+                                        onClick={() => seekBy(-10)}
+                                        disabled={!ready}
+                                        className="rounded-full border border-white/10 bg-white/5 p-3 hover:bg-white/10 disabled:opacity-40"
+                                        aria-label="Rewind 10 seconds"
+                                    >
+                                        <RotateCcw size={20} />
+                                    </button>
 
-                {/* SPEED */}
-                <div className="mt-6 text-center">
-                    <select value={speed} onChange={handleSpeed}>
-                        {[50, 60, 70, 80, 90, 100].map((wpm) => (
-                            <option key={wpm}>{wpm} WPM</option>
-                        ))}
-                    </select>
-                </div>
+                                    <button
+                                        onClick={togglePlay}
+                                        disabled={!ready}
+                                        className="rounded-full bg-indigo-600 p-5 text-white shadow-lg hover:bg-indigo-500 disabled:opacity-40"
+                                        aria-label={playing ? "Pause audio" : "Play audio"}
+                                    >
+                                        {playing ? <Pause size={28} /> : <Play size={28} />}
+                                    </button>
 
-            </motion.div>
+                                    <button
+                                        onClick={() => seekBy(10)}
+                                        disabled={!ready}
+                                        className="rounded-full border border-white/10 bg-white/5 p-3 hover:bg-white/10 disabled:opacity-40"
+                                        aria-label="Forward 10 seconds"
+                                    >
+                                        <RotateCw size={20} />
+                                    </button>
+                                </div>
+
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <label className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                                        Playback Speed
+                                        <select
+                                            value={playbackRate}
+                                            onChange={(event) => setPlaybackRate(Number(event.target.value))}
+                                            className="mt-2 w-full rounded-lg border border-white/10 bg-slate-950 p-2 text-white outline-none"
+                                        >
+                                            {[0.75, 0.9, 1, 1.1, 1.25, 1.5].map((rate) => (
+                                                <option key={rate} value={rate}>{rate}x</option>
+                                            ))}
+                                        </select>
+                                    </label>
+
+                                    <label className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                                        <span className="flex items-center gap-2">
+                                            <Volume2 size={16} />
+                                            Volume {Math.round(volume * 100)}%
+                                        </span>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.05"
+                                            value={volume}
+                                            onChange={(event) => setVolume(Number(event.target.value))}
+                                            className="mt-3 w-full accent-indigo-500"
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </motion.div>
+            </div>
         </div>
     );
 }

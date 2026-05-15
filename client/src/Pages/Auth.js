@@ -65,10 +65,10 @@ function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] px-4">
-      <div className="w-full max-w-5xl flex flex-col md:flex-row rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl overflow-hidden">
+    <div className="flex min-h-dvh items-center justify-center bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] px-3 py-5 sm:px-4">
+      <div className="flex w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-xl md:flex-row">
         {/* LEFT PANEL */}
-        <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 lg:p-10 flex-col justify-center text-white">
+        <div className="hidden flex-col justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 text-white md:flex md:w-1/2 lg:p-10">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">SAS Academy</h1>
           <p className="text-base lg:text-lg opacity-90">
             Train like real SSC exams. Improve speed, accuracy, and confidence.
@@ -81,7 +81,7 @@ function Auth() {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+        <div className="flex w-full flex-col justify-center p-5 sm:p-8 md:w-1/2 lg:p-10">
           <h2 className="text-2xl sm:text-3xl text-white font-bold mb-2 text-center md:text-left">
             {isLogin ? "Login" : "Register"}
           </h2>

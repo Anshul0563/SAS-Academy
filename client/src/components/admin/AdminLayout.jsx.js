@@ -109,12 +109,12 @@ const AdminLayout = () => {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
+    <div className="flex min-h-dvh bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-x-hidden">
       
       {/* 🔥 SIDEBAR */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transition-transform duration-300 ease-in-out ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,16rem)] lg:w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transition-transform duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 lg:static lg:inset-0`}>
+      } lg:translate-x-0 lg:sticky lg:top-0 lg:h-dvh`}>
         
         {/* Logo */}
         <div className="p-6 border-b border-slate-700">
@@ -170,27 +170,27 @@ const AdminLayout = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 min-w-0 flex flex-col">
         
         {/* Top Navbar */}
-        <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-30 p-4">
-          <div className="flex items-center justify-between">
+        <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-30 px-3 py-3 sm:px-4">
+          <div className="flex items-center justify-between gap-3">
             
             {/* Left: Mobile Menu + Breadcrumbs */}
-            <div className="flex items-center gap-4">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
               <button
                 onClick={toggleSidebar}
                 className="lg:hidden p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 text-slate-300"
               >
                 {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <div className="hidden md:block text-sm text-slate-400 font-medium">
+              <div className="hidden min-w-0 text-sm text-slate-400 font-medium md:block">
                 <span className="text-white">Dashboard</span> / Overview
               </div>
             </div>
 
             {/* Right: Notifications + Profile */}
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               <button className="p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 text-slate-300 relative">
                 <Bell size={18} />
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-xs rounded-full flex items-center justify-center font-bold">
@@ -202,7 +202,7 @@ const AdminLayout = () => {
                 <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
                   {safeUser.name[0]}
                 </div>
-                <span className="text-sm font-medium text-slate-200">{safeUser.name}</span>
+                <span className="hidden max-w-28 truncate text-sm font-medium text-slate-200 sm:inline">{safeUser.name}</span>
               </div>
 
               {/* User Dropdown */}
@@ -222,7 +222,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto p-6 lg:p-8">
+        <main className="min-w-0 flex-1 overflow-x-hidden p-3 sm:p-5 lg:p-6">
           <Outlet />
         </main>
       </div>

@@ -19,7 +19,14 @@ const resultSchema = new mongoose.Schema({
   netWPM: Number,
 
   accuracy: Number,
+  totalWords: Number,
+  typedWords: Number,
+  correctWords: Number,
   errorsDetails: Number,
+  typedCharacters: Number,
+  expectedCharacters: Number,
+  correctCharacters: Number,
+  errorPenaltyCharacters: Number,
 
   //breakdown
   omissions: Number,
@@ -29,6 +36,14 @@ const resultSchema = new mongoose.Schema({
 
   backspaces: Number,
   keystrokes: Number,
+  comparison: [
+    {
+      expected: String,
+      typed: String,
+      word: String,
+      type: String
+    }
+  ],
 
   timeTaken: Number,
 

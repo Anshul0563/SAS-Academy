@@ -5,12 +5,10 @@ import { useNavigate } from "react-router-dom";
 import {
     Search,
     Play,
-    Eye,
     Headphones,
     Clock,
     Tag,
-    Loader2,
-    Mic
+    Loader2
 } from "lucide-react";
 
 function DictationList() {
@@ -24,10 +22,9 @@ function DictationList() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/tests");
+                const res = await axios.get("/api/tests?type=dictation");
 
                 const filtered = res.data
-                    .filter((t) => t.type?.toLowerCase() === "dictation")
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 setTests(filtered);
@@ -46,13 +43,13 @@ function DictationList() {
     );
 
     return (
-        <div className="min-h-screen bg-[#020617] text-white px-3 sm:px-6 lg:px-10 py-5">
+        <div className="text-white">
 
             {/* HEADER */}
-            <div className="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+            <div className="mb-5 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
 
                 <div>
-                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-pink-400">
+                    <h1 className="text-2xl font-bold text-pink-400 sm:text-3xl">
                         🎤 Dictation Tests
                     </h1>
                     <p className="text-gray-400 text-xs sm:text-sm">
@@ -87,14 +84,14 @@ function DictationList() {
                 </div>
             ) : (
 
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
 
                     {filteredTests.map((test) => (
 
                         <motion.div
                             key={test._id}
                             whileHover={{ scale: 1.02 }}
-                            className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col justify-between hover:bg-white/10 transition"
+                            className="flex flex-col justify-between rounded-xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
                         >
 
                             {/* TITLE */}
@@ -137,17 +134,11 @@ function DictationList() {
 
                                 <button
                                     onClick={() => navigate(`/dictation/${test._id}`)}
-                                    className="flex-1 bg-green-500 hover:bg-green-600 py-2 rounded flex items-center justify-center gap-2 text-xs sm:text-sm"
+                                    disabled={!test.audioURL && !test.audioUrl}
+                                    className="flex-1 bg-green-500 hover:bg-green-600 py-2 rounded flex items-center justify-center gap-2 text-xs sm:text-sm disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     <Play size={14} />
                                     Start
-                                </button>
-
-                                <button
-                                    onClick={() => navigate(`/dictation-view/${test._id}`)}
-                                    className="bg-yellow-500 hover:bg-yellow-600 px-3 rounded flex items-center justify-center"
-                                >
-                                    <Eye size={14} />
                                 </button>
 
                             </div>
@@ -158,14 +149,6 @@ function DictationList() {
 
                 </div>
             )}
-
-            {/* FLOAT BUTTON */}
-            <button
-                onClick={() => navigate("/dictation/new-quick")}
-                className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 bg-pink-500 p-3 sm:p-4 rounded-full shadow-lg hover:bg-pink-600 transition"
-            >
-                <Mic size={18} />
-            </button>
 
         </div>
     );

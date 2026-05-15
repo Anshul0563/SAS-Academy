@@ -97,15 +97,15 @@ function AddTest() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] text-white p-8">
+        <div className="text-white">
             <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-3xl mx-auto bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl"
+                className="mx-auto max-w-3xl rounded-2xl border border-white/10 bg-white/5 p-4 shadow-2xl backdrop-blur-xl sm:p-6 lg:p-8"
             >
 
 
-                <h2 className="text-3xl font-bold text-center mb-6">
+                <h2 className="mb-5 text-center text-2xl font-bold sm:mb-6 sm:text-3xl">
                     Create New Test
                 </h2>
 
@@ -116,11 +116,11 @@ function AddTest() {
                 )}
 
                 {/* TYPE SWITCH */}
-                <div className="flex gap-4 mb-6">
+                <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
 
                     <button
                         onClick={() => setForm({ ...form, type: "transcription" })}
-                        className={`flex-1 p-3 rounded-xl flex items-center justify-center gap-2 font-medium
+                        className={`flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl p-3 text-sm font-medium sm:text-base
                         ${form.type === "transcription" ? "bg-indigo-500 text-white shadow-lg" : "bg-white/10 hover:bg-white/20 text-gray-300"} transition-all`}
                     >
                         <FileText size={18} />
@@ -129,7 +129,7 @@ function AddTest() {
 
                     <button
                         onClick={() => setForm({ ...form, type: "dictation" })}
-                        className={`flex-1 p-3 rounded-xl flex items-center justify-center gap-2 font-medium
+                        className={`flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl p-3 text-sm font-medium sm:text-base
                         ${form.type === "dictation" ? "bg-indigo-500 text-white shadow-lg" : "bg-white/10 hover:bg-white/20 text-gray-300"} transition-all`}
                     >
                         <Headphones size={18} />
@@ -167,7 +167,7 @@ function AddTest() {
                             <label className="block text-sm font-medium mb-2 text-gray-300">
                                 Audio File *
                             </label>
-                            <label className="flex items-center gap-3 cursor-pointer p-4 border-2 border-dashed border-white/30 rounded-xl hover:border-indigo-400 hover:bg-white/5 transition-all min-h-[80px]">
+                            <label className="flex min-h-[80px] cursor-pointer flex-col gap-3 rounded-xl border-2 border-dashed border-white/30 p-4 transition-all hover:border-indigo-400 hover:bg-white/5 sm:flex-row sm:items-center">
                                 <UploadCloud size={24} className="text-indigo-400 flex-shrink-0" />
                                 <div>
                                     {audio ? (
@@ -189,7 +189,7 @@ function AddTest() {
                         </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <input
                             name="duration"
                             type="number"
@@ -234,7 +234,7 @@ function AddTest() {
                     disabled={loading}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full mt-8 bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-4 px-8 rounded-2xl font-semibold text-lg shadow-2xl hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="mt-8 w-full rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-4 text-base font-semibold text-white shadow-2xl transition-all hover:shadow-indigo-500/25 disabled:cursor-not-allowed disabled:opacity-50 sm:text-lg"
                 >
                     {loading ? (
                         <div className="flex items-center gap-2">
