@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
+const getDefaultDuration = (test) => (test?.type === "dictation" ? 10 : 50);
+const getDisplayDuration = (test) => {
+    const duration = Number(test?.duration);
+    return !duration || duration === 5 ? getDefaultDuration(test) : duration;
+};
+
 function Tests() {
 
     const [tests, setTests] = useState([]);
@@ -53,7 +59,7 @@ function Tests() {
                             </p>
 
                             <p className="text-gray-500 mt-1 text-sm">
-                                {test.duration} min
+                                {getDisplayDuration(test)} min
                             </p>
                         </div>
 

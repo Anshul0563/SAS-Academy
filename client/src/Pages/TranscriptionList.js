@@ -13,7 +13,10 @@ import {
     Loader2
 } from "lucide-react";
 
-const getDisplayDuration = (test) => Number(test?.duration) || 50;
+const getDisplayDuration = (test) => {
+    const duration = Number(test?.duration);
+    return !duration || duration === 5 ? 50 : duration;
+};
 
 function TranscriptionList() {
 

@@ -3,7 +3,11 @@ import API from "../../api/axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Clock, Edit3, FileText, Headphones, Plus, Search, Trash2 } from "lucide-react";
 
-const getDisplayDuration = (test) => Number(test?.duration) || (test?.type === "dictation" ? 10 : 50);
+const getDefaultDuration = (test) => (test?.type === "dictation" ? 10 : 50);
+const getDisplayDuration = (test) => {
+    const duration = Number(test?.duration);
+    return !duration || duration === 5 ? getDefaultDuration(test) : duration;
+};
 
 function AdminTests() {
     const [tests, setTests] = useState([]);

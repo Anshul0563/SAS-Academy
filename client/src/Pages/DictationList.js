@@ -12,7 +12,10 @@ import {
     Loader2
 } from "lucide-react";
 
-const getDisplayDuration = (test) => Number(test?.duration) || 10;
+const getDisplayDuration = (test) => {
+    const duration = Number(test?.duration);
+    return !duration || duration === 5 ? 10 : duration;
+};
 
 function DictationList() {
 

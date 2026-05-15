@@ -26,7 +26,11 @@ const formatDate = () => new Date().toLocaleDateString(undefined, {
     day: "numeric"
 });
 
-const getDisplayDuration = (test) => Number(test?.duration) || (test?.type === "dictation" ? 10 : 50);
+const getDefaultDuration = (test) => (test?.type === "dictation" ? 10 : 50);
+const getDisplayDuration = (test) => {
+    const duration = Number(test?.duration);
+    return !duration || duration === 5 ? getDefaultDuration(test) : duration;
+};
 
 function Dashboard() {
     const navigate = useNavigate();
