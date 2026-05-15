@@ -1,4 +1,12 @@
 {
+  "scripts": {
+    "build:client": "npm --prefix client run build",
+    "start:server": "npm --prefix Server start",
+    "dev:server": "npm --prefix Server run dev",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up --build",
+    "docker:prod": "docker compose -f docker-compose.prod.yml up --build -d"
+  },
   "devDependencies": {
     "nodemon": "^3.1.14"
   },

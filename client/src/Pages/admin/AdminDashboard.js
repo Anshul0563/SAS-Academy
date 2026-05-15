@@ -18,15 +18,15 @@ function AdminDashboard() {
     //  useCallback fix (eslint + performance)
     const fetchData = useCallback(async () => {
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("adminToken");
 
             if (!token) {
-                navigate("/login");
+                navigate("/admin-login");
                 return;
             }
 
             const res = await axios.get(
-                "http://localhost:5000/api/dashboard/admin-dashboard",
+                "/api/dashboard/admin-dashboard",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -34,8 +34,6 @@ function AdminDashboard() {
                     params: { t: Date.now() }
                 }
             );
-
-            console.log("🔥 DASHBOARD DATA:", res.data); // ✅ DEBUG
 
             setData(res.data);
 
@@ -66,7 +64,7 @@ function AdminDashboard() {
     return (
         <div className="min-h-screen bg-[#020617] text-white p-6 md:p-8">
 
-            <h1 className="text-3xl font-bold mb-6">👑 Admin Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
 
             {/*  CLICKABLE STATS */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -136,7 +134,7 @@ function AdminDashboard() {
 
             {/* RECENT TESTS */}
             <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                <h3 className="text-xl mb-4">📊 Recent Tests</h3>
+                <h3 className="text-xl mb-4">Recent Tests</h3>
 
                 {Array.isArray(data?.recentTests) && data.recentTests.length > 0 ? (
                     data.recentTests.map((test, i) => (

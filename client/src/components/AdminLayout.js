@@ -25,17 +25,17 @@ function TranscriptionView() {
         const fetchTest = async () => {
             try {
                 setLoading(true);
-                const res = await axios.get(`http://localhost:5000/api/tests/${id}`);
+                const res = await axios.get(`/api/tests/${id}`);
 
                 if (res.data?.passage) {
                     setText(res.data.passage);
                 } else {
-                    setText("⚠️ No passage available for this test");
+                    setText("No passage available for this test");
                 }
 
             } catch (err) {
                 console.error(err);
-                setText("❌ Failed to load passage");
+                setText("Failed to load passage");
             } finally {
                 setLoading(false);
             }

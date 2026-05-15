@@ -10,14 +10,14 @@ function Tests() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/tests", {
+                const res = await axios.get("/api/tests", {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token")
                     }
                 });
                 setTests(res.data);
             } catch (err) {
-                console.log("Fetch error:", err);
+                console.error("Fetch error:", err);
             }
         };
 
