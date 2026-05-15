@@ -33,6 +33,15 @@ CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 ```
 
+Create the first admin account from environment variables:
+
+```bash
+cd Server
+ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=change-this-password npm run create-admin
+```
+
+The public admin registration endpoint is disabled after the first admin exists unless `ALLOW_ADMIN_REGISTRATION=true`.
+
 For root compose variables, copy `.env.example` to `.env` if needed:
 
 ```bash
@@ -45,6 +54,12 @@ This starts MongoDB, the Node API, and the production React/Nginx container:
 
 ```bash
 docker compose up --build
+```
+
+Or use the root shortcut:
+
+```bash
+npm run docker:up
 ```
 
 Open:
@@ -65,6 +80,12 @@ Use `docker-compose.prod.yml` when MongoDB is managed externally, such as MongoD
 
 ```bash
 docker compose -f docker-compose.prod.yml up --build -d
+```
+
+Or:
+
+```bash
+npm run docker:prod
 ```
 
 The client container serves the React app with Nginx and proxies:
