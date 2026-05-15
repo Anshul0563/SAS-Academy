@@ -27,6 +27,24 @@ function AddTest() {
     };
 
     const handleSubmit = async () => {
+        const title = form.title.trim();
+        const passage = form.passage.trim();
+
+        if (!title) {
+            setMsg("Test title is required");
+            return;
+        }
+
+        if (form.type === "transcription" && !passage) {
+            setMsg("Transcription passage is required");
+            return;
+        }
+
+        if (form.type === "dictation" && !audio) {
+            setMsg("Please upload audio file");
+            return;
+        }
+
         try {
             setLoading(true);
             setMsg("");
@@ -39,19 +57,16 @@ function AddTest() {
                 return;
             }
 
-            // AUDIO VALIDATION
-            if (form.type === "dictation" && !audio) {
-                setMsg("Please upload audio file");
-                setLoading(false);
-                return;
-            }
-
             const data = new FormData();
 
             // ADD FORM DATA
-            Object.keys(form).forEach((key) => {
-                data.append(key, form[key]);
-            });
+            data.append("title", title);
+            data.append("type", form.type);
+            data.append("duration", form.duration);
+            data.append("difficulty", form.difficulty);
+            data.append("category", form.category.trim());
+            data.append("tags", form.tags.trim());
+            data.append("passage", form.type === "transcription" ? passage : "");
 
             // ADD AUDIO
             if (form.type === "dictation") {
@@ -89,7 +104,7 @@ function AddTest() {
             }, 1500);
 
         } catch (err) {
-            console.log("ERROR:", err);
+            console.log("ERROR:", err.response?.data || err);
             setMsg(err.response?.data?.message || "Error creating test");
         } finally {
             setLoading(false);

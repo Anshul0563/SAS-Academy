@@ -14,6 +14,16 @@ const getTestById = testController.getTestById;
 const updateTest = testController.updateTest;
 const deleteTest = testController.deleteTest;
 
+const uploadAudio = (req, res, next) => {
+    upload.single("audio")(req, res, (error) => {
+        if (error) {
+            return res.status(400).json({ message: error.message });
+        }
+
+        next();
+    });
+};
+
 // ================= ROUTES =================
 
 //   CREATE TEST (Admin only)
@@ -21,7 +31,7 @@ router.post(
     "/",
     protect,
     isAdmin,
-    upload.single("audio"),
+    uploadAudio,
     createTest
 );
 
@@ -36,7 +46,7 @@ router.put(
     "/:id",
     protect,
     isAdmin,
-    upload.single("audio"),
+    uploadAudio,
     updateTest
 );
 

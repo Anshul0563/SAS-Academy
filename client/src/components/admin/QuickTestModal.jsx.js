@@ -21,26 +21,41 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   const handleSubmit = async () => {
-    if (!form.title || !form.passage) {
-      setMessage('Title and passage/audio required');
+    const title = form.title.trim();
+    const passage = form.passage.trim();
+
+    if (!title) {
+      setMessage('Title is required');
+      return;
+    }
+
+    if (form.type === 'transcription' && !passage) {
+      setMessage('Passage is required');
+      return;
+    }
+
+    if (form.type === 'dictation' && !audio) {
+      setMessage('Audio file is required');
       return;
     }
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('adminToken');
       const data = new FormData();
-      
-      Object.keys(form).forEach(key => data.append(key, form[key]));
+
+      data.append('title', title);
+      data.append('type', form.type);
+      data.append('passage', form.type === 'transcription' ? passage : '');
+      data.append('duration', form.duration);
+      data.append('category', form.category.trim());
+
       if (form.type === 'dictation' && audio) {
         data.append('audio', audio);
       }
 
       await API.post('/tests', data, {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       setMessage('✅ Test created successfully!');
@@ -51,6 +66,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
         setAudio(null);
       }, 1500);
     } catch (error) {
+      console.error('Quick test create error:', error.response?.data || error);
       setMessage(`❌ ${error.response?.data?.message || 'Error creating test'}`);
     } finally {
       setLoading(false);
@@ -196,4 +212,3 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
 };
 
 export default QuickTestModal;
-
