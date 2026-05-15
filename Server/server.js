@@ -28,7 +28,7 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000,http://localhost:3002,http://localhost:5173,http://127.0.0.1:3000")
+const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000,http://localhost:3002,http://localhost:5173,http://127.0.0.1:3000, http://localhost:5000")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
