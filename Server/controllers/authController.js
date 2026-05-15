@@ -2,11 +2,34 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const normalizeEmail = (email = "") => String(email).trim().toLowerCase();
+const sanitizeName = (name = "") => String(name).trim();
+const validatePassword = (password = "") => String(password).length >= 8;
+
+const createToken = (payload) => {
+    if (!process.env.JWT_SECRET) {
+        const error = new Error("JWT secret is not configured");
+        error.statusCode = 500;
+        throw error;
+    }
+
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
+};
+
+const canRegisterAdmin = async () => {
+    if (process.env.ALLOW_ADMIN_REGISTRATION === "true") return true;
+    const adminCount = await User.countDocuments({ role: "admin" });
+    return adminCount === 0;
+};
+
 // Register
 exports.register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { password } = req.body;
+        const name = sanitizeName(req.body.name);
+        const email = normalizeEmail(req.body.email);
         if (!name || !email || !password) return res.status(400).json({ message: "All fields required" });
+        if (!validatePassword(password)) return res.status(400).json({ message: "Password must be at least 8 characters" });
 
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: "User already exists" });
@@ -23,14 +46,19 @@ exports.register = async (req, res) => {
 // Login
 exports.login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { password } = req.body;
+        const email = normalizeEmail(req.body.email);
         const user = await User.findOne({ email });
 
         if (!user || !await bcrypt.compare(password, user.password)) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        if (user.isActive === false) {
+            return res.status(403).json({ message: "Account is disabled" });
+        }
+
+        const token = createToken({ id: user._id });
         res.json({
             message: "Login successful",
             token,
@@ -44,16 +72,12 @@ exports.login = async (req, res) => {
 // ADMIN LOGIN WITH DEBUG
 exports.adminLogin = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { password } = req.body;
+        const email = normalizeEmail(req.body.email);
 
         const user = await User.findOne({ email });
 
-        if (!user) {
-            return res.status(404).json({ message: "Admin user not found" });
-        }
-
-        const passwordOk = await bcrypt.compare(password, user.password);
-        if (!passwordOk) {
+        if (!user || !await bcrypt.compare(password, user.password)) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
@@ -61,7 +85,11 @@ exports.adminLogin = async (req, res) => {
             return res.status(403).json({ message: "Admin required" });
         }
 
-        const token = jwt.sign({ id: user._id, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        if (user.isActive === false) {
+            return res.status(403).json({ message: "Account is disabled" });
+        }
+
+        const token = createToken({ id: user._id, role: "admin" });
 
         res.json({
             message: "Admin login successful",
@@ -75,8 +103,15 @@ exports.adminLogin = async (req, res) => {
 
 exports.adminRegister = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { password } = req.body;
+        const name = sanitizeName(req.body.name);
+        const email = normalizeEmail(req.body.email);
         if (!name || !email || !password) return res.status(400).json({ message: "All fields required" });
+        if (!validatePassword(password)) return res.status(400).json({ message: "Password must be at least 8 characters" });
+
+        if (!await canRegisterAdmin()) {
+            return res.status(403).json({ message: "Admin registration is disabled" });
+        }
 
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: "User already exists" });
@@ -92,5 +127,4 @@ exports.adminRegister = async (req, res) => {
         res.status(500).json({ message: "Admin registration failed" });
     }
 };
-
 

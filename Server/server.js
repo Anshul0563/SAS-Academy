@@ -33,6 +33,12 @@ const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000,http:/
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+const requiredEnv = ["MONGO_URI", "JWT_SECRET"];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+if (missingEnv.length > 0) {
+  console.warn(`Missing required environment variables: ${missingEnv.join(", ")}`);
+}
+
 //  IMPORTANT: Middleware FIRST
 app.use(cors({
   origin(origin, callback) {
@@ -46,7 +52,14 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
+app.disable("x-powered-by");
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  next();
+});
+app.use(express.json({ limit: process.env.JSON_LIMIT || "2mb" }));
 
 //  Static
 app.use("/uploads", express.static("uploads"));
