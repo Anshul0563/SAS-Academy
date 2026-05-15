@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 function Tests() {
@@ -10,7 +10,7 @@ function Tests() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get("/api/tests", {
+                const res = await API.get("/tests", {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token")
                     }

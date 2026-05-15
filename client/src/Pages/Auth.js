@@ -22,7 +22,7 @@ function Auth() {
 
     try {
       if (isLogin) {
-        const res = await API.post("/api/auth/login", { email, password });
+        const res = await API.post("/auth/login", { email, password });
 
 
         // IMPORTANT: Keep user/admin login separated.
@@ -42,7 +42,7 @@ function Auth() {
 
         navigate("/dashboard");
       } else {
-        await API.post("/api/auth/register", { name, email, password });
+        await API.post("/auth/register", { name, email, password });
 
 
         setIsLogin(true);

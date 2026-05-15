@@ -35,7 +35,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await API.get("/api/tests");
+                const res = await API.get("/tests");
                 setTests(Array.isArray(res.data) ? res.data : []);
             } catch (err) {
                 console.error("Dashboard tests error:", err);

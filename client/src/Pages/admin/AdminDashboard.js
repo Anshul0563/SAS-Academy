@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import API from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
@@ -25,8 +25,8 @@ function AdminDashboard() {
                 return;
             }
 
-            const res = await axios.get(
-                "/api/dashboard/admin-dashboard",
+            const res = await API.get(
+                "/dashboard/admin-dashboard",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

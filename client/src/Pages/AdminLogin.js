@@ -35,7 +35,7 @@ function AdminLogin() {
             setLoading(true);
 
             const res = await API.post(
-                "/api/auth/admin-login",
+                "/auth/admin-login",
 
                 form,
                 {

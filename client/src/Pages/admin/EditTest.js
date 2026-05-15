@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 function EditTest() {
@@ -23,7 +23,7 @@ function EditTest() {
     useEffect(() => {
         const fetchTest = async () => {
             try {
-                const res = await axios.get(`/api/tests/${id}`);
+                const res = await API.get(`/tests/${id}`);
                 setForm({
                     title: res.data.title || "",
                     type: res.data.type || "transcription",
@@ -60,7 +60,7 @@ function EditTest() {
                 data.append("audio", audio);
             }
 
-            await axios.put(`/api/tests/${id}`, data, {
+            await API.put(`/tests/${id}`, data, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

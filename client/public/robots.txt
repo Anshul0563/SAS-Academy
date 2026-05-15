@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
 
-Sitemap: https://sasacademy.in/sitemap.xml
+Sitemap: https://sas-academy-eta.vercel.app/sitemap.xml

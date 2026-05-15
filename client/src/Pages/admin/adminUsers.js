@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../../api/axios";
 
 
 
@@ -13,7 +13,7 @@ function AdminUsers() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("/api/users", {
+        const res = await API.get("/users", {
           headers: {
             Authorization: `Bearer ${token}`
           }

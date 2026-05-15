@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import API from "../api/axios";
 import { motion } from "framer-motion";
 import {
     AlertCircle,
@@ -42,7 +42,7 @@ function DictationPlayer() {
             try {
                 setLoading(true);
                 setError("");
-                const res = await axios.get(`/api/tests/${id}`);
+                const res = await API.get(`/tests/${id}`);
                 setTest(res.data);
             } catch (err) {
                 console.error("Dictation fetch error:", err);

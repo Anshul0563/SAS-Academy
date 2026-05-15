@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import API from '../../api/axios';
 import { FileText, Headphones, UploadCloud, X, Plus } from 'lucide-react';
 
 const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
@@ -36,7 +36,7 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
         data.append('audio', audio);
       }
 
-      await axios.post('/api/tests', data, {
+      await API.post('/tests', data, {
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

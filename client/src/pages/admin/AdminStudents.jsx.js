@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import API from '../../api/axios';
 import { Search, Filter, Users, BarChart3 } from 'lucide-react';
 
 import { motion } from 'framer-motion';
@@ -17,7 +17,7 @@ const AdminStudents = () => {
   const fetchStudents = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await axios.get('/api/users', {
+      const res = await API.get('/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStudents(res.data || []);
@@ -177,7 +177,7 @@ const AdminStudents = () => {
                       <button
                         onClick={async () => {
                           const token = localStorage.getItem('adminToken');
-                          await axios.patch(`/api/users/${student._id}/status`, { isActive: !student.isActive }, {
+                          await API.patch(`/users/${student._id}/status`, { isActive: !student.isActive }, {
                             headers: { Authorization: `Bearer ${token}` }
                           });
                           setStudents(current => current.map(item => (

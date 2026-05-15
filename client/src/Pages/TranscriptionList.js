@@ -23,7 +23,7 @@ function TranscriptionList() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await API.get("/api/tests?type=transcription");
+                const res = await API.get("/tests?type=transcription");
 
                 setTests(Array.isArray(res.data) ? res.data : []);
             } catch (err) {

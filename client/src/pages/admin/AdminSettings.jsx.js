@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../../api/axios';
 import { Settings, Save, Database, Globe } from 'lucide-react';
 
 import { motion } from 'framer-motion';
@@ -22,7 +22,7 @@ const AdminSettings = () => {
   const fetchSettings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('/api/admin/settings', {
+      const res = await API.get('/admin/settings', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSettings(res.data);
@@ -43,7 +43,7 @@ const AdminSettings = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('/api/admin/settings', settings, {
+      await API.post('/admin/settings', settings, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('✅ Settings saved successfully!');

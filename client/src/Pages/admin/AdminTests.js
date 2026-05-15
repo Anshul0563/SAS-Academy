@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import API from "../../api/axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Clock, Edit3, FileText, Headphones, Plus, Search, Trash2 } from "lucide-react";
 
@@ -18,7 +18,7 @@ function AdminTests() {
             setLoading(true);
             setError("");
             const token = localStorage.getItem("adminToken");
-            const res = await axios.get("/api/tests", {
+            const res = await API.get("/tests", {
                 headers: token ? { Authorization: `Bearer ${token}` } : undefined
             });
 
@@ -55,7 +55,7 @@ function AdminTests() {
 
         try {
             const token = localStorage.getItem("adminToken");
-            await axios.delete(`/api/tests/${id}`, {
+            await API.delete(`/tests/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setTests((current) => current.filter((test) => test._id !== id));

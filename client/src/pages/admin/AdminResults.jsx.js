@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import API from '../../api/axios';
 import { BarChart3, Filter, Download, Calendar, TrendingUp, Award } from 'lucide-react';
 
 import { motion } from 'framer-motion';
@@ -18,7 +18,7 @@ const AdminResults = () => {
   const fetchResults = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await axios.get('/api/results', {
+      const res = await API.get('/results', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setResults(res.data.slice(0, 50) || []); // Top 50 recent
@@ -32,7 +32,7 @@ const AdminResults = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await axios.get('/api/results/stats', {
+      const res = await API.get('/results/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStats(res.data || {});

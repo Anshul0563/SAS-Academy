@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 function AdminRegister() {
@@ -33,8 +33,8 @@ function AdminRegister() {
             setLoading(true);
             setError("");
 
-            await axios.post(
-                "/api/auth/admin-register",
+            await API.post(
+                "/auth/admin-register",
                 form,
                 {
                     headers: {

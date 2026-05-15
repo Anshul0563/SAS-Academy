@@ -177,7 +177,7 @@ function Result() {
                 const token = localStorage.getItem("userToken") || localStorage.getItem("token");
                 const res = await API.post(
 
-                    "/api/results/submit",
+                    "/results/submit",
                     {
                         testId,
                         typedText,
@@ -197,7 +197,7 @@ function Result() {
                 setError("Result was calculated locally, but it could not be saved right now.");
 
                 try {
-                    const testRes = await API.get(`/api/tests/${testId}`);
+                    const testRes = await API.get(`/tests/${testId}`);
 
                     setData(calculateLocalResult({
                         originalText: testRes.data?.passage || "",

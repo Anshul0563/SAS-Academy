@@ -26,7 +26,7 @@ function TranscriptionView() {
         const fetchTest = async () => {
             try {
                 setLoading(true);
-                const res = await API.get(`/api/tests/${id}`);
+                const res = await API.get(`/tests/${id}`);
 
 
                 if (res.data?.passage) {

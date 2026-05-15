@@ -23,7 +23,7 @@ function DictationList() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await API.get("/api/tests?type=dictation");
+                const res = await API.get("/tests?type=dictation");
 
 
                 const filtered = res.data

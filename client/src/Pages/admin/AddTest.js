@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "../../api/axios";
 import { motion } from "framer-motion";
 import { UploadCloud, FileText, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -58,8 +58,8 @@ function AddTest() {
                 data.append("audio", audio);
             }
 
-            await axios.post(
-                "/api/tests",
+            await API.post(
+                "/tests",
                 data,
                 {
                     headers: {

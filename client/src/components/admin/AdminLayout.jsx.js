@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../api/axios';
 import { 
   LayoutDashboard, 
   Users, 
@@ -34,7 +34,7 @@ const AdminLayout = () => {
         const token = localStorage.getItem('adminToken');
         if (!token) return;
 
-        const res = await axios.get('/api/dashboard/admin-dashboard', {
+        const res = await API.get('/dashboard/admin-dashboard', {
           headers: { Authorization: `Bearer ${token}` }
         });
 
