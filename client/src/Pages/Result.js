@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
+
 import { useNavigate } from "react-router-dom";
 import { useExam } from "../context/ExamContext";
 
@@ -174,7 +175,8 @@ function Result() {
 
             try {
                 const token = localStorage.getItem("userToken") || localStorage.getItem("token");
-                const res = await axios.post(
+                const res = await API.post(
+
                     "/api/results/submit",
                     {
                         testId,
@@ -195,7 +197,8 @@ function Result() {
                 setError("Result was calculated locally, but it could not be saved right now.");
 
                 try {
-                    const testRes = await axios.get(`/api/tests/${testId}`);
+                    const testRes = await API.get(`/api/tests/${testId}`);
+
                     setData(calculateLocalResult({
                         originalText: testRes.data?.passage || "",
                         typedText,

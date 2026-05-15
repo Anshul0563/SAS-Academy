@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
@@ -34,8 +34,9 @@ function AdminLogin() {
         try {
             setLoading(true);
 
-            const res = await axios.post(
+            const res = await API.post(
                 "/api/auth/admin-login",
+
                 form,
                 {
                     timeout: 10000

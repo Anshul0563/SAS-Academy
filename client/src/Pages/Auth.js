@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../api/axios";
+
 
 function Auth() {
   const navigate = useNavigate();
@@ -21,7 +22,8 @@ function Auth() {
 
     try {
       if (isLogin) {
-        const res = await axios.post("/api/auth/login", { email, password });
+        const res = await API.post("/api/auth/login", { email, password });
+
 
         // IMPORTANT: Keep user/admin login separated.
         // Even if backend returns role=admin, do NOT auto-redirect to admin login here.
@@ -40,7 +42,8 @@ function Auth() {
 
         navigate("/dashboard");
       } else {
-        await axios.post("/api/auth/register", { name, email, password });
+        await API.post("/api/auth/register", { name, email, password });
+
 
         setIsLogin(true);
         setError("Account created! Please login.");
