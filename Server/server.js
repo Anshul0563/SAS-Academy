@@ -42,7 +42,7 @@ if (missingEnv.length > 0) {
 //  IMPORTANT: Middleware FIRST
 app.use(cors({
   origin(origin, callback) {
-    
+
     console.log("Request Origin:", origin);
 
     if (!origin || allowedOrigins.includes(origin)) {
@@ -112,3 +112,14 @@ const startServer = async () => {
 };
 
 startServer();
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+
+  console.error("🔥 SERVER ERROR:", err);
+
+  res.status(500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
