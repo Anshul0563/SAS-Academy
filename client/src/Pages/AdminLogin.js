@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { storeAdminAuth } from "../utils/authStorage";
 
 function AdminLogin() {
     const navigate = useNavigate();
@@ -43,13 +44,15 @@ function AdminLogin() {
                 }
             );
 
-            // SEPARATE ADMIN STORAGE
-            localStorage.setItem("adminToken", res.data.token);
-            localStorage.setItem("adminUser", JSON.stringify(res.data.user));
-            
-            // Clear user token to prevent conflicts
-            localStorage.removeItem("userToken");
-            localStorage.removeItem("user");
+            if (!res.data?.token || res.data?.user?.role !== "admin") {
+                setError("Admin login response is invalid");
+                return;
+            }
+
+            storeAdminAuth({
+                token: res.data.token,
+                user: res.data.user
+            });
 
             navigate("/admin");
 

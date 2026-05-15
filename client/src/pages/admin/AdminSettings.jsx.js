@@ -1,35 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import API from '../../api/axios';
 import { Settings, Save, Database, Globe } from 'lucide-react';
 
 import { motion } from 'framer-motion';
 
+const STORAGE_KEY = 'sasAdminSettings';
+const defaultSettings = {
+  siteName: 'SAS Academy',
+  emailNotifications: true,
+  allowRegistrations: true,
+  maintenanceMode: false,
+  testDurationLimit: 60,
+  defaultDifficulty: 'medium'
+};
+
 const AdminSettings = () => {
-  const [settings, setSettings] = useState({
-    siteName: 'SAS Academy',
-    emailNotifications: true,
-    allowRegistrations: true,
-    maintenanceMode: false,
-    testDurationLimit: 30
-  });
+  const [settings, setSettings] = useState(defaultSettings);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const fetchSettings = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await API.get('/admin/settings', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setSettings(res.data);
-    } catch (error) {
-      console.error('Error fetching settings:', error);
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      setSettings({ ...defaultSettings, ...saved });
+    } catch {
+      setSettings(defaultSettings);
     }
-  };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -42,11 +38,14 @@ const AdminSettings = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      await API.post('/admin/settings', settings, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setMessage('✅ Settings saved successfully!');
+      const normalizedSettings = {
+        ...settings,
+        testDurationLimit: Math.max(1, Math.min(60, Number(settings.testDurationLimit) || 60))
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedSettings));
+      setSettings(normalizedSettings);
+      setMessage('✅ Settings saved locally!');
     } catch (error) {
       setMessage('❌ Error saving settings');
     } finally {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import API from '../../api/axios';
 import { useNavigate } from 'react-router-dom';
+import { getAdminAuthToken } from '../../utils/authStorage';
 import { 
   Users, 
   FileText, 
@@ -37,7 +38,7 @@ const AdminDashboard = () => {
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('adminToken');
+      const token = getAdminAuthToken();
       
       if (!token) {
         setLoading(false);

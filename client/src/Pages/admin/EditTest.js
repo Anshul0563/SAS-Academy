@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { getAdminAuthToken } from "../../utils/authStorage";
 
 function EditTest() {
     const { id } = useParams();
@@ -52,7 +53,13 @@ function EditTest() {
         try {
             setSaving(true);
             setMessage("");
-            const token = localStorage.getItem("adminToken");
+            const token = getAdminAuthToken();
+            if (!token) {
+                setMessage("Admin login required. Please login again.");
+                navigate("/admin-login");
+                return;
+            }
+
             const data = new FormData();
 
             Object.entries(form).forEach(([key, value]) => data.append(key, value));

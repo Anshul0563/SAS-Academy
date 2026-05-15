@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../api/axios';
 import { Search, Filter, Users, BarChart3 } from 'lucide-react';
+import { getAdminAuthToken } from '../../utils/authStorage';
 
 import { motion } from 'framer-motion';
 
@@ -16,7 +17,7 @@ const AdminStudents = () => {
 
   const fetchStudents = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = getAdminAuthToken();
       const res = await API.get('/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -176,7 +177,7 @@ const AdminStudents = () => {
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={async () => {
-                          const token = localStorage.getItem('adminToken');
+                          const token = getAdminAuthToken();
                           await API.patch(`/users/${student._id}/status`, { isActive: !student.isActive }, {
                             headers: { Authorization: `Bearer ${token}` }
                           });

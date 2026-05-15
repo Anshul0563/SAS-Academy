@@ -32,6 +32,7 @@ import Layout from "./components/Layout";
 
 // Context
 import { ExamProvider } from "./context/ExamContext";
+import { getAdminAuthToken, getStoredAdminUser } from "./utils/authStorage";
 
 
 // 🔐 USER PROTECT - Separate token
@@ -42,8 +43,8 @@ const UserPrivateRoute = ({ children }) => {
 
 // 🔐 ADMIN PROTECT - Separate token
 const AdminPrivateRoute = ({ children }) => {
-  const adminToken = localStorage.getItem("adminToken");
-  const adminUser = adminToken ? JSON.parse(localStorage.getItem("adminUser") || '{}') : {};
+  const adminToken = getAdminAuthToken();
+  const adminUser = adminToken ? getStoredAdminUser() : {};
   return adminToken && adminUser.role === "admin" ? children : <Navigate to="/admin-login" />;
 };
 
@@ -57,11 +58,6 @@ function App() {
           <Route path="/" element={<Auth />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/admin-register" element={<AdminRegister />} />
-
-
-
-          {/* RESULT */}
-          <Route path="/result" element={<Result />} />
 
           {/* USER PANEL - Separate token */}
           <Route element={
@@ -80,6 +76,13 @@ function App() {
           <Route path="/typing/:id" element={
             <UserPrivateRoute>
               <TypingTest />
+            </UserPrivateRoute>
+          } />
+
+          {/* RESULT */}
+          <Route path="/result" element={
+            <UserPrivateRoute>
+              <Result />
             </UserPrivateRoute>
           } />
 

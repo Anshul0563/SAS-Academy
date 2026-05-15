@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import API from "../../api/axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Clock, Edit3, FileText, Headphones, Plus, Search, Trash2 } from "lucide-react";
+import { getAdminAuthToken } from "../../utils/authStorage";
 
 const getDefaultDuration = (test) => (test?.type === "dictation" ? 10 : 50);
 const getDisplayDuration = (test) => {
@@ -23,7 +24,7 @@ function AdminTests() {
         try {
             setLoading(true);
             setError("");
-            const token = localStorage.getItem("adminToken");
+            const token = getAdminAuthToken();
             const res = await API.get("/tests", {
                 headers: token ? { Authorization: `Bearer ${token}` } : undefined
             });
@@ -60,7 +61,13 @@ function AdminTests() {
         if (!ok) return;
 
         try {
-            const token = localStorage.getItem("adminToken");
+            const token = getAdminAuthToken();
+            if (!token) {
+                setError("Admin login required. Please login again.");
+                navigate("/admin-login");
+                return;
+            }
+
             await API.delete(`/tests/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import API from '../../api/axios';
 import { FileText, Headphones, UploadCloud, X, Plus } from 'lucide-react';
+import { getAdminAuthToken } from '../../utils/authStorage';
 
 const getDefaultDuration = (type) => (type === 'dictation' ? 10 : 50);
 
@@ -56,7 +57,12 @@ const QuickTestModal = ({ isOpen, onClose, onSuccess }) => {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = getAdminAuthToken();
+      if (!token) {
+        setMessage('❌ Admin login required. Please login again.');
+        return;
+      }
+
       const data = new FormData();
 
       data.append('title', title);

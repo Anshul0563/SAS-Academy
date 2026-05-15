@@ -179,12 +179,12 @@ function Auth() {
           </p>
 
           {/* ADMIN LOGIN */}
-          <p
+          {/*<p
             className="text-indigo-400 text-center mt-2 cursor-pointer hover:underline text-sm"
             onClick={() => navigate("/admin-login")}
           >
             Login as Admin 🔐
-          </p>
+          </p>*/}
         </div>
       </div>
     </div>

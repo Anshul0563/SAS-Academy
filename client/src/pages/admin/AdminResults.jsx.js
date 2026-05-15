@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../api/axios';
 import { BarChart3, Filter, Download, Calendar, TrendingUp, Award } from 'lucide-react';
+import { getAdminAuthToken } from '../../utils/authStorage';
 
 import { motion } from 'framer-motion';
 
@@ -17,7 +18,7 @@ const AdminResults = () => {
 
   const fetchResults = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = getAdminAuthToken();
       const res = await API.get('/results', {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -31,7 +32,7 @@ const AdminResults = () => {
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = getAdminAuthToken();
       const res = await API.get('/results/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });

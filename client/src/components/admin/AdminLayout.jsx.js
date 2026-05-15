@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import API from '../../api/axios';
+import { getAdminAuthToken } from '../../utils/authStorage';
 import { 
   LayoutDashboard, 
   Users, 
@@ -31,7 +32,7 @@ const AdminLayout = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const token = localStorage.getItem('adminToken');
+        const token = getAdminAuthToken();
         if (!token) return;
 
         const res = await API.get('/dashboard/admin-dashboard', {

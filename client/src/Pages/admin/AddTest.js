@@ -3,6 +3,7 @@ import API from "../../api/axios";
 import { motion } from "framer-motion";
 import { UploadCloud, FileText, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getAdminAuthToken } from "../../utils/authStorage";
 
 const getDefaultDuration = (type) => (type === "dictation" ? 10 : 50);
 
@@ -63,11 +64,12 @@ function AddTest() {
             setLoading(true);
             setMsg("");
 
-            const token = localStorage.getItem("adminToken");
+            const token = getAdminAuthToken();
 
             if (!token) {
-                setMsg("Login required");
+                setMsg("Admin login required. Please login again.");
                 setLoading(false);
+                navigate("/admin-login");
                 return;
             }
 
