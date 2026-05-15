@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://sas-academy-eta.vercel.app</loc>
+    <loc>https://sas-academy-eta.vercel.app/</loc>
     <priority>1.0</priority>
   </url>
+
   <url>
-    <loc>https://sasacademy.in/dashboard</loc>
+    <loc>https://sas-academy-eta.vercel.app/dashboard</loc>
     <priority>0.7</priority>
   </url>
+
   <url>
-    <loc>https://sasacademy.in/transcription</loc>
+    <loc>https://sas-academy-eta.vercel.app/transcription</loc>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://sasacademy.in/dictations</loc>
+    <loc>https://sas-academy-eta.vercel.app/dictations</loc>
     <priority>0.8</priority>
   </url>
+
 </urlset>
