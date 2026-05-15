@@ -42,6 +42,9 @@ if (missingEnv.length > 0) {
 //  IMPORTANT: Middleware FIRST
 app.use(cors({
   origin(origin, callback) {
+    
+    console.log("Request Origin:", origin);
+
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
