@@ -4,5 +4,6 @@
         "ppybfqs",
         "sassteno",
         "Ssteno"
-    ]
+    ],
+    "gitdoc.enabled": true
 }

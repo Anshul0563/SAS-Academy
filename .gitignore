@@ -1,5 +1,10 @@
 node_modules/
 .env
+.env.*
+!.env.example
+!**/.env.example
 client/node_modules/
 server/node_modules/
 server/uploads/*.mp3
+Server/uploads/
+client/build/
