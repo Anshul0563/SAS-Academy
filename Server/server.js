@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const dns = require("dns");
-const path = require("path");
 
 const connectDB = require("./config/db");
 
@@ -28,7 +27,10 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000,http://localhost:3002,http://localhost:5173,http://127.0.0.1:3000, http://localhost:5000,https://sas-academy-1ruh.onrender.com")
+const allowedOrigins = (
+  process.env.CLIENT_URLS ||
+  "http://localhost:3000,http://localhost:3002,http://localhost:5173,http://127.0.0.1:3000, http://localhost:5000,https://sas-academy-1ruh.onrender.com"
+)
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -36,25 +38,28 @@ const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000,http:/
 const requiredEnv = ["MONGO_URI", "JWT_SECRET"];
 const missingEnv = requiredEnv.filter((key) => !process.env[key]);
 if (missingEnv.length > 0) {
-  console.warn(`Missing required environment variables: ${missingEnv.join(", ")}`);
+  console.warn(
+    `Missing required environment variables: ${missingEnv.join(", ")}`,
+  );
 }
 
 //  IMPORTANT: Middleware FIRST
-app.use(cors({
-  origin(origin, callback) {
+app.use(
+  cors({
+    origin(origin, callback) {
+      console.log("Request Origin:", origin);
 
-    console.log("Request Origin:", origin);
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.disable("x-powered-by");
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
@@ -69,10 +74,10 @@ app.use("/uploads", express.static("uploads"));
 
 //  Protected test route
 app.get("/api/protected", protect, (req, res) => {
-    res.json({
-        message: "access granted",
-        user: req.user
-    });
+  res.json({
+    message: "access granted",
+    user: req.user,
+  });
 });
 
 //  Routes (AFTER middleware)
@@ -84,38 +89,37 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
 
 app.get("/api/health", (req, res) => {
-    res.json({
-        status: "ok",
-        service: "sas-academy-api",
-        timestamp: new Date().toISOString()
-    });
+  res.json({
+    status: "ok",
+    service: "sas-academy-api",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 //  Root
 app.get("/", (req, res) => {
-    res.send("API running...");
+  res.send("API running...");
 });
 
 //  Start server
 const startServer = async () => {
-    try {
-        await connectDB();
+  try {
+    await connectDB();
 
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
 
-    } catch (error) {
-        console.error("Failed to start server:", error.message);
-        process.exit(1);
-    }
+  } catch (error) {
+    console.error("Failed to start server:", error.message);
+    process.exit(1);
+  }
 };
 
 startServer();
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-
   console.error("🔥 SERVER ERROR:", err);
 
   res.status(500).json({
