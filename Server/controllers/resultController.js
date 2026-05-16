@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const toCompactResult = ({ userId, testId, resultData, timeTaken }) => ({
     userId,
-    testId,
+    ...(mongoose.Types.ObjectId.isValid(testId) ? { testId } : {}),
     accuracy: resultData.accuracy,
     netWPM: resultData.netWPM,
     grossWPM: resultData.grossWPM,
@@ -14,6 +14,20 @@ const toCompactResult = ({ userId, testId, resultData, timeTaken }) => ({
     errorsDetails: resultData.errorsDetails,
     timeTaken: Math.max(1, Number(timeTaken) || 1)
 });
+
+const compactFromRequest = (body = {}) => {
+    const resultData = body.resultData || body;
+    const number = (value) => Number.isFinite(Number(value)) ? Number(value) : 0;
+
+    return {
+        accuracy: Math.max(0, Math.min(100, number(resultData.accuracy))),
+        netWPM: Math.max(0, number(resultData.netWPM)),
+        grossWPM: Math.max(0, number(resultData.grossWPM)),
+        correctWords: Math.max(0, Math.round(number(resultData.correctWords))),
+        totalWords: Math.max(0, Math.round(number(resultData.totalWords))),
+        errorsDetails: Math.max(0, Math.round(number(resultData.errorsDetails ?? resultData.errors))),
+    };
+};
 
 exports.submitTest = async (req, res) => {
     try {
@@ -62,6 +76,32 @@ exports.submitTest = async (req, res) => {
         console.error("Result submit error:", error);
         res.status(500).json({
             message: "Result could not be saved. Your score was calculated locally.",
+            detail: process.env.NODE_ENV === "production" ? undefined : error.message
+        });
+    }
+};
+
+exports.saveCompactResult = async (req, res) => {
+    try {
+        const compactResult = compactFromRequest(req.body);
+        const savedResult = await Result.create(toCompactResult({
+            userId: req.user._id,
+            testId: req.body.testId,
+            resultData: compactResult,
+            timeTaken: req.body.timeTaken || req.body.resultData?.timeTaken
+        }));
+
+        res.json({
+            _id: savedResult._id,
+            saved: true,
+            ...compactResult,
+            timeTaken: savedResult.timeTaken,
+            createdAt: savedResult.createdAt
+        });
+    } catch (error) {
+        console.error("Compact result save error:", error);
+        res.status(500).json({
+            message: "Result could not be saved.",
             detail: process.env.NODE_ENV === "production" ? undefined : error.message
         });
     }
