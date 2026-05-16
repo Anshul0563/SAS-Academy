@@ -492,7 +492,9 @@ function PracticePanel({
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-[#0b1120]/70 p-4">
-              <p className="text-2xl font-bold text-red-300">{stats.mistakes}</p>
+              <p className="text-2xl font-bold text-red-300">
+                {stats.mistakes}
+              </p>
 
               <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-500">
                 Errors
@@ -501,35 +503,46 @@ function PracticePanel({
           </div>
         </div>
         {/* PASSAGE CAROUSEL */}
-        <div className="mt-5 overflow-x-auto pb-2">
-          <div className="flex gap-3">
+        <div className="mt-5 overflow-hidden">
+          <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10">
             {passageSet.slice(0, 10).map((item, index) => (
               <button
                 key={item.id || index}
                 onClick={() => onPassageChange(index)}
-                className={`min-w-[220px] rounded-2xl border p-4 text-left transition ${
+                className={`group min-w-[240px] rounded-3xl border p-4 text-left transition-all duration-200 ${
                   passageIndex === index
-                    ? "border-indigo-400/40 bg-indigo-500/10"
-                    : "border-white/10 bg-[#0b1120]/60 hover:bg-white/[0.04]"
+                    ? "border-indigo-400/40 bg-indigo-500/10 shadow-lg shadow-indigo-500/10"
+                    : "border-white/10 bg-[#0b1120]/60 hover:border-white/20 hover:bg-white/[0.04]"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                     Practice {index + 1}
                   </span>
 
-                  <span className="rounded-full bg-emerald-400/10 px-2 py-1 text-[10px] font-semibold text-emerald-200">
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${
+                      passageIndex === index
+                        ? "bg-indigo-400/20 text-indigo-100"
+                        : "bg-emerald-400/10 text-emerald-200"
+                    }`}
+                  >
                     10 MIN
                   </span>
                 </div>
 
-                <h3 className="mt-3 line-clamp-2 text-sm font-semibold text-white">
+                <h3 className="mt-3 line-clamp-2 text-sm font-semibold text-white transition group-hover:text-indigo-100">
                   {item.title}
                 </h3>
 
-                <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
-                  <span>{item.difficulty}</span>
-                  <span>{item.targetWPM} WPM</span>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="rounded-full bg-white/5 px-3 py-1 text-[11px] font-medium text-slate-400">
+                    {item.difficulty}
+                  </span>
+
+                  <span className="text-xs font-semibold text-emerald-300">
+                    {item.targetWPM} WPM
+                  </span>
                 </div>
               </button>
             ))}
