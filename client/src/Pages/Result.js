@@ -271,7 +271,7 @@ function Result() {
         if (!token) throw new Error("Login session expired.");
 
         const res = await API.post(
-          "/results/compact",
+          "/results/submit",
           {
             testId,
             timeTaken: timeUsedSeconds,

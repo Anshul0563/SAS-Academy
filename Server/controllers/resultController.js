@@ -33,6 +33,24 @@ exports.submitTest = async (req, res) => {
     try {
         const { testId, typedText = "", timeTaken, backspaces = 0, keystrokes, settings = {} } = req.body;
 
+        if (req.body.resultData || req.body.accuracy !== undefined || req.body.netWPM !== undefined) {
+            const compactResult = compactFromRequest(req.body);
+            const savedResult = await Result.create(toCompactResult({
+                userId: req.user._id,
+                testId,
+                resultData: compactResult,
+                timeTaken: timeTaken || req.body.resultData?.timeTaken
+            }));
+
+            return res.json({
+                _id: savedResult._id,
+                saved: true,
+                ...compactResult,
+                timeTaken: savedResult.timeTaken,
+                createdAt: savedResult.createdAt
+            });
+        }
+
         if (!mongoose.Types.ObjectId.isValid(testId)) {
             return res.status(400).json({ message: "Please start a real transcription test before submitting." });
         }
