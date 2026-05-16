@@ -13,6 +13,7 @@ const resultRoutes = require("./routes/resultRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const userRoutes = require("./routes/userRoutes");
+const typingLearningRoutes = require("./routes/typingLearningRoutes");
 
 const { protect } = require("./middleware/authMiddleware");
 
@@ -21,6 +22,7 @@ require("./models/user");
 require("./models/test");
 require("./models/result");
 require("./models/attempt");
+require("./models/typingResult");
 
 // DNS fix
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
@@ -114,6 +116,7 @@ app.get("/__debug/routes", (req, res) => {
 app.use("/api/upload", uploadRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/typing-learning", typingLearningRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({
