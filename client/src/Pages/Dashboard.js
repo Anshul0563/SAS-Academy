@@ -12,6 +12,7 @@ import {
   FileText,
   Headphones,
   Mail,
+  Medal,
   Phone,
   Play,
   Search,
@@ -36,6 +37,30 @@ const getDisplayDuration = (test) => {
 };
 const formatScoreNumber = (value, digits = 1) =>
   Number(value || 0).toFixed(digits);
+const clampScore = (value) => Math.max(0, Math.min(100, Number(value) || 0));
+const getCompositeScore = (entry) =>
+  Math.round(
+    clampScore(entry.accuracy) * 0.65 +
+      Math.min(100, Number(entry.netWPM || 0) * 2) * 0.25 +
+      Math.min(100, Number(entry.grossWPM || 0) * 1.5) * 0.1,
+  );
+const getAccuracyTone = (value) => {
+  const accuracy = Number(value) || 0;
+  if (accuracy >= 90) return "text-emerald-300";
+  if (accuracy >= 75) return "text-amber-200";
+  return "text-red-300";
+};
+const getPerformanceLabel = (entry) => {
+  const score = getCompositeScore(entry);
+  if (score >= 90) return "Elite";
+  if (score >= 78) return "Advanced";
+  if (score >= 62) return "Steady";
+  return "Building";
+};
+const formatDuration = (seconds = 0) => {
+  const minutes = Number(seconds || 0) / 60;
+  return minutes >= 1 ? `${minutes.toFixed(1)} min` : `${seconds || 0}s`;
+};
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -76,7 +101,7 @@ function Dashboard() {
         });
 
         if (!cancelled) {
-          setLeaderboard(Array.isArray(res.data) ? res.data.slice(0, 5) : []);
+          setLeaderboard(Array.isArray(res.data) ? res.data.slice(0, 10) : []);
         }
       } catch (err) {
         console.error("Dashboard leaderboard error:", err);
@@ -147,6 +172,34 @@ function Dashboard() {
       },
     ];
   }, [tests]);
+
+  const topEntry = leaderboard[0];
+  const leaderboardStats = useMemo(() => {
+    if (!leaderboard.length) {
+      return {
+        averageAccuracy: 0,
+        averageNetWPM: 0,
+        cleanestErrors: 0,
+      };
+    }
+
+    const totals = leaderboard.reduce(
+      (summary, entry) => ({
+        accuracy: summary.accuracy + Number(entry.accuracy || 0),
+        netWPM: summary.netWPM + Number(entry.netWPM || 0),
+        errors: summary.errors + Number(entry.errors || 0),
+      }),
+      { accuracy: 0, netWPM: 0, errors: 0 },
+    );
+
+    return {
+      averageAccuracy: totals.accuracy / leaderboard.length,
+      averageNetWPM: totals.netWPM / leaderboard.length,
+      cleanestErrors: Math.min(
+        ...leaderboard.map((entry) => Number(entry.errors || 0)),
+      ),
+    };
+  }, [leaderboard]);
 
   const recentTests = tests.slice(0, 5);
   const featuredTest = tests[0];
