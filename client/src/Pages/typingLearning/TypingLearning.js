@@ -55,7 +55,7 @@ function TypingLearning() {
   const config = modeConfig[mode];
   const passageSet = passages[language];
   const passage = passageSet[passageIndex % passageSet.length];
-  const durationSeconds = passage.duration || config.duration;
+  const durationSeconds = 600;
   const elapsedSeconds = Math.max(1, durationSeconds - timeLeft);
   const stats = useMemo(
     () =>
