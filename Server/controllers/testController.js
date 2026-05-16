@@ -26,6 +26,7 @@ const cleanupFile = async (filePath) => {
 };
 
 const getDefaultDuration = (type) => (type === "dictation" ? 10 : 50);
+const testListFields = "title type duration category difficulty tags createdAt updatedAt";
 
 // ================= CREATE TEST =================
 exports.createTest = async (req, res) => {
@@ -84,7 +85,11 @@ exports.getTests = async (req, res) => {
             query.title = { $regex: req.query.search, $options: "i" };
         }
 
-        const tests = await Test.find(query).sort({ createdAt: -1 });
+        const tests = await Test.find(query)
+            .select(testListFields)
+            .sort({ createdAt: -1 })
+            .lean();
+
         res.json(tests);
     } catch (error) {
         console.log("GET TESTS ERROR:", error);
@@ -148,7 +153,7 @@ exports.deleteTest = async (req, res) => {
 // ================= GET BY ID =================
 exports.getTestById = async (req, res) => {
     try {
-        const test = await Test.findById(req.params.id);
+        const test = await Test.findById(req.params.id).lean();
 
         if (!test) {
             return res.status(404).json({ message: "Test not found" });

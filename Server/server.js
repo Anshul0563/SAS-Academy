@@ -58,8 +58,6 @@ if (missingEnv.length > 0) {
 
 const corsOptions = {
   origin(origin, callback) {
-    console.log("Request Origin:", origin);
-
     if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
