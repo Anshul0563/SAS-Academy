@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import API from "../api/axios";
+import { getUserAuthToken } from "../utils/authStorage";
 
 import { useNavigate } from "react-router-dom";
 import { useExam } from "../context/ExamContext";
@@ -174,7 +175,11 @@ function Result() {
             const keystrokes = Number(localStorage.getItem("keystrokes")) || typedText.length;
 
             try {
-                const token = localStorage.getItem("userToken") || localStorage.getItem("token");
+                const token = getUserAuthToken();
+                if (!token) {
+                    throw new Error("Login session expired. Result cannot be saved.");
+                }
+
                 const res = await API.post(
 
                     "/results/submit",

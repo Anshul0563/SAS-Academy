@@ -111,6 +111,8 @@ function Dashboard() {
 
     const recentTests = tests.slice(0, 5);
     const featuredTest = tests[0];
+    const quickPracticeTest = tests.find((test) => test.type === "transcription") || tests.find((test) => test.type !== "dictation");
+    const quickPracticePath = quickPracticeTest ? `/typing-settings/${quickPracticeTest._id}` : "/transcription";
     const topCategories = useMemo(() => {
         const counts = tests.reduce((acc, test) => {
             const key = test.category || "General";
@@ -128,7 +130,7 @@ function Dashboard() {
             title: "Start Speed Test",
             detail: "Quick timed transcription practice",
             icon: Play,
-            to: "/typing-settings/new-quick",
+            to: quickPracticePath,
             accent: "bg-emerald-500"
         },
         {
@@ -178,7 +180,7 @@ function Dashboard() {
 
                         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                             <button
-                                onClick={() => navigate("/typing-settings/new-quick")}
+                                onClick={() => navigate(quickPracticePath)}
                                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
                             >
                                 <Play size={18} /> Start Practice

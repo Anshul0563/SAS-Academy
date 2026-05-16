@@ -104,6 +104,11 @@ function TestSettings() {
     };
 
     const handleStart = () => {
+        if (id === "new-quick") {
+            navigate("/transcription");
+            return;
+        }
+
         const finalSettings = {
             ...settings,
             version: SETTINGS_VERSION,

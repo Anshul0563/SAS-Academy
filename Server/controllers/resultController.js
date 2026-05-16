@@ -1,10 +1,15 @@
 const Test = require("../models/test");
 const Result = require("../models/result");
 const calculateResult = require("../utils/resultCalculator");
+const mongoose = require("mongoose");
 
 exports.submitTest = async (req, res) => {
     try {
         const { testId, typedText = "", timeTaken, backspaces = 0, keystrokes, settings = {} } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(testId)) {
+            return res.status(400).json({ message: "Please start a real transcription test before submitting." });
+        }
 
         const test = await Test.findById(testId);
         if (!test) {
