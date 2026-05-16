@@ -4,7 +4,7 @@ import {
   AlertTriangle,
   BarChart3,
   CheckCircle2,
- Download,
+  Download,
   Gauge,
   Keyboard,
   MinusCircle,
@@ -20,10 +20,7 @@ import { useExam } from "../context/ExamContext";
 import { getUserAuthToken } from "../utils/authStorage";
 
 const clean = (text = "", options = {}) => {
-  let value = String(text)
-    .replace(/\r\n/g, "\n")
-    .replace(/\s+/g, " ")
-    .trim();
+  let value = String(text).replace(/\r\n/g, "\n").replace(/\s+/g, " ").trim();
 
   if (options.ignoreCase) {
     value = value.toLowerCase();
@@ -41,9 +38,7 @@ const getUnits = (originalText, typedText, options) => {
   const typed = clean(typedText, options);
 
   const characterMode = Boolean(
-    typed &&
-      !typed.includes(" ") &&
-      !original.includes(" ")
+    typed && !typed.includes(" ") && !original.includes(" "),
   );
 
   if (characterMode) {
@@ -67,9 +62,7 @@ const round = (value, decimals = 2) =>
 const formatNumber = (value, decimals = 1) => {
   const number = Number(value || 0);
 
-  return number % 1 === 0
-    ? String(number)
-    : number.toFixed(decimals);
+  return number % 1 === 0 ? String(number) : number.toFixed(decimals);
 };
 
 const formatTime = (seconds = 0) => {
@@ -77,34 +70,22 @@ const formatTime = (seconds = 0) => {
 
   const minutes = Math.floor(value / 60);
 
-  const remainingSeconds = String(
-    Math.floor(value % 60)
-  ).padStart(2, "0");
+  const remainingSeconds = String(Math.floor(value % 60)).padStart(2, "0");
 
   return `${minutes}:${remainingSeconds}`;
 };
 
-const buildLinearComparison = (
-  originalUnits,
-  typedUnits
-) => {
+const buildLinearComparison = (originalUnits, typedUnits) => {
   const comparison = [];
 
   let i = 0;
   let j = 0;
 
-  while (
-    i < originalUnits.length ||
-    j < typedUnits.length
-  ) {
+  while (i < originalUnits.length || j < typedUnits.length) {
     const expected = originalUnits[i] || "";
     const typed = typedUnits[j] || "";
 
-    if (
-      expected &&
-      typed &&
-      expected === typed
-    ) {
+    if (expected && typed && expected === typed) {
       comparison.push({
         expected,
         typed,
@@ -114,12 +95,7 @@ const buildLinearComparison = (
 
       i += 1;
       j += 1;
-    }
-
-    else if (
-      typed &&
-      originalUnits[i] === typedUnits[j + 1]
-    ) {
+    } else if (typed && originalUnits[i] === typedUnits[j + 1]) {
       comparison.push({
         expected: "",
         typed,
@@ -128,12 +104,7 @@ const buildLinearComparison = (
       });
 
       j += 1;
-    }
-
-    else if (
-      expected &&
-      originalUnits[i + 1] === typedUnits[j]
-    ) {
+    } else if (expected && originalUnits[i + 1] === typedUnits[j]) {
       comparison.push({
         expected,
         typed: "",
@@ -142,9 +113,7 @@ const buildLinearComparison = (
       });
 
       i += 1;
-    }
-
-    else if (expected && typed) {
+    } else if (expected && typed) {
       comparison.push({
         expected,
         typed,
@@ -154,9 +123,7 @@ const buildLinearComparison = (
 
       i += 1;
       j += 1;
-    }
-
-    else if (typed) {
+    } else if (typed) {
       comparison.push({
         expected: "",
         typed,
@@ -165,9 +132,7 @@ const buildLinearComparison = (
       });
 
       j += 1;
-    }
-
-    else {
+    } else {
       comparison.push({
         expected,
         typed: "",
@@ -182,17 +147,11 @@ const buildLinearComparison = (
   return comparison;
 };
 
-const buildWordComparison = (
-  originalWords,
-  typedWords
-) => {
+const buildWordComparison = (originalWords, typedWords) => {
   const rows = originalWords.length;
   const cols = typedWords.length;
 
-  const dp = Array.from(
-    { length: rows + 1 },
-    () => Array(cols + 1).fill(0)
-  );
+  const dp = Array.from({ length: rows + 1 }, () => Array(cols + 1).fill(0));
 
   for (let i = 0; i <= rows; i += 1) {
     dp[i][0] = i;
@@ -204,15 +163,12 @@ const buildWordComparison = (
 
   for (let i = 1; i <= rows; i += 1) {
     for (let j = 1; j <= cols; j += 1) {
-      const cost =
-        originalWords[i - 1] === typedWords[j - 1]
-          ? 0
-          : 1;
+      const cost = originalWords[i - 1] === typedWords[j - 1] ? 0 : 1;
 
       dp[i][j] = Math.min(
         dp[i - 1][j] + 1,
         dp[i][j - 1] + 1,
-        dp[i - 1][j - 1] + cost
+        dp[i - 1][j - 1] + cost,
       );
     }
   }
@@ -223,12 +179,7 @@ const buildWordComparison = (
   let j = cols;
 
   while (i > 0 || j > 0) {
-    if (
-      i > 0 &&
-      j > 0 &&
-      originalWords[i - 1] ===
-        typedWords[j - 1]
-    ) {
+    if (i > 0 && j > 0 && originalWords[i - 1] === typedWords[j - 1]) {
       comparison.unshift({
         expected: originalWords[i - 1],
         typed: typedWords[j - 1],
@@ -238,12 +189,7 @@ const buildWordComparison = (
 
       i -= 1;
       j -= 1;
-    }
-
-    else if (
-      j > 0 &&
-      dp[i][j] === dp[i][j - 1] + 1
-    ) {
+    } else if (j > 0 && dp[i][j] === dp[i][j - 1] + 1) {
       comparison.unshift({
         expected: "",
         typed: typedWords[j - 1],
@@ -252,12 +198,7 @@ const buildWordComparison = (
       });
 
       j -= 1;
-    }
-
-    else if (
-      i > 0 &&
-      dp[i][j] === dp[i - 1][j] + 1
-    ) {
+    } else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
       comparison.unshift({
         expected: originalWords[i - 1],
         typed: "",
@@ -266,9 +207,7 @@ const buildWordComparison = (
       });
 
       i -= 1;
-    }
-
-    else {
+    } else {
       comparison.unshift({
         expected: originalWords[i - 1],
         typed: typedWords[j - 1],
@@ -285,9 +224,7 @@ const buildWordComparison = (
 };
 
 const getComparisonWord = (item) => {
-  return item.type === "omission"
-    ? item.expected
-    : item.word || item.typed;
+  return item.type === "omission" ? item.expected : item.word || item.typed;
 };
 
 const calculateLocalResult = ({
@@ -297,102 +234,60 @@ const calculateLocalResult = ({
   settings,
 }) => {
   const options = {
-    ignoreCase:
-      settings.ignoreCase ||
-      settings.caps === "none",
+    ignoreCase: settings.ignoreCase || settings.caps === "none",
 
     ignorePunctuation:
-      settings.ignorePunctuation ||
-      settings.punctuation === "none",
+      settings.ignorePunctuation || settings.punctuation === "none",
   };
 
-  const {
-    mode,
-    originalUnits,
-    typedUnits,
-  } = getUnits(
+  const { mode, originalUnits, typedUnits } = getUnits(
     originalText,
     typedText,
-    options
+    options,
   );
 
   const comparison =
     mode === "characters"
-      ? buildLinearComparison(
-          originalUnits,
-          typedUnits
-        )
-      : buildWordComparison(
-          originalUnits,
-          typedUnits
-        );
+      ? buildLinearComparison(originalUnits, typedUnits)
+      : buildWordComparison(originalUnits, typedUnits);
 
   const correctWords = comparison.filter(
-    (item) => item.type === "correct"
+    (item) => item.type === "correct",
   ).length;
 
   const omissions = comparison.filter(
-    (item) => item.type === "omission"
+    (item) => item.type === "omission",
   ).length;
 
   const additions = comparison.filter(
-    (item) => item.type === "addition"
+    (item) => item.type === "addition",
   ).length;
 
-  const spelling = comparison.filter(
-    (item) => item.type === "spelling"
-  ).length;
+  const spelling = comparison.filter((item) => item.type === "spelling").length;
 
-  const errors =
-    omissions + additions + spelling;
+  const errors = omissions + additions + spelling;
 
-  const minutes =
-    Math.max(
-      1,
-      Number(timeUsedSeconds) || 1
-    ) / 60;
+  const minutes = Math.max(1, Number(timeUsedSeconds) || 1) / 60;
 
-  const typedCharacters =
-    clean(typedText, options).length;
+  const typedCharacters = clean(typedText, options).length;
 
-  const expectedCharacters =
-    clean(originalText, options).length;
+  const expectedCharacters = clean(originalText, options).length;
 
   const correctCharacters = comparison
-    .filter(
-      (item) => item.type === "correct"
-    )
+    .filter((item) => item.type === "correct")
     .reduce(
-      (total, item) =>
-        total +
-        String(
-          item.typed ||
-            item.word ||
-            ""
-        ).length,
-      0
+      (total, item) => total + String(item.typed || item.word || "").length,
+      0,
     );
 
-  const totalWords =
-    originalUnits.length || 1;
+  const totalWords = originalUnits.length || 1;
 
   return {
-    grossWPM: round(
-      (typedCharacters / 5) / minutes
-    ),
+    grossWPM: round(typedCharacters / 5 / minutes),
 
-    netWPM: round(
-      (correctCharacters / 5) / minutes
-    ),
+    netWPM: round(correctCharacters / 5 / minutes),
 
-    accuracy: round(
-      Math.max(
-        0,
-        ((totalWords - errors) /
-          totalWords) *
-          100
-      )
-    ),
+    accuracy: round(Math.max(0, ((totalWords - errors) / totalWords) * 100)),
 
     totalWords: originalUnits.length,
 
@@ -422,10 +317,7 @@ const calculateLocalResult = ({
 
     comparisonMode: mode,
 
-    timeTaken: Math.max(
-      1,
-      Number(timeUsedSeconds) || 1
-    ),
+    timeTaken: Math.max(1, Number(timeUsedSeconds) || 1),
   };
 };
 
@@ -437,29 +329,15 @@ const getReliableUserToken = () => {
   }
 
   try {
-    const user = JSON.parse(
-      localStorage.getItem("user") || "{}"
-    );
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    if (
-      user?.id ||
-      user?._id ||
-      user?.email
-    ) {
+    if (user?.id || user?._id || user?.email) {
       return (
-        localStorage.getItem(
-          "userToken"
-        ) ||
-        localStorage.getItem("token") ||
-        ""
+        localStorage.getItem("userToken") || localStorage.getItem("token") || ""
       );
     }
   } catch {
-    return (
-      localStorage.getItem(
-        "userToken"
-      ) || ""
-    );
+    return localStorage.getItem("userToken") || "";
   }
 
   return "";
@@ -474,18 +352,11 @@ function Result() {
 
   const [data, setData] = useState(null);
 
-  const [saveError, setSaveError] =
-    useState("");
+  const [saveError, setSaveError] = useState("");
 
   const settings = useMemo(() => {
     try {
-      return (
-        JSON.parse(
-          localStorage.getItem(
-            "testSettings"
-          )
-        ) || {}
-      );
+      return JSON.parse(localStorage.getItem("testSettings")) || {};
     } catch {
       return {};
     }
@@ -499,53 +370,27 @@ function Result() {
     let cancelled = false;
 
     const run = async () => {
-      const testId =
-        localStorage.getItem("testId");
+      const testId = localStorage.getItem("testId");
 
-      const typedText =
-        localStorage.getItem(
-          "typedText"
-        ) || "";
+      const typedText = localStorage.getItem("typedText") || "";
 
-      const timeUsedSeconds =
-        Number(
-          localStorage.getItem(
-            "timeUsed"
-          )
-        ) || 1;
+      const timeUsedSeconds = Number(localStorage.getItem("timeUsed")) || 1;
 
-      const backspaces =
-        Number(
-          localStorage.getItem(
-            "backspace"
-          )
-        ) || 0;
+      const backspaces = Number(localStorage.getItem("backspace")) || 0;
 
       const keystrokes =
-        Number(
-          localStorage.getItem(
-            "keystrokes"
-          )
-        ) || typedText.length;
+        Number(localStorage.getItem("keystrokes")) || typedText.length;
 
       let originalText = typedText;
 
       try {
         if (testId) {
-          const testRes =
-            await API.get(
-              `/tests/${testId}`
-            );
+          const testRes = await API.get(`/tests/${testId}`);
 
-          originalText =
-            testRes.data?.passage ||
-            typedText;
+          originalText = testRes.data?.passage || typedText;
         }
       } catch (loadError) {
-        console.error(
-          "Result test load error:",
-          loadError
-        );
+        console.error("Result test load error:", loadError);
       }
 
       const localResult = {
@@ -564,34 +409,32 @@ function Result() {
       };
 
       try {
-        const token =
-          getReliableUserToken();
+        const token = getReliableUserToken();
 
         if (!token) {
-          throw new Error(
-            "Login session expired."
-          );
+          throw new Error("Login session expired.");
         }
 
         const res = await API.post(
           "/results/submit",
           {
             testId,
-            timeTaken:
-              timeUsedSeconds,
-            resultData: localResult,
+            typedText,
+            timeTaken: timeUsedSeconds,
+            backspaces,
+            keystrokes,
+            settings,
           },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (!cancelled) {
           setData({
-            ...localResult,
-            _id: res.data?._id,
+            ...res.data,
             saved: true,
           });
 
@@ -599,22 +442,17 @@ function Result() {
         }
       } catch (saveFailure) {
         const reason =
-          saveFailure.response?.data
-            ?.detail ||
-          saveFailure.response?.data
-            ?.message ||
+          saveFailure.response?.data?.detail ||
+          saveFailure.response?.data?.message ||
           saveFailure.message;
 
-        console.error(
-          "Compact result save error:",
-          saveFailure
-        );
+        console.error("Compact result save error:", saveFailure);
 
         if (!cancelled) {
           setData(localResult);
 
           setSaveError(
-            `Result calculated, but DB save failed. Reason: ${reason}`
+            `Result calculated, but DB save failed. Reason: ${reason}`,
           );
         }
       }
@@ -633,58 +471,32 @@ function Result() {
     const lines = [
       "SAS Academy Result",
 
-      `Status: ${
-        data.saved
-          ? "Saved"
-          : "Not saved"
-      }`,
+      `Status: ${data.saved ? "Saved" : "Not saved"}`,
 
-      `Net WPM: ${
-        data.netWPM || 0
-      }`,
+      `Net WPM: ${data.netWPM || 0}`,
 
-      `Gross WPM: ${
-        data.grossWPM || 0
-      }`,
+      `Gross WPM: ${data.grossWPM || 0}`,
 
-      `Accuracy: ${
-        data.accuracy || 0
-      }%`,
+      `Accuracy: ${data.accuracy || 0}%`,
 
-      `Correct: ${
-        data.correctWords || 0
-      }/${
-        data.totalWords || 0
-      }`,
+      `Correct: ${data.correctWords || 0}/${data.totalWords || 0}`,
 
-      `Errors: ${
-        data.errorsDetails ??
-        data.errors ??
-        0
-      }`,
+      `Errors: ${data.errorsDetails ?? data.errors ?? 0}`,
 
-      `Time: ${
-        data.timeTaken || 0
-      }s`,
+      `Time: ${data.timeTaken || 0}s`,
     ];
 
-    const blob = new Blob(
-      [lines.join("\n")],
-      {
-        type: "text/plain",
-      }
-    );
+    const blob = new Blob([lines.join("\n")], {
+      type: "text/plain",
+    });
 
-    const url =
-      URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
 
-    const link =
-      document.createElement("a");
+    const link = document.createElement("a");
 
     link.href = url;
 
-    link.download =
-      "sas-academy-result.txt";
+    link.download = "sas-academy-result.txt";
 
     link.click();
 
@@ -699,15 +511,9 @@ function Result() {
     );
   }
 
-  const errors =
-    data.errorsDetails ??
-    data.errors ??
-    0;
+  const errors = data.errorsDetails ?? data.errors ?? 0;
 
-  const typedCharacters =
-    data.typedCharacters ??
-    data.keystrokes ??
-    0;
+  const typedCharacters = data.typedCharacters ?? data.keystrokes ?? 0;
 
   const saveTone = data.saved
     ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100"
@@ -716,9 +522,7 @@ function Result() {
   const scoreCards = [
     {
       label: "Net WPM",
-      value: formatNumber(
-        data.netWPM
-      ),
+      value: formatNumber(data.netWPM),
       detail: "Correct strokes",
       icon: Gauge,
       tone: "text-emerald-300",
@@ -726,23 +530,15 @@ function Result() {
 
     {
       label: "Accuracy",
-      value: `${formatNumber(
-        data.accuracy
-      )}%`,
-      detail: `${
-        data.correctWords || 0
-      }/${
-        data.totalWords || 0
-      } correct`,
+      value: `${formatNumber(data.accuracy)}%`,
+      detail: `${data.correctWords || 0}/${data.totalWords || 0} correct`,
       icon: Target,
       tone: "text-amber-200",
     },
 
     {
       label: "Gross WPM",
-      value: formatNumber(
-        data.grossWPM
-      ),
+      value: formatNumber(data.grossWPM),
       detail: "All typed strokes",
       icon: Keyboard,
       tone: "text-sky-300",
@@ -750,12 +546,8 @@ function Result() {
 
     {
       label: "Time",
-      value: formatTime(
-        data.timeTaken
-      ),
-      detail: `${
-        data.timeTaken || 0
-      } seconds`,
+      value: formatTime(data.timeTaken),
+      detail: `${data.timeTaken || 0} seconds`,
       icon: Timer,
       tone: "text-violet-200",
     },
@@ -764,8 +556,7 @@ function Result() {
   const detailStats = [
     {
       label: "Correct",
-      value:
-        data.correctWords || 0,
+      value: data.correctWords || 0,
       icon: CheckCircle2,
       tone: "text-emerald-300",
     },
@@ -779,16 +570,14 @@ function Result() {
 
     {
       label: "Omissions",
-      value:
-        data.omissions || 0,
+      value: data.omissions || 0,
       icon: MinusCircle,
       tone: "text-sky-300",
     },
 
     {
       label: "Additions",
-      value:
-        data.additions || 0,
+      value: data.additions || 0,
       icon: PlusCircle,
       tone: "text-amber-200",
     },
@@ -796,8 +585,7 @@ function Result() {
 
   const getWordStyle = (type) => {
     const styles = {
-      correct:
-        "rounded px-[2px] text-emerald-300",
+      correct: "rounded px-[2px] text-emerald-300",
 
       omission:
         "rounded bg-sky-500/15 px-[3px] text-sky-200 line-through decoration-sky-200/80",
@@ -809,10 +597,7 @@ function Result() {
         "rounded bg-red-500/15 px-[3px] text-red-200 underline decoration-red-200/80 decoration-wavy underline-offset-2",
     };
 
-    return `font-medium ${
-      styles[type] ||
-      styles.spelling
-    }`;
+    return `font-medium ${styles[type] || styles.spelling}`;
   };
 
   return (
@@ -831,7 +616,8 @@ function Result() {
                 Performance scorecard
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-                Review speed, accuracy, mistakes, and the word comparison for this attempt.
+                Review speed, accuracy, mistakes, and the word comparison for
+                this attempt.
               </p>
 
               <div
@@ -859,7 +645,9 @@ function Result() {
                 Dashboard
               </button>
               <button
-                onClick={() => navigate(`/typing/${localStorage.getItem("testId")}`)}
+                onClick={() =>
+                  navigate(`/typing/${localStorage.getItem("testId")}`)
+                }
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold transition hover:bg-emerald-500"
               >
                 <RefreshCcw size={16} />
@@ -926,7 +714,9 @@ function Result() {
             <div className="mt-4 rounded-md border border-white/10 bg-slate-950/70 p-3 text-sm leading-6 text-slate-300">
               <p>
                 Typed strokes:{" "}
-                <span className="font-semibold text-white">{typedCharacters}</span>
+                <span className="font-semibold text-white">
+                  {typedCharacters}
+                </span>
               </p>
               <p>
                 Correct strokes:{" "}
@@ -976,43 +766,32 @@ function Result() {
               {data.comparison?.length ? (
                 <div
                   className={`flex flex-wrap items-start gap-x-1 gap-y-2 text-slate-200 ${
-                    data.comparisonMode ===
-                    "characters"
+                    data.comparisonMode === "characters"
                       ? "font-mono text-[15px] leading-7 break-all"
                       : "text-base leading-9"
                   }`}
                 >
-                  {data.comparison.map(
-                    (item, index) => (
-                      <span
-                        key={index}
-                        className={getWordStyle(
-                          item.type
-                        )}
-                        title={
-                          item.expected &&
-                          item.typed
-                            ? `${item.expected} → ${item.typed}`
-                            : item.type ===
-                              "addition"
+                  {data.comparison.map((item, index) => (
+                    <span
+                      key={index}
+                      className={getWordStyle(item.type)}
+                      title={
+                        item.expected && item.typed
+                          ? `${item.expected} → ${item.typed}`
+                          : item.type === "addition"
                             ? "Extra typed item"
-                            : item.type ===
-                              "omission"
-                            ? "Missed item"
-                            : undefined
-                        }
-                      >
-                        {getComparisonWord(
-                          item
-                        )}
-                      </span>
-                    )
-                  )}
+                            : item.type === "omission"
+                              ? "Missed item"
+                              : undefined
+                      }
+                    >
+                      {getComparisonWord(item)}
+                    </span>
+                  ))}
                 </div>
               ) : (
                 <p className="text-sm text-slate-400">
-                  No comparison data
-                  available.
+                  No comparison data available.
                 </p>
               )}
             </div>
