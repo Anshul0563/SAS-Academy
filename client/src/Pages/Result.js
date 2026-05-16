@@ -18,6 +18,13 @@ const clean = (text = "", options = {}) => {
 
 const tokenize = (text = "", options = {}) => {
   const value = clean(text, options);
+
+  // If no spaces exist, compare character-by-character
+  if (!value.includes(" ")) {
+    return value.split("");
+  }
+
+  // Normal word comparison
   return value ? value.split(" ") : [];
 };
 
