@@ -605,67 +605,6 @@ function PracticePanel({
   );
 }
 
-function StatsStrip({
-  stats,
-  timeLeft,
-  completed,
-  backspaceDisabled,
-  backspaces,
-}) {
-  const items = [
-    { label: "Time", value: formatTime(timeLeft), tone: "text-violet-200" },
-    {
-      label: "Live WPM",
-      value: Number(stats.wpm).toFixed(1),
-      tone: "text-emerald-300",
-    },
-    {
-      label: "Accuracy",
-      value: `${Number(stats.accuracy).toFixed(1)}%`,
-      tone: "text-amber-200",
-    },
-    { label: "Errors", value: stats.errors, tone: "text-red-300" },
-    {
-      label: "Backspace",
-      value: backspaceDisabled ? "Off" : backspaces,
-      tone: "text-sky-300",
-    },
-  ];
-
-  return (
-    <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-      {items.map((item) => (
-        <div
-          key={item.label}
-          className="rounded-md border border-white/10 bg-slate-950/60 p-3"
-        >
-          <p className={`text-lg font-bold sm:text-xl ${item.tone}`}>
-            {item.value}
-          </p>
-          <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-            {item.label}
-          </p>
-        </div>
-      ))}
-      {completed && (
-        <div className="col-span-2 rounded-md border border-emerald-400/20 bg-emerald-400/10 p-3 text-sm font-semibold text-emerald-100 sm:col-span-3 lg:col-span-5">
-          Attempt completed
-        </div>
-      )}
-    </div>
-  );
-}
-
-function MetaItem({ label, value }) {
-  return (
-    <div>
-      <p className="break-words font-semibold capitalize text-white">{value}</p>
-      <p className="mt-0.5 font-semibold uppercase tracking-wide text-slate-500">
-        {label}
-      </p>
-    </div>
-  );
-}
 
 function CharacterDisplay({ source, typed }) {
   const containerRef = useRef(null);
