@@ -658,13 +658,13 @@ function CharacterDisplay({ source, typed }) {
 
 function LessonsPanel({ nextCharacter, language }) {
   return (
-    <section className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
-        <div className="flex items-center gap-3">
+    <section className="grid min-w-0 gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+        <div className="flex items-start gap-3 sm:items-center">
           <span className="flex h-10 w-10 items-center justify-center rounded-md bg-emerald-400/10 text-emerald-300">
             <CheckCircle2 size={19} />
           </span>
-          <div>
+          <div className="min-w-0">
             <h2 className="text-lg font-semibold">Finger placement lessons</h2>
             <p className="text-xs text-slate-400">
               Home-row discipline for English and Hindi typing practice.
@@ -685,7 +685,7 @@ function LessonsPanel({ nextCharacter, language }) {
                 </span>
               </div>
               <p className="mt-2 text-sm text-slate-400">{lesson.note}</p>
-              <p className="mt-3 rounded-md bg-white/5 px-3 py-2 font-mono text-sm text-emerald-100">
+              <p className="mt-3 overflow-x-auto rounded-md bg-white/5 px-3 py-2 font-mono text-sm text-emerald-100">
                 {lesson.drill}
               </p>
             </div>
@@ -693,10 +693,10 @@ function LessonsPanel({ nextCharacter, language }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="min-w-0 flex flex-col gap-4">
         <VirtualKeyboard activeKey={nextCharacter} />
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
-          <div className="flex items-center gap-3">
+        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+          <div className="flex items-start gap-3 sm:items-center">
             <Languages className="text-sky-300" size={19} />
             <h2 className="text-lg font-semibold">Hindi + English support</h2>
           </div>
@@ -712,19 +712,25 @@ function LessonsPanel({ nextCharacter, language }) {
 
 function AnalyticsPanel({ progress, coach, leaderboard, liveWeakKeys }) {
   return (
-    <section className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-      <div className="flex flex-col gap-4">
+    <section className="grid min-w-0 gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+      <div className="min-w-0 flex flex-col gap-4">
         <CoachCard
           headline={coach.headline}
           weakKeys={coach.weakKeys?.length ? coach.weakKeys : liveWeakKeys}
           tips={coach.tips}
           trend={coach.trend}
         />
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
+        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
           <h2 className="text-lg font-semibold">User progress tracking</h2>
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            <ProgressStat label="Best WPM" value={Number(progress?.bestWPM || 0).toFixed(1)} />
-            <ProgressStat label="Best Accuracy" value={`${Number(progress?.bestAccuracy || 0).toFixed(1)}%`} />
+            <ProgressStat
+              label="Best WPM"
+              value={Number(progress?.bestWPM || 0).toFixed(1)}
+            />
+            <ProgressStat
+              label="Best Accuracy"
+              value={`${Number(progress?.bestAccuracy || 0).toFixed(1)}%`}
+            />
             <ProgressStat label="Total Errors" value={progress?.totalErrors || 0} />
             <ProgressStat label="Saved Attempts" value={progress?.attempts || 0} />
           </div>
@@ -738,12 +744,12 @@ function AnalyticsPanel({ progress, coach, leaderboard, liveWeakKeys }) {
 
 function CoachCard({ headline, weakKeys = [], tips = [], trend }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
-      <div className="flex items-center gap-3">
+    <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+      <div className="flex items-start gap-3 sm:items-center">
         <span className="flex h-10 w-10 items-center justify-center rounded-md bg-fuchsia-400/10 text-fuchsia-200">
           <Brain size={19} />
         </span>
-        <div>
+        <div className="min-w-0">
           <h2 className="text-lg font-semibold">AI Typing Coach</h2>
           <p className="text-xs text-slate-400">{headline}</p>
         </div>
@@ -766,7 +772,9 @@ function CoachCard({ headline, weakKeys = [], tips = [], trend }) {
             </span>
           ))
         ) : (
-          <span className="text-sm text-slate-400">Weak keys will appear here.</span>
+          <span className="text-sm text-slate-400">
+            Weak keys will appear here.
+          </span>
         )}
       </div>
 
@@ -783,24 +791,25 @@ function CoachCard({ headline, weakKeys = [], tips = [], trend }) {
 
 function VirtualKeyboard({ activeKey }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
+    <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
       <div className="flex items-center gap-3">
         <Keyboard className="text-emerald-300" size={19} />
         <h2 className="text-lg font-semibold">Virtual keyboard</h2>
       </div>
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 overflow-x-auto pb-1">
+        <div className="min-w-[19rem] space-y-2 sm:min-w-0">
         {keyboardRows.map((row, rowIndex) => (
           <div
             key={row.join("")}
-            className={`flex justify-center gap-1 ${rowIndex === 1 ? "pr-5" : ""}`}
+            className={`flex justify-center gap-1 ${rowIndex === 1 ? "px-4 sm:pr-5" : ""}`}
           >
             {row.map((key) => {
               const active = activeKey === key;
               return (
                 <span
                   key={key}
-                  className={`flex h-10 min-w-9 items-center justify-center rounded-md border text-sm font-semibold ${
+                  className={`flex h-9 min-w-7 flex-1 items-center justify-center rounded-md border text-xs font-semibold sm:h-10 sm:min-w-9 sm:text-sm ${
                     active
                       ? "border-emerald-300 bg-emerald-400/20 text-emerald-100"
                       : "border-white/10 bg-slate-950/60 text-slate-300"
@@ -812,6 +821,7 @@ function VirtualKeyboard({ activeKey }) {
             })}
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
@@ -819,12 +829,12 @@ function VirtualKeyboard({ activeKey }) {
 
 function LeaderboardPanel({ leaderboard, compact = false }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
-      <div className="flex items-center gap-3">
+    <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+      <div className="flex items-start gap-3 sm:items-center">
         <span className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-400/10 text-amber-200">
           <Trophy size={19} />
         </span>
-        <div>
+        <div className="min-w-0">
           <h2 className="text-lg font-semibold">Typing leaderboard</h2>
           <p className="text-xs text-slate-400">Top saved learning attempts.</p>
         </div>
@@ -835,7 +845,7 @@ function LeaderboardPanel({ leaderboard, compact = false }) {
           leaderboard.slice(0, compact ? 5 : 10).map((entry, index) => (
             <div
               key={entry._id}
-              className="grid grid-cols-[3rem_1fr_auto] gap-3 px-3 py-3 text-sm"
+              className="grid grid-cols-[2.6rem_minmax(0,1fr)] gap-3 px-3 py-3 text-sm sm:grid-cols-[3rem_minmax(0,1fr)_auto]"
             >
               <span className="flex h-8 w-10 items-center justify-center rounded-md bg-white/10 font-bold text-slate-200">
                 #{index + 1}
@@ -848,7 +858,7 @@ function LeaderboardPanel({ leaderboard, compact = false }) {
                   {entry.mode || "practice"} / {entry.language || "english"}
                 </p>
               </div>
-              <div className="text-right">
+              <div className="col-start-2 text-left sm:col-start-auto sm:text-right">
                 <p className="font-semibold text-emerald-300">
                   {Number(entry.wpm || 0).toFixed(1)} WPM
                 </p>
