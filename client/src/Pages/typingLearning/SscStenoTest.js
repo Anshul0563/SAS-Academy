@@ -295,14 +295,29 @@ function HeaderStat({ label, value, icon: Icon }) {
 }
 
 function StenoHighlight({ source, typed, currentWordIndex }) {
+  const containerRef = useRef(null);
+  const activeRef = useRef(null);
+
   const typedChars = Array.from(typed);
+
   let wordIndex = 0;
   let inWord = false;
 
+  useEffect(() => {
+    if (activeRef.current && containerRef.current) {
+      activeRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [currentWordIndex]);
+
   return (
-    <div className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10 bg-[#020817]/95 p-7 shadow-inner">
+    <div
+      ref={containerRef}
+      className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10 bg-[#020817]/95 p-7 shadow-inner"
+    >
       <div className="mx-auto w-full max-w-full xl:max-w-5xl">
-        {" "}
         <div className="mb-5 flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
@@ -318,8 +333,8 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
             Word #{currentWordIndex + 1}
           </div>
         </div>
+
         <div className="w-full overflow-hidden rounded-2xl bg-[#0b1120]/80 p-5 sm:p-6">
-          {" "}
           <p className="break-words whitespace-pre-wrap text-[18px] leading-[2.8rem] tracking-[0.01em] text-slate-300 sm:text-[20px] sm:leading-[3rem]">
             {Array.from(source).map((char, index) => {
               if (char !== " " && !inWord) {
@@ -327,6 +342,7 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
               }
 
               const activeWord = wordIndex === currentWordIndex;
+
               const typedChar = typedChars[index];
 
               const state =
@@ -347,6 +363,8 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
                       ? "bg-indigo-500/20 text-white ring-1 ring-indigo-400/40 shadow-[0_0_20px_rgba(99,102,241,0.18)]"
                       : "text-slate-500";
 
+              const isActive = activeWord && typedChar === undefined;
+
               if (char === " " && inWord) {
                 wordIndex += 1;
                 inWord = false;
@@ -354,6 +372,7 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
 
               return (
                 <span
+                  ref={isActive ? activeRef : null}
                   key={`${char}-${index}`}
                   className={`rounded-lg px-[4px] py-[3px] transition-all duration-150 ${className}`}
                 >
@@ -367,7 +386,6 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
     </div>
   );
 }
-
 function InfoPanel({ paragraph, backspaces }) {
   const items = [
     ["Duration", formatSeconds(paragraph.duration)],
