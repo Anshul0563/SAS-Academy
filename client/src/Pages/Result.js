@@ -416,7 +416,7 @@ function Result() {
         }
 
         const res = await API.post(
-          "/results/submit",
+          "/results/compact",
           {
             testId,
             typedText,
