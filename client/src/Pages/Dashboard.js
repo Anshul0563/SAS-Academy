@@ -360,11 +360,21 @@ function Dashboard() {
                       <span
                         className={`flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold ${
                           index === 0
-                            ? "bg-amber-400 text-slate-950"
-                            : "bg-white/10 text-slate-200"
+                            ? "bg-yellow-400 text-slate-950"
+                            : index === 1
+                              ? "bg-slate-300 text-slate-950"
+                              : index === 2
+                                ? "bg-orange-500 text-white"
+                                : "bg-white/10 text-slate-200"
                         }`}
                       >
-                        #{index + 1}
+                        {index === 0
+                          ? "🥇"
+                          : index === 1
+                            ? "🥈"
+                            : index === 2
+                              ? "🥉"
+                              : `#${index + 1}`}
                       </span>
                     </div>
                     <div className="min-w-0">
@@ -399,7 +409,7 @@ function Dashboard() {
                       </p>
                       <p className="mt-0.5 text-xs capitalize text-slate-500">
                         {entry.testType || "practice"} /{" "}
-                        {Math.round(Number(entry.timeTaken || 0) / 60) || 1} min
+                        {(Number(entry.timeTaken || 0) / 60).toFixed(1)} min
                       </p>
                     </div>
                   </div>
