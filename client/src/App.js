@@ -17,6 +17,8 @@ import TestSettings from "./Pages/TestSettings";
 import TranscriptionView from "./Pages/TranscriptionView";
 import Settings from "./Pages/Settings";
 import TypingLearning from "./Pages/typingLearning/TypingLearning";
+import SscStenoList from "./Pages/typingLearning/SscStenoList";
+import SscStenoTest from "./Pages/typingLearning/SscStenoTest";
 import AdminLayout from "./components/admin/AdminLayout.jsx.js";
 
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx.js";
@@ -73,6 +75,8 @@ function App() {
             <Route path="/typing-settings/:id" element={<TestSettings />} />
             <Route path="/transcription-view/:id" element={<TranscriptionView />} />
             <Route path="/typing-learning" element={<TypingLearning />} />
+            <Route path="/typing-learning/ssc-steno" element={<SscStenoList />} />
+            <Route path="/typing-learning/ssc-steno/:id" element={<SscStenoTest />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
 

@@ -8,6 +8,7 @@ import {
     Headphones,
     FileText,
     Keyboard,
+    Mic2,
     Bell,
     Menu,
     Settings
@@ -29,7 +30,14 @@ function Layout() {
         { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
         { name: "Dictation", icon: Headphones, path: "/dictations" },
         { name: "Transcription", icon: FileText, path: "/transcription" },
-        { name: "Typing Learning", icon: Keyboard, path: "/typing-learning" },
+        {
+            name: "Typing Learning",
+            icon: Keyboard,
+            path: "/typing-learning",
+            children: [
+                { name: "SSC Steno Test", icon: Mic2, path: "/typing-learning/ssc-steno" },
+            ],
+        },
         { name: "Settings", icon: Settings, path: "/settings" },
     ];
 
@@ -74,23 +82,50 @@ function Layout() {
                     <div className="px-3 space-y-2">
                         {menu.map((item, i) => {
                             const Icon = item.icon;
-                            const active = location.pathname === item.path;
+                            const active = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
 
                             return (
-                                <div
-                                    key={i}
-                                    onClick={() => {
-                                        navigate(item.path);
-                                        setSidebarOpen(false);
-                                    }}
-                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-300
-                                    ${active
-                                            ? "bg-indigo-500/20 text-indigo-400 shadow-inner"
-                                            : "text-gray-400 hover:bg-white/10 hover:text-white hover:translate-x-1"
-                                        }`}
-                                >
-                                    <Icon size={18} />
-                                    <span>{item.name}</span>
+                                <div key={i}>
+                                    <div
+                                        onClick={() => {
+                                            navigate(item.path);
+                                            setSidebarOpen(false);
+                                        }}
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-300
+                                        ${active
+                                                ? "bg-indigo-500/20 text-indigo-400 shadow-inner"
+                                                : "text-gray-400 hover:bg-white/10 hover:text-white hover:translate-x-1"
+                                            }`}
+                                    >
+                                        <Icon size={18} />
+                                        <span>{item.name}</span>
+                                    </div>
+                                    {item.children && active && (
+                                        <div className="mt-1 space-y-1 pl-7">
+                                            {item.children.map((child) => {
+                                                const ChildIcon = child.icon;
+                                                const childActive = location.pathname === child.path || location.pathname.startsWith(`${child.path}/`);
+
+                                                return (
+                                                    <div
+                                                        key={child.path}
+                                                        onClick={() => {
+                                                            navigate(child.path);
+                                                            setSidebarOpen(false);
+                                                        }}
+                                                        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm cursor-pointer transition
+                                                        ${childActive
+                                                                ? "bg-emerald-500/15 text-emerald-300"
+                                                                : "text-gray-500 hover:bg-white/10 hover:text-white"
+                                                            }`}
+                                                    >
+                                                        <ChildIcon size={15} />
+                                                        <span>{child.name}</span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}
