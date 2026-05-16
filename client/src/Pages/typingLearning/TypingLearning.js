@@ -281,7 +281,7 @@ function TypingLearning() {
               setStarted(false);
               setCompleted(false);
               setBackspaces(0);
-              setTimeLeft(passageSet[index]?.duration || config.duration);
+              setTimeLeft(600);
             }}
             onReset={() => resetAttempt(mode, language)}
             onSave={saveAttempt}
@@ -498,6 +498,41 @@ function PracticePanel({
                 Errors
               </p>
             </div>
+          </div>
+        </div>
+        {/* PASSAGE CAROUSEL */}
+        <div className="mt-5 overflow-x-auto pb-2">
+          <div className="flex gap-3">
+            {passageSet.slice(0, 10).map((item, index) => (
+              <button
+                key={item.id || index}
+                onClick={() => onPassageChange(index)}
+                className={`min-w-[220px] rounded-2xl border p-4 text-left transition ${
+                  passageIndex === index
+                    ? "border-indigo-400/40 bg-indigo-500/10"
+                    : "border-white/10 bg-[#0b1120]/60 hover:bg-white/[0.04]"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Practice {index + 1}
+                  </span>
+
+                  <span className="rounded-full bg-emerald-400/10 px-2 py-1 text-[10px] font-semibold text-emerald-200">
+                    10 MIN
+                  </span>
+                </div>
+
+                <h3 className="mt-3 line-clamp-2 text-sm font-semibold text-white">
+                  {item.title}
+                </h3>
+
+                <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
+                  <span>{item.difficulty}</span>
+                  <span>{item.targetWPM} WPM</span>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
 
