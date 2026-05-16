@@ -80,7 +80,9 @@ function SscStenoTest() {
 
   const handleInput = (event) => {
     if (!started) setStarted(true);
-    setTypedText(event.target.value.slice(0, paragraph.paragraphText.length + 40));
+    setTypedText(
+      event.target.value.slice(0, paragraph.paragraphText.length + 40),
+    );
   };
 
   const handleKeyDown = (event) => {
@@ -104,7 +106,11 @@ function SscStenoTest() {
     : 0;
 
   return (
-    <div ref={shellRef} className="mx-auto flex max-w-7xl flex-col gap-5 text-white">
+    <div
+      ref={shellRef}
+      className="mx-auto flex min-h-screen max-w-[1600px] flex-col gap-4 px-3 pb-10 pt-3 text-white sm:px-5"
+    >
+      {" "}
       <header className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
@@ -128,7 +134,11 @@ function SscStenoTest() {
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[520px]">
-            <HeaderStat label="Time" value={formatSeconds(timeLeft)} icon={Timer} />
+            <HeaderStat
+              label="Time"
+              value={formatSeconds(timeLeft)}
+              icon={Timer}
+            />
             <HeaderStat
               label="Net WPM"
               value={stats.netWPM.toFixed(1)}
@@ -139,11 +149,14 @@ function SscStenoTest() {
               value={`${stats.accuracy.toFixed(1)}%`}
               icon={Target}
             />
-            <HeaderStat label="Mistakes" value={stats.mistakes} icon={XCircle} />
+            <HeaderStat
+              label="Mistakes"
+              value={stats.mistakes}
+              icon={XCircle}
+            />
           </div>
         </div>
       </header>
-
       <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.65fr)]">
         <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -214,7 +227,6 @@ function SscStenoTest() {
           <LiveMistakes stats={stats} />
         </aside>
       </section>
-
       {completed && (
         <ResultAnalytics
           stats={stats}
@@ -278,7 +290,10 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
         }
 
         return (
-          <span key={`${char}-${index}`} className={`rounded px-[2px] ${className}`}>
+          <span
+            key={`${char}-${index}`}
+            className={`rounded px-[2px] ${className}`}
+          >
             {char === " " ? "\u00A0" : char}
           </span>
         );
@@ -351,7 +366,10 @@ function ResultAnalytics({ stats, suggestions, paragraph }) {
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <ResultStat label="Gross WPM" value={stats.grossWPM.toFixed(1)} />
           <ResultStat label="Net WPM" value={stats.netWPM.toFixed(1)} />
-          <ResultStat label="Accuracy" value={`${stats.accuracy.toFixed(1)}%`} />
+          <ResultStat
+            label="Accuracy"
+            value={`${stats.accuracy.toFixed(1)}%`}
+          />
           <ResultStat label="Mistakes" value={stats.mistakes} />
         </div>
 
@@ -359,7 +377,10 @@ function ResultAnalytics({ stats, suggestions, paragraph }) {
           <h3 className="font-semibold text-white">Typing consistency</h3>
           <div className="mt-3 flex h-28 items-end gap-2 rounded-md border border-white/10 bg-slate-950/60 p-3">
             {stats.consistency.map((item) => (
-              <div key={item.label} className="flex flex-1 flex-col items-center gap-1">
+              <div
+                key={item.label}
+                className="flex flex-1 flex-col items-center gap-1"
+              >
                 <div
                   className="w-full rounded-t bg-emerald-400/70"
                   style={{ height: `${Math.max(8, item.accuracy)}%` }}
