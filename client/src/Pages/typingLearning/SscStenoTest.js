@@ -111,44 +111,50 @@ function SscStenoTest() {
       className="mx-auto flex min-h-screen max-w-[1600px] flex-col gap-4 px-3 pb-10 pt-3 text-white sm:px-5"
     >
       {" "}
-      <header className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <header className="sticky top-3 z-40 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-4 shadow-2xl backdrop-blur-xl sm:px-6">
+        <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="min-w-0">
             <button
               onClick={() => navigate("/typing-learning/ssc-steno")}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 transition hover:text-white"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition hover:text-white"
             >
               <ArrowLeft size={16} />
               Paragraph list
             </button>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.25em] text-emerald-300">
               SSC Steno Test Environment
             </p>
-            <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">
+
+            <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-4xl">
               {paragraph.title}
             </h1>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+
+            <p className="mt-2 text-sm leading-6 text-slate-400">
               {paragraph.category} / {paragraph.practiceType} /{" "}
               {paragraph.difficulty}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[520px]">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:min-w-[520px]">
             <HeaderStat
               label="Time"
               value={formatSeconds(timeLeft)}
               icon={Timer}
             />
+
             <HeaderStat
               label="Net WPM"
               value={stats.netWPM.toFixed(1)}
               icon={Gauge}
             />
+
             <HeaderStat
               label="Accuracy"
               value={`${stats.accuracy.toFixed(1)}%`}
               icon={Target}
             />
+
             <HeaderStat
               label="Mistakes"
               value={stats.mistakes}
@@ -218,7 +224,7 @@ function SscStenoTest() {
             autoCapitalize="off"
             autoComplete="off"
             placeholder="Start SSC Steno transcription here..."
-            className="mt-4 h-[34vh] min-h-56 w-full resize-none rounded-md border border-white/10 bg-slate-950/70 p-4 text-base leading-7 text-white outline-none transition focus:border-emerald-300/50"
+            className="h-[45vh] min-h-[360px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
           />
         </div>
 
@@ -258,46 +264,49 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
   let inWord = false;
 
   return (
-    <div className="mt-4 max-h-72 overflow-y-auto rounded-md border border-white/10 bg-slate-950/70 p-3 text-base leading-8 sm:p-4 sm:text-lg sm:leading-9">
-      {Array.from(source).map((char, index) => {
-        if (char !== " " && !inWord) {
-          inWord = true;
-        }
+    <div className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1120]/90 p-6 shadow-inner">
+      <div className="mx-auto max-w-5xl text-[20px] leading-[3rem] tracking-[0.015em] sm:text-[22px] sm:leading-[3.2rem]">
+        {Array.from(source).map((char, index) => {
+          if (char !== " " && !inWord) {
+            inWord = true;
+          }
 
-        const activeWord = wordIndex === currentWordIndex;
-        const typedChar = typedChars[index];
-        const state =
-          typedChar === undefined
-            ? activeWord
-              ? "current"
-              : "pending"
-            : typedChar === char
-              ? "correct"
-              : "wrong";
+          const activeWord = wordIndex === currentWordIndex;
+          const typedChar = typedChars[index];
 
-        const className =
-          state === "correct"
-            ? "bg-emerald-400/15 text-emerald-200"
-            : state === "wrong"
-              ? "bg-red-500/20 text-red-200 underline decoration-red-200 decoration-wavy"
-              : state === "current"
-                ? "bg-indigo-500/20 text-white"
-                : "text-slate-300";
+          const state =
+            typedChar === undefined
+              ? activeWord
+                ? "current"
+                : "pending"
+              : typedChar === char
+                ? "correct"
+                : "wrong";
 
-        if (char === " " && inWord) {
-          wordIndex += 1;
-          inWord = false;
-        }
+          const className =
+            state === "correct"
+              ? "bg-emerald-400/10 text-emerald-100"
+              : state === "wrong"
+                ? "bg-red-500/20 text-red-200 shadow-[0_0_0_1px_rgba(239,68,68,0.25)]"
+                : state === "current"
+                  ? "bg-indigo-500/20 text-white ring-1 ring-indigo-400/40 shadow-[0_0_18px_rgba(99,102,241,0.18)]"
+                  : "text-slate-500";
 
-        return (
-          <span
-            key={`${char}-${index}`}
-            className={`rounded px-[2px] ${className}`}
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
-        );
-      })}
+          if (char === " " && inWord) {
+            wordIndex += 1;
+            inWord = false;
+          }
+
+          return (
+            <span
+              key={`${char}-${index}`}
+              className={`rounded-lg px-[4px] py-[3px] transition-all duration-150 ${className}`}
+            >
+              {char === " " ? "\u00A0" : char}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
