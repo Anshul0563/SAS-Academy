@@ -13,6 +13,7 @@ const resultRoutes = require("./routes/resultRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const userRoutes = require("./routes/userRoutes");
+const resultRoutes = require("./routes/resultRoutes");
 
 const { protect } = require("./middleware/authMiddleware");
 
