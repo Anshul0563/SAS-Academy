@@ -3,9 +3,20 @@ const Result = require("../models/result");
 const calculateResult = require("../utils/resultCalculator");
 const mongoose = require("mongoose");
 
+const getUserObjectId = (user) => {
+    const userId = user?._id || user?.id;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        const error = new Error("Valid user id was not found on the auth session");
+        error.statusCode = 401;
+        throw error;
+    }
+
+    return new mongoose.Types.ObjectId(String(userId));
+};
+
 const toCompactResult = ({ userId, testId, resultData, timeTaken }) => ({
-    userId,
-    ...(mongoose.Types.ObjectId.isValid(testId) ? { testId } : {}),
+    userId: getUserObjectId({ _id: userId }),
+    ...(mongoose.Types.ObjectId.isValid(testId) ? { testId: new mongoose.Types.ObjectId(String(testId)) } : {}),
     accuracy: resultData.accuracy,
     netWPM: resultData.netWPM,
     grossWPM: resultData.grossWPM,
@@ -29,14 +40,33 @@ const compactFromRequest = (body = {}) => {
     };
 };
 
+const saveCompactDocument = async (document) => {
+    const payload = {
+        ...document,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    };
+
+    try {
+        return await Result.create(document);
+    } catch (createError) {
+        console.error("Result.create failed, trying raw insert:", createError.message);
+        const inserted = await Result.collection.insertOne(payload);
+        return {
+            _id: inserted.insertedId,
+            ...payload
+        };
+    }
+};
+
 exports.submitTest = async (req, res) => {
     try {
         const { testId, typedText = "", timeTaken, backspaces = 0, keystrokes, settings = {} } = req.body;
 
         if (req.body.resultData || req.body.accuracy !== undefined || req.body.netWPM !== undefined) {
             const compactResult = compactFromRequest(req.body);
-            const savedResult = await Result.create(toCompactResult({
-                userId: req.user._id,
+            const savedResult = await saveCompactDocument(toCompactResult({
+                userId: getUserObjectId(req.user),
                 testId,
                 resultData: compactResult,
                 timeTaken: timeTaken || req.body.resultData?.timeTaken
@@ -74,8 +104,8 @@ exports.submitTest = async (req, res) => {
             }
         );
 
-        const savedResult = await Result.create(toCompactResult({
-            userId: req.user._id,
+        const savedResult = await saveCompactDocument(toCompactResult({
+            userId: getUserObjectId(req.user),
             testId,
             resultData,
             timeTaken
@@ -92,9 +122,10 @@ exports.submitTest = async (req, res) => {
 
     } catch (error) {
         console.error("Result submit error:", error);
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             message: "Result could not be saved. Your score was calculated locally.",
-            detail: process.env.NODE_ENV === "production" ? undefined : error.message
+            detail: error.message,
+            code: error.code || error.name
         });
     }
 };
@@ -102,8 +133,8 @@ exports.submitTest = async (req, res) => {
 exports.saveCompactResult = async (req, res) => {
     try {
         const compactResult = compactFromRequest(req.body);
-        const savedResult = await Result.create(toCompactResult({
-            userId: req.user._id,
+        const savedResult = await saveCompactDocument(toCompactResult({
+            userId: getUserObjectId(req.user),
             testId: req.body.testId,
             resultData: compactResult,
             timeTaken: req.body.timeTaken || req.body.resultData?.timeTaken
@@ -118,9 +149,10 @@ exports.saveCompactResult = async (req, res) => {
         });
     } catch (error) {
         console.error("Compact result save error:", error);
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             message: "Result could not be saved.",
-            detail: process.env.NODE_ENV === "production" ? undefined : error.message
+            detail: error.message,
+            code: error.code || error.name
         });
     }
 };
