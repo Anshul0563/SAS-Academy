@@ -321,75 +321,141 @@ function DashboardPanel({ progress, leaderboard, stats, onStart }) {
       tone: "text-amber-200",
     },
     {
-      label: "Attempts",
+      label: "Saved Attempts",
       value: progress?.attempts || 0,
       icon: BarChart3,
       tone: "text-sky-300",
     },
     {
       label: "Live WPM",
-      value: Number(stats.wpm || 0).toFixed(1),
+      value: Number(stats.netWPM || 0).toFixed(1),
       icon: Clock3,
       tone: "text-violet-200",
     },
   ];
 
   return (
-    <>
-      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {cards.map((item) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={item.label}
-              className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl"
-            >
-              <Icon size={18} className={item.tone} />
-              <p className={`mt-4 text-2xl font-bold sm:text-3xl ${item.tone}`}>
-                {item.value}
-              </p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                {item.label}
-              </p>
+    <div className="space-y-5">
+      {/* HERO */}
+      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#020617] p-6 shadow-2xl sm:p-8">
+        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-indigo-500/10 blur-3xl" />
+
+        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
+              SAS Academy Typing Lab
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              Master SSC Typing With Real Exam Practice
+            </h2>
+
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+              Practice long-form SSC typing passages, improve accuracy,
+              strengthen finger rhythm, and prepare for real examination
+              pressure using advanced analytics and AI coaching.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                onClick={() => onStart("practice")}
+                className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500"
+              >
+                Start Practice
+              </button>
+
+              <button
+                onClick={() => onStart("ssc")}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
+              >
+                SSC Simulation
+              </button>
             </div>
-          );
-        })}
+          </div>
+
+          {/* QUICK STATS */}
+          <div className="grid grid-cols-2 gap-3 lg:w-[360px]">
+            {cards.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.label}
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
+                >
+                  <Icon size={18} className={item.tone} />
+
+                  <p
+                    className={`mt-4 text-2xl font-bold sm:text-3xl ${item.tone}`}
+                  >
+                    {item.value}
+                  </p>
+
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    {item.label}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
-          <div className="flex items-start gap-3 sm:items-center">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500/15 text-indigo-200">
-              <Keyboard size={19} />
-            </span>
-            <div className="min-w-0">
-              <h2 className="text-lg font-semibold">Training modules</h2>
-              <p className="text-xs text-slate-400">
-                SSC, accuracy, speed, no-backspace, Hindi, and English modes.
+      {/* TRAINING MODES */}
+      <section className="grid gap-4 lg:grid-cols-[1fr_340px]">
+        <div className="rounded-3xl border border-white/10 bg-[#020817]/80 p-5 shadow-2xl backdrop-blur-xl">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-500/15 text-indigo-200">
+              <Keyboard size={20} />
+            </div>
+
+            <div>
+              <h2 className="text-xl font-semibold text-white">
+                Training Modes
+              </h2>
+
+              <p className="text-sm text-slate-400">
+                Practice realistic SSC typing workflows.
               </p>
             </div>
           </div>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {Object.entries(modeConfig).map(([key, item]) => (
               <button
                 key={key}
                 onClick={() => onStart(key)}
-                className="rounded-md border border-white/10 bg-slate-950/60 p-3 text-left transition hover:border-indigo-300/40 hover:bg-indigo-500/10 sm:p-4"
+                className="group rounded-2xl border border-white/10 bg-[#0b1120]/70 p-5 text-left transition-all duration-200 hover:border-indigo-400/30 hover:bg-indigo-500/10"
               >
-                <p className="font-semibold text-white">{item.label}</p>
-                <p className="mt-2 text-xs text-slate-400">
-                  {formatTime(item.duration)} /{" "}
-                  {item.backspaceDisabled ? "No backspace" : "Backspace on"}
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                    {item.backspaceDisabled
+                      ? "No Backspace"
+                      : "Practice"}
+                  </span>
+
+                  <span className="text-xs font-semibold text-emerald-300">
+                    {formatTime(600)}
+                  </span>
+                </div>
+
+                <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-indigo-100">
+                  {item.label}
+                </h3>
+
+                <p className="mt-3 text-sm leading-6 text-slate-400">
+                  Long-form SSC typing simulation with realistic paragraph
+                  training and accuracy tracking.
                 </p>
               </button>
             ))}
           </div>
         </div>
 
+        {/* LEADERBOARD */}
         <LeaderboardPanel leaderboard={leaderboard} compact />
       </section>
-    </>
+    </div>
   );
 }
 
