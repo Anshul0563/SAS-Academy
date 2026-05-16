@@ -55,7 +55,8 @@ function TypingLearning() {
   const config = modeConfig[mode];
   const passageSet = passages[language];
   const passage = passageSet[passageIndex % passageSet.length];
-  const elapsedSeconds = Math.max(1, config.duration - timeLeft);
+  const durationSeconds = passage.duration || config.duration;
+  const elapsedSeconds = Math.max(1, durationSeconds - timeLeft);
   const stats = useMemo(
     () =>
       calculateTypingStats({
@@ -119,8 +120,13 @@ function TypingLearning() {
     return () => clearInterval(timer);
   }, [completed, passage.text.length, started, timeLeft, typedText.length]);
 
+  useEffect(() => {
+    if (!started && !typedText) {
+      setTimeLeft(durationSeconds);
+    }
+  }, [durationSeconds, started, typedText]);
+
   const resetAttempt = (nextMode = mode, nextLanguage = language) => {
-    const nextConfig = modeConfig[nextMode];
     setMode(nextMode);
     setLanguage(nextLanguage);
     setPassageIndex(0);
@@ -128,7 +134,7 @@ function TypingLearning() {
     setStarted(false);
     setCompleted(false);
     setBackspaces(0);
-    setTimeLeft(nextConfig.duration);
+    setTimeLeft(passages[nextLanguage][0]?.duration || modeConfig[nextMode].duration);
     setSaveMessage("");
     setTimeout(() => inputRef.current?.focus(), 0);
   };
@@ -166,7 +172,7 @@ function TypingLearning() {
         mode,
         language,
         passageTitle: passage.title,
-        durationSeconds: config.duration,
+        durationSeconds,
         timeTaken: elapsedSeconds,
         backspaceDisabled: config.backspaceDisabled,
         backspaces,
@@ -249,6 +255,7 @@ function TypingLearning() {
             config={config}
             language={language}
             passage={passage}
+            durationSeconds={durationSeconds}
             passageSet={passageSet}
             passageIndex={passageIndex}
             typedText={typedText}
@@ -270,7 +277,7 @@ function TypingLearning() {
               setStarted(false);
               setCompleted(false);
               setBackspaces(0);
-              setTimeLeft(config.duration);
+              setTimeLeft(passageSet[index]?.duration || config.duration);
             }}
             onReset={() => resetAttempt(mode, language)}
             onSave={saveAttempt}
@@ -387,6 +394,7 @@ function PracticePanel({
   config,
   language,
   passage,
+  durationSeconds,
   passageSet,
   passageIndex,
   typedText,
@@ -414,7 +422,7 @@ function PracticePanel({
           <div>
             <h2 className="text-xl font-semibold">{config.label}</h2>
             <p className="mt-1 text-xs text-slate-400">
-              {passage.title} / {passage.level}
+              {passage.title} / {passage.chapter || passage.level}
             </p>
           </div>
 
@@ -464,6 +472,13 @@ function PracticePanel({
               {item.title}
             </button>
           ))}
+        </div>
+
+        <div className="mt-4 grid gap-2 rounded-md border border-white/10 bg-slate-950/50 p-3 text-xs text-slate-300 sm:grid-cols-4">
+          <MetaItem label="Difficulty" value={passage.difficulty || "practice"} />
+          <MetaItem label="Target" value={`${passage.targetWPM || 25} WPM`} />
+          <MetaItem label="Accuracy goal" value={`${passage.accuracyGoal || 94}%`} />
+          <MetaItem label="Duration" value={formatTime(durationSeconds)} />
         </div>
 
         <StatsStrip
@@ -570,6 +585,17 @@ function StatsStrip({ stats, timeLeft, completed, backspaceDisabled, backspaces 
   );
 }
 
+function MetaItem({ label, value }) {
+  return (
+    <div>
+      <p className="font-semibold capitalize text-white">{value}</p>
+      <p className="mt-0.5 font-semibold uppercase tracking-wide text-slate-500">
+        {label}
+      </p>
+    </div>
+  );
+}
+
 function CharacterDisplay({ source, typed }) {
   const typedChars = Array.from(typed);
 
@@ -626,6 +652,9 @@ function LessonsPanel({ nextCharacter, language }) {
                 </span>
               </div>
               <p className="mt-2 text-sm text-slate-400">{lesson.note}</p>
+              <p className="mt-3 rounded-md bg-white/5 px-3 py-2 font-mono text-sm text-emerald-100">
+                {lesson.drill}
+              </p>
             </div>
           ))}
         </div>
