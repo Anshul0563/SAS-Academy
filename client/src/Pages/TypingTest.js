@@ -119,6 +119,10 @@ function TypingTest() {
 
                 <textarea
                     value={inputText}
+                    spellCheck={false}
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    autoComplete="off"
                     onChange={(e) => {
                         if (!started) setStarted(true);
                         setInputText(e.target.value);
