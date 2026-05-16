@@ -134,7 +134,9 @@ function TypingLearning() {
     setStarted(false);
     setCompleted(false);
     setBackspaces(0);
-    setTimeLeft(passages[nextLanguage][0]?.duration || modeConfig[nextMode].duration);
+    setTimeLeft(
+      passages[nextLanguage][0]?.duration || modeConfig[nextMode].duration,
+    );
     setSaveMessage("");
     setTimeout(() => inputRef.current?.focus(), 0);
   };
@@ -188,7 +190,9 @@ function TypingLearning() {
       ]);
 
       setProgress(progressRes.data || null);
-      setLeaderboard(Array.isArray(leaderboardRes.data) ? leaderboardRes.data : []);
+      setLeaderboard(
+        Array.isArray(leaderboardRes.data) ? leaderboardRes.data : [],
+      );
       setSaveMessage("Attempt saved");
     } catch (error) {
       console.error("Typing result save error:", error);
@@ -206,14 +210,14 @@ function TypingLearning() {
 
   return (
     <div ref={containerRef} className="min-h-dvh text-white">
-      <div className="mx-auto flex max-w-7xl flex-col gap-5">
-        <header className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:gap-5">
+        <header className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
+            <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
                 Typing Learning System
               </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+              <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">
                 SSC typing practice studio
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
@@ -222,12 +226,12 @@ function TypingLearning() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
               {tabs.map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                  className={`shrink-0 rounded-lg px-4 py-2 text-sm font-semibold transition ${
                     activeTab === tab
                       ? "bg-indigo-600 text-white"
                       : "border border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/10"
@@ -341,7 +345,7 @@ function DashboardPanel({ progress, leaderboard, stats, onStart }) {
               className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl"
             >
               <Icon size={18} className={item.tone} />
-              <p className={`mt-4 text-3xl font-bold ${item.tone}`}>
+              <p className={`mt-4 text-2xl font-bold sm:text-3xl ${item.tone}`}>
                 {item.value}
               </p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
@@ -353,12 +357,12 @@ function DashboardPanel({ progress, leaderboard, stats, onStart }) {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl">
-          <div className="flex items-center gap-3">
+        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+          <div className="flex items-start gap-3 sm:items-center">
             <span className="flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500/15 text-indigo-200">
               <Keyboard size={19} />
             </span>
-            <div>
+            <div className="min-w-0">
               <h2 className="text-lg font-semibold">Training modules</h2>
               <p className="text-xs text-slate-400">
                 SSC, accuracy, speed, no-backspace, Hindi, and English modes.
@@ -371,7 +375,7 @@ function DashboardPanel({ progress, leaderboard, stats, onStart }) {
               <button
                 key={key}
                 onClick={() => onStart(key)}
-                className="rounded-md border border-white/10 bg-slate-950/60 p-4 text-left transition hover:border-indigo-300/40 hover:bg-indigo-500/10"
+                className="rounded-md border border-white/10 bg-slate-950/60 p-3 text-left transition hover:border-indigo-300/40 hover:bg-indigo-500/10 sm:p-4"
               >
                 <p className="font-semibold text-white">{item.label}</p>
                 <p className="mt-2 text-xs text-slate-400">
@@ -416,22 +420,22 @@ function PracticePanel({
   onFullscreen,
 }) {
   return (
-    <section className="grid gap-4 xl:grid-cols-[1.3fr_0.7fr]">
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+    <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.7fr)]">
+      <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold">{config.label}</h2>
+          <div className="min-w-0">
+            <h2 className="text-lg font-semibold sm:text-xl">{config.label}</h2>
             <p className="mt-1 text-xs text-slate-400">
               {passage.title} / {passage.chapter || passage.level}
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0 lg:justify-end">
             {Object.keys(modeConfig).map((key) => (
               <button
                 key={key}
                 onClick={() => onModeChange(key)}
-                className={`rounded-md px-3 py-2 text-xs font-semibold transition ${
+                className={`shrink-0 rounded-md px-3 py-2 text-xs font-semibold transition ${
                   mode === key
                     ? "bg-emerald-600 text-white"
                     : "border border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/10"
@@ -443,12 +447,12 @@ function PracticePanel({
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
           {["english", "hindi"].map((item) => (
             <button
               key={item}
               onClick={() => onLanguageChange(item)}
-              className={`inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold capitalize ${
+              className={`inline-flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold capitalize ${
                 language === item
                   ? "bg-indigo-600 text-white"
                   : "border border-white/10 bg-white/[0.04] text-slate-300"
@@ -463,7 +467,7 @@ function PracticePanel({
             <button
               key={item.title}
               onClick={() => onPassageChange(index)}
-              className={`rounded-md px-3 py-2 text-xs font-semibold ${
+              className={`max-w-[14rem] shrink-0 truncate rounded-md px-3 py-2 text-xs font-semibold sm:max-w-none ${
                 passageIndex === index
                   ? "bg-white/15 text-white"
                   : "border border-white/10 text-slate-300"
@@ -474,10 +478,16 @@ function PracticePanel({
           ))}
         </div>
 
-        <div className="mt-4 grid gap-2 rounded-md border border-white/10 bg-slate-950/50 p-3 text-xs text-slate-300 sm:grid-cols-4">
-          <MetaItem label="Difficulty" value={passage.difficulty || "practice"} />
+        <div className="mt-4 grid grid-cols-2 gap-2 rounded-md border border-white/10 bg-slate-950/50 p-3 text-xs text-slate-300 sm:grid-cols-4">
+          <MetaItem
+            label="Difficulty"
+            value={passage.difficulty || "practice"}
+          />
           <MetaItem label="Target" value={`${passage.targetWPM || 25} WPM`} />
-          <MetaItem label="Accuracy goal" value={`${passage.accuracyGoal || 94}%`} />
+          <MetaItem
+            label="Accuracy goal"
+            value={`${passage.accuracyGoal || 94}%`}
+          />
           <MetaItem label="Duration" value={formatTime(durationSeconds)} />
         </div>
 
@@ -501,20 +511,20 @@ function PracticePanel({
           autoCapitalize="off"
           autoComplete="off"
           placeholder="Start typing here..."
-          className="mt-4 h-40 w-full resize-none rounded-md border border-white/10 bg-slate-950/70 p-4 text-base leading-7 text-white outline-none transition focus:border-emerald-300/50"
+          className="mt-4 h-36 w-full resize-none rounded-md border border-white/10 bg-slate-950/70 p-3 text-base leading-7 text-white outline-none transition focus:border-emerald-300/50 sm:h-40 sm:p-4"
         />
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-4 grid gap-2 sm:flex sm:flex-wrap sm:items-center">
           <button
             onClick={onReset}
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
           >
             <RotateCcw size={16} />
             Reset
           </button>
           <button
             onClick={onFullscreen}
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
           >
             <Maximize2 size={16} />
             Fullscreen
@@ -522,20 +532,20 @@ function PracticePanel({
           <button
             onClick={onSave}
             disabled={saving || !typedText}
-            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Save size={16} />
             {saving ? "Saving..." : "Save attempt"}
           </button>
           {saveMessage && (
-            <span className="text-sm font-semibold text-emerald-200">
+            <span className="text-center text-sm font-semibold text-emerald-200 sm:text-left">
               {saveMessage}
             </span>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="min-w-0 flex flex-col gap-4">
         <CoachCard
           headline={completed ? "Attempt ready for review." : "Live coach"}
           weakKeys={stats.weakKeys}
@@ -554,30 +564,50 @@ function PracticePanel({
   );
 }
 
-function StatsStrip({ stats, timeLeft, completed, backspaceDisabled, backspaces }) {
+function StatsStrip({
+  stats,
+  timeLeft,
+  completed,
+  backspaceDisabled,
+  backspaces,
+}) {
   const items = [
     { label: "Time", value: formatTime(timeLeft), tone: "text-violet-200" },
-    { label: "Live WPM", value: Number(stats.wpm).toFixed(1), tone: "text-emerald-300" },
-    { label: "Accuracy", value: `${Number(stats.accuracy).toFixed(1)}%`, tone: "text-amber-200" },
+    {
+      label: "Live WPM",
+      value: Number(stats.wpm).toFixed(1),
+      tone: "text-emerald-300",
+    },
+    {
+      label: "Accuracy",
+      value: `${Number(stats.accuracy).toFixed(1)}%`,
+      tone: "text-amber-200",
+    },
     { label: "Errors", value: stats.errors, tone: "text-red-300" },
-    { label: "Backspace", value: backspaceDisabled ? "Off" : backspaces, tone: "text-sky-300" },
+    {
+      label: "Backspace",
+      value: backspaceDisabled ? "Off" : backspaces,
+      tone: "text-sky-300",
+    },
   ];
 
   return (
-    <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
       {items.map((item) => (
         <div
           key={item.label}
           className="rounded-md border border-white/10 bg-slate-950/60 p-3"
         >
-          <p className={`text-xl font-bold ${item.tone}`}>{item.value}</p>
+          <p className={`text-lg font-bold sm:text-xl ${item.tone}`}>
+            {item.value}
+          </p>
           <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
             {item.label}
           </p>
         </div>
       ))}
       {completed && (
-        <div className="rounded-md border border-emerald-400/20 bg-emerald-400/10 p-3 text-sm font-semibold text-emerald-100 sm:col-span-2 lg:col-span-5">
+        <div className="col-span-2 rounded-md border border-emerald-400/20 bg-emerald-400/10 p-3 text-sm font-semibold text-emerald-100 sm:col-span-3 lg:col-span-5">
           Attempt completed
         </div>
       )}
@@ -588,7 +618,7 @@ function StatsStrip({ stats, timeLeft, completed, backspaceDisabled, backspaces 
 function MetaItem({ label, value }) {
   return (
     <div>
-      <p className="font-semibold capitalize text-white">{value}</p>
+      <p className="break-words font-semibold capitalize text-white">{value}</p>
       <p className="mt-0.5 font-semibold uppercase tracking-wide text-slate-500">
         {label}
       </p>
@@ -600,7 +630,7 @@ function CharacterDisplay({ source, typed }) {
   const typedChars = Array.from(typed);
 
   return (
-    <div className="mt-4 max-h-64 overflow-y-auto rounded-md border border-white/10 bg-slate-950/70 p-4 text-lg leading-9">
+    <div className="mt-4 max-h-64 overflow-y-auto rounded-md border border-white/10 bg-slate-950/70 p-3 text-base leading-8 sm:p-4 sm:text-lg sm:leading-9">
       {Array.from(source).map((char, index) => {
         const state = getCharacterState(char, typedChars[index]);
         const active = index === typedChars.length;
@@ -614,7 +644,10 @@ function CharacterDisplay({ source, typed }) {
                 : "text-slate-300";
 
         return (
-          <span key={`${char}-${index}`} className={`rounded px-[2px] ${className}`}>
+          <span
+            key={`${char}-${index}`}
+            className={`rounded px-[2px] ${className}`}
+          >
             {char === " " ? "\u00A0" : char}
           </span>
         );
