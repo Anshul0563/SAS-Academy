@@ -164,111 +164,111 @@ function SscStenoTest() {
         </div>
       </header>
       <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
-  {/* MAIN WORKSPACE */}
-  <div className="min-w-0 rounded-3xl border border-white/10 bg-[#020817]/80 p-5 shadow-2xl backdrop-blur-xl sm:p-7">
-    {/* TOP BAR */}
-    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white">
-          Transcription Workspace
-        </h2>
+        {/* MAIN WORKSPACE */}
+        <div className="min-w-0 rounded-3xl border border-white/10 bg-[#020817]/80 p-5 shadow-2xl backdrop-blur-xl sm:p-7">
+          {/* TOP BAR */}
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-white">
+                Transcription Workspace
+              </h2>
 
-        <p className="mt-1 text-sm text-slate-400">
-          Current word: #{currentWordIndex + 1} / {paragraph.wordCount}
-        </p>
-      </div>
+              <p className="mt-1 text-sm text-slate-400">
+                Current word: #{currentWordIndex + 1} / {paragraph.wordCount}
+              </p>
+            </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setBackspaceDisabled((value) => !value)}
-          className={`inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
-            backspaceDisabled
-              ? "bg-red-500/15 text-red-100 ring-1 ring-red-500/20"
-              : "border border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/10"
-          }`}
-        >
-          <LockKeyhole size={16} />
-          Backspace {backspaceDisabled ? "Off" : "On"}
-        </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setBackspaceDisabled((value) => !value)}
+                className={`inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                  backspaceDisabled
+                    ? "bg-red-500/15 text-red-100 ring-1 ring-red-500/20"
+                    : "border border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/10"
+                }`}
+              >
+                <LockKeyhole size={16} />
+                Backspace {backspaceDisabled ? "Off" : "On"}
+              </button>
 
-        <button
-          onClick={() => shellRef.current?.requestFullscreen?.()}
-          className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
-        >
-          <Maximize2 size={16} />
-          Fullscreen
-        </button>
+              <button
+                onClick={() => shellRef.current?.requestFullscreen?.()}
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
+              >
+                <Maximize2 size={16} />
+                Fullscreen
+              </button>
 
-        <button
-          onClick={resetTest}
-          className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
-        >
-          <RotateCcw size={16} />
-          Reset
-        </button>
-      </div>
-    </div>
+              <button
+                onClick={resetTest}
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
+              >
+                <RotateCcw size={16} />
+                Reset
+              </button>
+            </div>
+          </div>
 
-    {/* PROGRESS BAR */}
-    <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
-      <div
-        className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-indigo-400 transition-all duration-300"
-        style={{ width: `${stats.progress}%` }}
-      />
-    </div>
+          {/* PROGRESS BAR */}
+          <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-indigo-400 transition-all duration-300"
+              style={{ width: `${stats.progress}%` }}
+            />
+          </div>
 
-    {/* SOURCE PARAGRAPH */}
-    <div className="mt-7 rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner">
-      <div className="mb-5 flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
-          Source Paragraph
-        </h3>
+          {/* SOURCE PARAGRAPH */}
+          <div className="mt-7 rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner">
+            <div className="mb-5 flex items-center justify-between">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Source Paragraph
+              </h3>
 
-        <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-100">
-          SSC Mode
-        </span>
-      </div>
+              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-100">
+                SSC Mode
+              </span>
+            </div>
 
-      <StenoHighlight
-        source={paragraph.paragraphText}
-        typed={typedText}
-        currentWordIndex={currentWordIndex}
-      />
-    </div>
+            <StenoHighlight
+              source={paragraph.paragraphText}
+              typed={typedText}
+              currentWordIndex={currentWordIndex}
+            />
+          </div>
 
-    {/* TYPING AREA */}
-    <div className="mt-7 rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner">
-      <div className="mb-5 flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
-          Typing Area
-        </h3>
+          {/* TYPING AREA */}
+          <div className="mt-7 rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner">
+            <div className="mb-5 flex items-center justify-between">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Typing Area
+              </h3>
 
-        <span className="text-xs text-slate-500">
-          Long-form focused typing
-        </span>
-      </div>
+              <span className="text-xs text-slate-500">
+                Long-form focused typing
+              </span>
+            </div>
 
-      <textarea
-        ref={inputRef}
-        value={typedText}
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
-        spellCheck={false}
-        autoCorrect="off"
-        autoCapitalize="off"
-        autoComplete="off"
-        placeholder="Start SSC Steno transcription here..."
-        className="h-[45vh] min-h-[360px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
-      />
-    </div>
-  </div>
+            <textarea
+              ref={inputRef}
+              value={typedText}
+              onChange={handleInput}
+              onKeyDown={handleKeyDown}
+              spellCheck={false}
+              autoCorrect="off"
+              autoCapitalize="off"
+              autoComplete="off"
+              placeholder="Start SSC Steno transcription here..."
+              className="h-[45vh] min-h-[360px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
+            />
+          </div>
+        </div>
 
-  {/* SIDE PANEL */}
-  <aside className="space-y-4 xl:sticky xl:top-24 xl:h-fit">
-    <InfoPanel paragraph={paragraph} backspaces={backspaces} />
-    <LiveMistakes stats={stats} />
-  </aside>
-</section>
+        {/* SIDE PANEL */}
+        <aside className="space-y-4 xl:sticky xl:top-24 xl:h-fit">
+          <InfoPanel paragraph={paragraph} backspaces={backspaces} />
+          <LiveMistakes stats={stats} />
+        </aside>
+      </section>
       {completed && (
         <ResultAnalytics
           stats={stats}
@@ -300,48 +300,69 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
   let inWord = false;
 
   return (
-    <div className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1120]/90 p-6 shadow-inner">
-      <div className="mx-auto max-w-5xl text-[20px] leading-[3rem] tracking-[0.015em] sm:text-[22px] sm:leading-[3.2rem]">
-        {Array.from(source).map((char, index) => {
-          if (char !== " " && !inWord) {
-            inWord = true;
-          }
+    <div className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10 bg-[#020817]/95 p-7 shadow-inner">
+      <div className="mx-auto w-full max-w-full xl:max-w-5xl">
+        {" "}
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+              SSC Steno Passage
+            </p>
 
-          const activeWord = wordIndex === currentWordIndex;
-          const typedChar = typedChars[index];
+            <h3 className="mt-2 text-lg font-semibold text-white">
+              Read ahead and maintain rhythm
+            </h3>
+          </div>
 
-          const state =
-            typedChar === undefined
-              ? activeWord
-                ? "current"
-                : "pending"
-              : typedChar === char
-                ? "correct"
-                : "wrong";
+          <div className="rounded-full border border-indigo-400/20 bg-indigo-500/10 px-4 py-2 text-xs font-semibold text-indigo-100">
+            Word #{currentWordIndex + 1}
+          </div>
+        </div>
+        <div className="w-full overflow-hidden rounded-2xl bg-[#0b1120]/80 p-5 sm:p-6">
+          {" "}
+          <p className="break-words whitespace-pre-wrap text-[18px] leading-[2.8rem] tracking-[0.01em] text-slate-300 sm:text-[20px] sm:leading-[3rem]">
+            {Array.from(source).map((char, index) => {
+              if (char !== " " && !inWord) {
+                inWord = true;
+              }
 
-          const className =
-            state === "correct"
-              ? "bg-emerald-400/10 text-emerald-100"
-              : state === "wrong"
-                ? "bg-red-500/20 text-red-200 shadow-[0_0_0_1px_rgba(239,68,68,0.25)]"
-                : state === "current"
-                  ? "bg-indigo-500/20 text-white ring-1 ring-indigo-400/40 shadow-[0_0_18px_rgba(99,102,241,0.18)]"
-                  : "text-slate-500";
+              const activeWord = wordIndex === currentWordIndex;
+              const typedChar = typedChars[index];
 
-          if (char === " " && inWord) {
-            wordIndex += 1;
-            inWord = false;
-          }
+              const state =
+                typedChar === undefined
+                  ? activeWord
+                    ? "current"
+                    : "pending"
+                  : typedChar === char
+                    ? "correct"
+                    : "wrong";
 
-          return (
-            <span
-              key={`${char}-${index}`}
-              className={`rounded-lg px-[4px] py-[3px] transition-all duration-150 ${className}`}
-            >
-              {char === " " ? "\u00A0" : char}
-            </span>
-          );
-        })}
+              const className =
+                state === "correct"
+                  ? "bg-emerald-400/10 text-emerald-100"
+                  : state === "wrong"
+                    ? "bg-red-500/20 text-red-200 shadow-[0_0_0_1px_rgba(239,68,68,0.25)]"
+                    : state === "current"
+                      ? "bg-indigo-500/20 text-white ring-1 ring-indigo-400/40 shadow-[0_0_20px_rgba(99,102,241,0.18)]"
+                      : "text-slate-500";
+
+              if (char === " " && inWord) {
+                wordIndex += 1;
+                inWord = false;
+              }
+
+              return (
+                <span
+                  key={`${char}-${index}`}
+                  className={`rounded-lg px-[4px] py-[3px] transition-all duration-150 ${className}`}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              );
+            })}
+          </p>
+        </div>
       </div>
     </div>
   );
