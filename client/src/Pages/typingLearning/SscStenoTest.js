@@ -258,7 +258,7 @@ function SscStenoTest() {
               autoCapitalize="off"
               autoComplete="off"
               placeholder="Start SSC Steno transcription here..."
-              className="h-[45vh] min-h-[360px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
+              className="h-[30vh] min-h-[220px] max-h-[320px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-5 py-5 text-[18px] leading-[2.4rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
             />
           </div>
         </div>
@@ -315,7 +315,7 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
   return (
     <div
       ref={containerRef}
-      className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10 bg-[#020817]/95 p-7 shadow-inner"
+      className="max-h-[320px] overflow-y-auto rounded-3xl border border-white/10 bg-[#020817]/95 p-5 shadow-inner"
     >
       <div className="mx-auto w-full max-w-full xl:max-w-5xl">
         <div className="mb-5 flex items-center justify-between">
@@ -334,8 +334,8 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
           </div>
         </div>
 
-        <div className="w-full overflow-hidden rounded-2xl bg-[#0b1120]/80 p-5 sm:p-6">
-          <p className="break-words whitespace-pre-wrap text-[18px] leading-[2.5rem] tracking-normal text-slate-300 sm:text-[20px] sm:leading-[3rem]">
+        <div className="w-full overflow-hidden rounded-2xl bg-[#0b1120]/80 p-4 sm:p-5">
+          <p className="break-words whitespace-pre-wrap text-[16px] leading-[2.1rem] tracking-normal text-slate-300 sm:text-[18px] sm:leading-[2.5rem]">
             {Array.from(source).map((char, index) => {
               if (char !== " " && !inWord) {
                 inWord = true;
