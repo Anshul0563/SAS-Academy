@@ -146,6 +146,26 @@ const formatTime = (seconds = 0) => {
     return `${minutes}:${remainingSeconds}`;
 };
 
+const getComparisonWord = (item) => {
+    if (item.type === "omission") return item.expected;
+    return item.word || item.typed;
+};
+
+const groupComparisonForDisplay = (comparison = []) => {
+    return comparison.reduce((groups, item) => {
+        if (item.type === "addition" && groups.length) {
+            groups[groups.length - 1].additions.push(item);
+            return groups;
+        }
+
+        groups.push({
+            base: item.type === "addition" ? null : item,
+            additions: item.type === "addition" ? [item] : []
+        });
+        return groups;
+    }, []);
+};
+
 function Result() {
     const navigate = useNavigate();
     const resultRef = useRef();
@@ -274,7 +294,7 @@ function Result() {
         { label: "Spelling", value: data.spelling || 0 },
         { label: "Backspace", value: data.backspaces || Number(localStorage.getItem("backspace")) || 0 }
     ];
-    const comparison = data.comparison || [];
+    const comparisonGroups = groupComparisonForDisplay(data.comparison || []);
 
     const getWordStyle = (type) => {
         const styles = {
@@ -362,16 +382,27 @@ function Result() {
                         </div>
 
                         <div className="mt-4 max-h-[360px] overflow-y-auto rounded-md bg-slate-900/80 p-4">
-                            {comparison.length ? (
-                                <p className="text-base leading-8 text-slate-200">
-                                    {comparison.map((item, index) => (
-                                        <span
-                                            key={`${item.type}-${index}`}
-                                            className={getWordStyle(item.type)}
-                                            title={item.expected && item.typed ? `${item.expected} -> ${item.typed}` : undefined}
-                                        >
-                                            {item.type === "omission" ? item.expected : item.word || item.typed}
-                                            {index < comparison.length - 1 ? " " : ""}
+                            {comparisonGroups.length ? (
+                                <p className="text-base leading-9 text-slate-200">
+                                    {comparisonGroups.map((group, groupIndex) => (
+                                        <span key={groupIndex} className="mr-1.5 inline-flex items-baseline gap-1 whitespace-nowrap align-baseline">
+                                            {group.base && (
+                                                <span
+                                                    className={getWordStyle(group.base.type)}
+                                                    title={group.base.expected && group.base.typed ? `${group.base.expected} -> ${group.base.typed}` : undefined}
+                                                >
+                                                    {getComparisonWord(group.base)}
+                                                </span>
+                                            )}
+                                            {group.additions.map((addition, additionIndex) => (
+                                                <span
+                                                    key={`addition-${groupIndex}-${additionIndex}`}
+                                                    className={getWordStyle(addition.type)}
+                                                    title="Extra word"
+                                                >
+                                                    {getComparisonWord(addition)}
+                                                </span>
+                                            ))}
                                         </span>
                                     ))}
                                 </p>
