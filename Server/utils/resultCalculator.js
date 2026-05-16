@@ -20,6 +20,23 @@ function tokenize(text = "", options = {}) {
     return normalized ? normalized.split(" ") : [];
 }
 
+function removeSymbols(text = "") {
+    return String(text).replace(/[^\w\s]|_/g, "");
+}
+
+function getMistakeType(expected = "", typed = "") {
+    if (
+        expected &&
+        typed &&
+        expected !== typed &&
+        removeSymbols(expected) === removeSymbols(typed)
+    ) {
+        return "symbol";
+    }
+
+    return "spelling";
+}
+
 function buildAlignment(originalWords, typedWords) {
     const rows = originalWords.length;
     const cols = typedWords.length;
@@ -63,7 +80,7 @@ function buildAlignment(originalWords, typedWords) {
                 expected: originalGap[index],
                 typed: typedGap[index],
                 word: typedGap[index],
-                type: "spelling"
+                type: getMistakeType(originalGap[index], typedGap[index])
             });
         }
 
@@ -133,7 +150,8 @@ function calculateResult(originalText, typedText, timeTaken = 1, options = {}) {
     const omissions = comparison.filter((item) => item.type === "omission").length;
     const additions = comparison.filter((item) => item.type === "addition").length;
     const spelling = comparison.filter((item) => item.type === "spelling").length;
-    const errors = omissions + additions + spelling;
+    const symbols = comparison.filter((item) => item.type === "symbol").length;
+    const errors = omissions + additions + spelling + symbols;
     const originalWordCount = originalWords.length || 1;
     const typedCharacters = normalize(typedText, options).length;
     const expectedCharacters = normalize(originalText, options).length;
@@ -144,7 +162,7 @@ function calculateResult(originalText, typedText, timeTaken = 1, options = {}) {
     );
     const errorPenaltyCharacters = Math.min(
         typedCharacters,
-        spelling * 5 + omissions * 5 + additions * 5
+        spelling * 5 + symbols * 5 + omissions * 5 + additions * 5
     );
 
     const grossWPM = (typedCharacters / 5) / minutes;
@@ -169,6 +187,7 @@ function calculateResult(originalText, typedText, timeTaken = 1, options = {}) {
         omissions,
         additions,
         spelling,
+        symbols,
         capitalization: 0,
         comparison
     };

@@ -25,6 +25,7 @@ const toCompactResult = ({ userId, testId, resultData, timeTaken }) => ({
   correctWords: resultData.correctWords,
   totalWords: resultData.totalWords,
   errorsDetails: resultData.errorsDetails,
+  symbols: resultData.symbols,
   timeTaken: Math.max(1, Number(timeTaken) || 1),
 });
 
@@ -43,6 +44,7 @@ const compactFromRequest = (body = {}) => {
       0,
       Math.round(number(resultData.errorsDetails ?? resultData.errors)),
     ),
+    symbols: Math.max(0, Math.round(number(resultData.symbols))),
   };
 };
 

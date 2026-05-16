@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   Download,
   Gauge,
+  Hash,
   Keyboard,
   MinusCircle,
   PlusCircle,
@@ -99,6 +100,21 @@ const getCorrectStrokeCount = (comparison, mode) => {
   );
 };
 
+const removeSymbols = (text = "") => String(text).replace(/[^\w\s]|_/g, "");
+
+const getMistakeType = (expected = "", typed = "") => {
+  if (
+    expected &&
+    typed &&
+    expected !== typed &&
+    removeSymbols(expected) === removeSymbols(typed)
+  ) {
+    return "symbol";
+  }
+
+  return "spelling";
+};
+
 const buildLinearComparison = (originalUnits, typedUnits) => {
   const comparison = [];
 
@@ -142,7 +158,7 @@ const buildLinearComparison = (originalUnits, typedUnits) => {
         expected,
         typed,
         word: typed,
-        type: "spelling",
+        type: getMistakeType(expected, typed),
       });
 
       i += 1;
@@ -216,7 +232,7 @@ const buildWordComparison = (originalWords, typedWords) => {
         expected: originalGap[index],
         typed: typedGap[index],
         word: typedGap[index],
-        type: "spelling",
+        type: getMistakeType(originalGap[index], typedGap[index]),
       });
     }
 
@@ -307,8 +323,9 @@ const calculateLocalResult = ({
   ).length;
 
   const spelling = comparison.filter((item) => item.type === "spelling").length;
+  const symbols = comparison.filter((item) => item.type === "symbol").length;
 
-  const errors = omissions + additions + spelling;
+  const errors = omissions + additions + spelling + symbols;
 
   const minutes = Math.max(1, Number(timeUsedSeconds) || 1) / 60;
 
@@ -350,6 +367,8 @@ const calculateLocalResult = ({
     additions,
 
     spelling,
+
+    symbols,
 
     capitalization: 0,
 
@@ -621,6 +640,13 @@ function Result() {
       icon: PlusCircle,
       tone: "text-amber-200",
     },
+
+    {
+      label: "Symbols",
+      value: data.symbols || 0,
+      icon: Hash,
+      tone: "text-fuchsia-200",
+    },
   ];
 
   const getWordStyle = (type) => {
@@ -635,6 +661,9 @@ function Result() {
 
       spelling:
         "rounded bg-red-500/15 px-[3px] text-red-200 underline decoration-red-200/80 decoration-wavy underline-offset-2",
+
+      symbol:
+        "rounded bg-fuchsia-500/15 px-[3px] text-fuchsia-100 underline decoration-fuchsia-200/80 underline-offset-2",
     };
 
     return `font-medium ${styles[type] || styles.spelling}`;
@@ -792,6 +821,10 @@ function Result() {
                   Mistake
                 </span>
                 <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-fuchsia-300" />
+                  Symbol
+                </span>
+                <span className="inline-flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-sky-300" />
                   Omission
                 </span>
@@ -822,6 +855,8 @@ function Result() {
                             ? "Extra typed item"
                             : item.type === "omission"
                               ? "Missed item"
+                              : item.type === "symbol"
+                                ? "Symbol mistake"
                               : undefined
                       }
                     >

@@ -41,6 +41,7 @@ const resultSchema = new mongoose.Schema(
     omissions: Number,
     additions: Number,
     spelling: Number,
+    symbols: Number,
 
     backspaces: Number,
     keystrokes: Number,
