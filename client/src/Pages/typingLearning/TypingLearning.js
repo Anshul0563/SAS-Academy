@@ -203,7 +203,7 @@ function TypingLearning() {
   };
 
   const openFullscreen = () => {
-    containerRef.current?.requestFullscreen?.();
+    document.documentElement?.requestFullscreen?.();
   };
 
   const nextCharacter = passage.text[typedText.length]?.toUpperCase();
@@ -492,7 +492,7 @@ function PracticePanel({
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-[#0b1120]/70 p-4">
-              <p className="text-2xl font-bold text-red-300">{stats.errors}</p>
+              <p className="text-2xl font-bold text-red-300">{stats.mistakes}</p>
 
               <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-500">
                 Errors
@@ -550,7 +550,7 @@ function PracticePanel({
           autoCapitalize="off"
           autoComplete="off"
           placeholder="Start typing here..."
-          className="mt-5 h-[42vh] min-h-[320px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-normal text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40"
+          className="mt-5 h-[34vh] min-h-[320px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-normal text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40"
         />
 
         {/* ACTIONS */}
@@ -623,7 +623,7 @@ function CharacterDisplay({ source, typed }) {
   return (
     <div
       ref={containerRef}
-      className="mt-5 max-h-[420px] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner"
+      className="mt-5 max-h-[340px] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner"
     >
       <div className="mx-auto max-w-5xl">
         <div className="mb-5 flex items-center justify-between">
