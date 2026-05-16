@@ -605,7 +605,6 @@ function PracticePanel({
   );
 }
 
-
 function CharacterDisplay({ source, typed }) {
   const containerRef = useRef(null);
   const activeRef = useRef(null);
@@ -615,7 +614,7 @@ function CharacterDisplay({ source, typed }) {
   useEffect(() => {
     if (activeRef.current) {
       activeRef.current.scrollIntoView({
-        behavior: "smooth",
+        behavior: "instant",
         block: "center",
       });
     }
@@ -641,6 +640,14 @@ function CharacterDisplay({ source, typed }) {
           <div className="rounded-full border border-indigo-400/20 bg-indigo-500/10 px-4 py-2 text-xs font-semibold text-indigo-100">
             Live Tracking
           </div>
+        </div>
+        <div className="mb-4 h-2 overflow-hidden rounded-full bg-white/10">
+          <div
+            className="h-full rounded-full bg-emerald-400 transition-all duration-300"
+            style={{
+              width: `${Math.min(100, (typed.length / source.length) * 100)}%`,
+            }}
+          />
         </div>
 
         <div className="rounded-2xl bg-[#020817]/80 p-5 sm:p-6">
