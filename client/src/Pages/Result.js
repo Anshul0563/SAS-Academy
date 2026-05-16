@@ -60,46 +60,89 @@ const buildComparison = (originalWords, typedWords) => {
   let i = rows;
   let j = cols;
 
-  const isMatch = i > 0 && j > 0 && originalWords[i - 1] === typedWords[j - 1];
+  while (i > 0 || j > 0) {
+    // Correct word
+    if (i > 0 && j > 0 && originalWords[i - 1] === typedWords[j - 1]) {
+      comparison.unshift({
+        expected: originalWords[i - 1],
+        typed: typedWords[j - 1],
+        word: typedWords[j - 1],
+        type: "correct",
+      });
 
-  if (isMatch) {
-    comparison.unshift({
-      expected: originalWords[i - 1],
-      typed: typedWords[j - 1],
-      word: typedWords[j - 1],
-      type: "correct",
-    });
+      i--;
+      j--;
+    }
 
-    i--;
-    j--;
-  } else if (i > 0 && j > 0 && dp[i][j] === dp[i - 1][j - 1] + 1) {
-    comparison.unshift({
-      expected: originalWords[i - 1],
-      typed: typedWords[j - 1],
-      word: typedWords[j - 1],
-      type: "spelling",
-    });
+    // Spelling mistake
+    else if (i > 0 && j > 0 && dp[i][j] === dp[i - 1][j - 1] + 1) {
+      comparison.unshift({
+        expected: originalWords[i - 1],
+        typed: typedWords[j - 1],
+        word: typedWords[j - 1],
+        type: "spelling",
+      });
 
-    i--;
-    j--;
-  } else if (j > 0 && dp[i][j] === dp[i][j - 1] + 1) {
-    comparison.unshift({
-      expected: "",
-      typed: typedWords[j - 1],
-      word: typedWords[j - 1],
-      type: "addition",
-    });
+      i--;
+      j--;
+    }
 
-    j--;
-  } else {
-    comparison.unshift({
-      expected: originalWords[i - 1],
-      typed: "",
-      word: originalWords[i - 1],
-      type: "omission",
-    });
+    // Addition
+    else if (j > 0 && dp[i][j] === dp[i][j - 1] + 1) {
+      comparison.unshift({
+        expected: "",
+        typed: typedWords[j - 1],
+        word: typedWords[j - 1],
+        type: "addition",
+      });
 
-    i--;
+      j--;
+    }
+
+    // Omission
+    else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
+      comparison.unshift({
+        expected: originalWords[i - 1],
+        typed: "",
+        word: originalWords[i - 1],
+        type: "omission",
+      });
+
+      i--;
+    }
+
+    // Safety fallback
+    else {
+      if (i > 0 && j > 0) {
+        comparison.unshift({
+          expected: originalWords[i - 1],
+          typed: typedWords[j - 1],
+          word: typedWords[j - 1],
+          type: "spelling",
+        });
+
+        i--;
+        j--;
+      } else if (j > 0) {
+        comparison.unshift({
+          expected: "",
+          typed: typedWords[j - 1],
+          word: typedWords[j - 1],
+          type: "addition",
+        });
+
+        j--;
+      } else {
+        comparison.unshift({
+          expected: originalWords[i - 1],
+          typed: "",
+          word: originalWords[i - 1],
+          type: "omission",
+        });
+
+        i--;
+      }
+    }
   }
 
   return comparison;
