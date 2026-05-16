@@ -163,76 +163,112 @@ function SscStenoTest() {
           </div>
         </div>
       </header>
-      <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.65fr)]">
-        <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="min-w-0">
-              <h2 className="text-lg font-semibold">Transcription workspace</h2>
-              <p className="mt-1 text-xs text-slate-400">
-                Current word: #{currentWordIndex + 1} / {paragraph.wordCount}
-              </p>
-            </div>
-            <div className="grid gap-2 sm:flex sm:flex-wrap">
-              <button
-                onClick={() => setBackspaceDisabled((value) => !value)}
-                className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition ${
-                  backspaceDisabled
-                    ? "bg-red-500/15 text-red-100"
-                    : "border border-white/10 bg-white/[0.04] text-slate-200"
-                }`}
-              >
-                <LockKeyhole size={16} />
-                Backspace {backspaceDisabled ? "Off" : "On"}
-              </button>
-              <button
-                onClick={() => shellRef.current?.requestFullscreen?.()}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
-              >
-                <Maximize2 size={16} />
-                Fullscreen
-              </button>
-              <button
-                onClick={resetTest}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
-              >
-                <RotateCcw size={16} />
-                Reset
-              </button>
-            </div>
-          </div>
+      <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
+  {/* MAIN WORKSPACE */}
+  <div className="min-w-0 rounded-3xl border border-white/10 bg-[#020817]/80 p-5 shadow-2xl backdrop-blur-xl sm:p-7">
+    {/* TOP BAR */}
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight text-white">
+          Transcription Workspace
+        </h2>
 
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-            <div
-              className="h-full rounded-full bg-emerald-400 transition-all"
-              style={{ width: `${stats.progress}%` }}
-            />
-          </div>
+        <p className="mt-1 text-sm text-slate-400">
+          Current word: #{currentWordIndex + 1} / {paragraph.wordCount}
+        </p>
+      </div>
 
-          <StenoHighlight
-            source={paragraph.paragraphText}
-            typed={typedText}
-            currentWordIndex={currentWordIndex}
-          />
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setBackspaceDisabled((value) => !value)}
+          className={`inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+            backspaceDisabled
+              ? "bg-red-500/15 text-red-100 ring-1 ring-red-500/20"
+              : "border border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/10"
+          }`}
+        >
+          <LockKeyhole size={16} />
+          Backspace {backspaceDisabled ? "Off" : "On"}
+        </button>
 
-          <textarea
-            ref={inputRef}
-            value={typedText}
-            onChange={handleInput}
-            onKeyDown={handleKeyDown}
-            spellCheck={false}
-            autoCorrect="off"
-            autoCapitalize="off"
-            autoComplete="off"
-            placeholder="Start SSC Steno transcription here..."
-            className="h-[45vh] min-h-[360px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
-          />
-        </div>
+        <button
+          onClick={() => shellRef.current?.requestFullscreen?.()}
+          className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
+        >
+          <Maximize2 size={16} />
+          Fullscreen
+        </button>
 
-        <aside className="min-w-0 space-y-4">
-          <InfoPanel paragraph={paragraph} backspaces={backspaces} />
-          <LiveMistakes stats={stats} />
-        </aside>
-      </section>
+        <button
+          onClick={resetTest}
+          className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
+        >
+          <RotateCcw size={16} />
+          Reset
+        </button>
+      </div>
+    </div>
+
+    {/* PROGRESS BAR */}
+    <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
+      <div
+        className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-indigo-400 transition-all duration-300"
+        style={{ width: `${stats.progress}%` }}
+      />
+    </div>
+
+    {/* SOURCE PARAGRAPH */}
+    <div className="mt-7 rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner">
+      <div className="mb-5 flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Source Paragraph
+        </h3>
+
+        <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-100">
+          SSC Mode
+        </span>
+      </div>
+
+      <StenoHighlight
+        source={paragraph.paragraphText}
+        typed={typedText}
+        currentWordIndex={currentWordIndex}
+      />
+    </div>
+
+    {/* TYPING AREA */}
+    <div className="mt-7 rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner">
+      <div className="mb-5 flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+          Typing Area
+        </h3>
+
+        <span className="text-xs text-slate-500">
+          Long-form focused typing
+        </span>
+      </div>
+
+      <textarea
+        ref={inputRef}
+        value={typedText}
+        onChange={handleInput}
+        onKeyDown={handleKeyDown}
+        spellCheck={false}
+        autoCorrect="off"
+        autoCapitalize="off"
+        autoComplete="off"
+        placeholder="Start SSC Steno transcription here..."
+        className="h-[45vh] min-h-[360px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-[0.015em] text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40 focus:bg-[#020617]"
+      />
+    </div>
+  </div>
+
+  {/* SIDE PANEL */}
+  <aside className="space-y-4 xl:sticky xl:top-24 xl:h-fit">
+    <InfoPanel paragraph={paragraph} backspaces={backspaces} />
+    <LiveMistakes stats={stats} />
+  </aside>
+</section>
       {completed && (
         <ResultAnalytics
           stats={stats}
