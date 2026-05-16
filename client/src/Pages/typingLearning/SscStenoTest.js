@@ -335,7 +335,7 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
         </div>
 
         <div className="w-full overflow-hidden rounded-2xl bg-[#0b1120]/80 p-5 sm:p-6">
-          <p className="break-words whitespace-pre-wrap text-[18px] leading-[2.8rem] tracking-[0.01em] text-slate-300 sm:text-[20px] sm:leading-[3rem]">
+          <p className="break-words whitespace-pre-wrap text-[18px] leading-[2.5rem] tracking-normal text-slate-300 sm:text-[20px] sm:leading-[3rem]">
             {Array.from(source).map((char, index) => {
               if (char !== " " && !inWord) {
                 inWord = true;
@@ -356,11 +356,11 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
 
               const className =
                 state === "correct"
-                  ? "bg-emerald-400/10 text-emerald-100"
+                  ? "text-emerald-200"
                   : state === "wrong"
-                    ? "bg-red-500/20 text-red-200 shadow-[0_0_0_1px_rgba(239,68,68,0.25)]"
+                    ? "text-red-300"
                     : state === "current"
-                      ? "bg-indigo-500/20 text-white ring-1 ring-indigo-400/40 shadow-[0_0_20px_rgba(99,102,241,0.18)]"
+                      ? "bg-indigo-500/15 text-white"
                       : "text-slate-500";
 
               const isActive = activeWord && typedChar === undefined;
@@ -374,7 +374,7 @@ function StenoHighlight({ source, typed, currentWordIndex }) {
                 <span
                   ref={isActive ? activeRef : null}
                   key={`${char}-${index}`}
-                  className={`rounded-lg px-[4px] py-[3px] transition-all duration-150 ${className}`}
+                  className={`px-[1px] transition-colors duration-100 ${className}`}
                 >
                   {char === " " ? "\u00A0" : char}
                 </span>
