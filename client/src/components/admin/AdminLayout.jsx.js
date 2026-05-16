@@ -35,7 +35,7 @@ const AdminLayout = () => {
         const token = getAdminAuthToken();
         if (!token) return;
 
-        const res = await API.get('/dashboard/admin-dashboard', {
+        const res = await API.get('/dashboard/admin-summary', {
           headers: { Authorization: `Bearer ${token}` }
         });
 

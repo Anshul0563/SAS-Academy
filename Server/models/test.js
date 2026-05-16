@@ -50,4 +50,7 @@ const testSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
+testSchema.index({ createdAt: -1 });
+testSchema.index({ type: 1, createdAt: -1 });
+
 module.exports = mongoose.model("Test", testSchema);

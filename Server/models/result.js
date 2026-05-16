@@ -57,4 +57,8 @@ const resultSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
+resultSchema.index({ createdAt: -1 });
+resultSchema.index({ accuracy: -1, netWPM: -1, grossWPM: -1, createdAt: -1 });
+resultSchema.index({ userId: 1, createdAt: -1 });
+
 module.exports = mongoose.model("Result", resultSchema);
