@@ -161,7 +161,8 @@ A disciplined typist does not strike the keyboard with excessive force. Professi
 
 Training sessions should also include regular performance analysis. After completing a typing passage, candidates should review repeated mistakes, weak key patterns, missed punctuation, and inconsistent spacing habits. Identifying these weaknesses early allows focused improvement and prevents the same errors from appearing repeatedly in examination conditions. Accuracy statistics and typing rhythm should be monitored together because true professional performance requires balance between both factors.
 
-In competitive examinations, candidates who remain calm and maintain disciplined typing rhythm usually perform better than those who rely only on aggressive speed. Long-term improvement comes from daily structured practice, realistic paragraph training, and continuous attention to formatting quality. With patience, stable technique, and gradual progression, typing becomes smoother, faster, and more dependable for both examination environments and professional office responsibilities.`,    },
+In competitive examinations, candidates who remain calm and maintain disciplined typing rhythm usually perform better than those who rely only on aggressive speed. Long-term improvement comes from daily structured practice, realistic paragraph training, and continuous attention to formatting quality. With patience, stable technique, and gradual progression, typing becomes smoother, faster, and more dependable for both examination environments and professional office responsibilities.`,
+    },
     {
       id: "eng-exam-formal-01",
       title: "Formal Government Paragraph",
@@ -173,8 +174,23 @@ In competitive examinations, candidates who remain calm and maintain disciplined
       targetWPM: 38,
       accuracyGoal: 95,
       level: "Exam Practice",
-      text: "All candidates are advised to preserve their admit card until the completion of the recruitment process. The admit card contains important details such as roll number, examination centre, reporting time, and instructions regarding permitted items. Any request for change of centre shall not be entertained after the scheduled deadline.",
-    },
+      text: `All candidates appearing for the recruitment examination are advised to preserve their admit card carefully until the completion of the entire selection process. The admit card contains important details including the candidate’s roll number, reporting time, examination venue, application reference number, and specific instructions regarding permitted and prohibited items inside the examination centre. Candidates should verify all printed details immediately after downloading the document and report any discrepancy to the concerned authority within the prescribed timeline.
+
+The examination authorities have established several procedural guidelines to ensure fairness, transparency, and orderly conduct during the recruitment process. Candidates must arrive at the examination venue well before the reporting time mentioned on the admit card because entry may not be permitted after the closing of the attendance procedure. Upon arrival, candidates are required to cooperate with security personnel and complete the identity verification process smoothly. Valid photo identification documents such as Aadhaar Card, Passport, Voter Identity Card, or Driving Licence should be carried in original form along with photocopies if instructed in the notification.
+
+Inside the examination premises, candidates are expected to maintain discipline and follow all instructions announced by the invigilators. Electronic devices including mobile phones, smart watches, calculators, Bluetooth accessories, and unauthorized communication equipment are strictly prohibited. If any candidate is found carrying restricted material, the candidature may be cancelled immediately without further consideration. Candidates should therefore avoid bringing unnecessary belongings to the examination venue.
+
+The examination authority has also implemented special arrangements for candidates belonging to reserved categories and persons with benchmark disabilities according to applicable government rules. Eligible candidates may receive compensatory time, seating assistance, or other approved facilities as mentioned in the recruitment notification. However, all supporting certificates must be submitted in the prescribed format during verification. Failure to produce valid documents may result in cancellation of the claimed benefits.
+
+After completion of the written examination, shortlisted candidates may be called for additional stages such as typing tests, skill tests, document verification, or medical examination depending on the nature of the recruitment process. Candidates should regularly monitor the official website for updates regarding result announcements, examination schedules, and further instructions. The examination authority generally communicates important notifications through official portals only; therefore candidates should avoid relying on unofficial information sources or misleading social media posts.
+
+During document verification, candidates must produce original educational certificates, category certificates, identity proofs, and supporting documents related to age relaxation or reservation benefits wherever applicable. All certificates should remain valid on the cut-off date specified in the official notification. Any mismatch between the information submitted in the application form and the supporting documents may lead to rejection of candidature during scrutiny.
+
+Candidates are also advised to maintain proper conduct throughout the recruitment process. Attempts to influence officials, use unfair means, impersonate another candidate, or submit false information are considered serious violations and may lead to debarment from future examinations. The recruitment authority reserves the right to cancel candidature at any stage if any irregularity is detected during verification or post-examination review.
+
+For typing and skill examinations, candidates should practice regularly using realistic examination passages and official formatting standards. Maintaining accuracy is essential because excessive typing errors may reduce qualifying performance even if typing speed is satisfactory. Candidates should focus on balanced posture, disciplined finger movement, and controlled pacing during preparation sessions. Long-form typing practice improves concentration, reduces hesitation, and strengthens familiarity with government-style language frequently used in official records.
+
+The examination process is conducted to identify candidates capable of performing administrative duties responsibly and efficiently. Successful candidates are expected to handle official communication, maintain records accurately, process files systematically, and support departmental operations professionally. Therefore, disciplined preparation, careful document management, and calm performance during examinations significantly improve the chances of success. Candidates are encouraged to approach the recruitment process with patience, honesty, and consistent effort so that their final performance reflects both competence and professional reliability.`,    },
     {
       id: "eng-coding-practice-01",
       title: "Coding Typing Practice",
@@ -186,7 +202,25 @@ In competitive examinations, candidates who remain calm and maintain disciplined
       targetWPM: 30,
       accuracyGoal: 96,
       level: "Coding",
-      text: "const score = Math.max(0, accuracy - errors); function formatResult(wpm, accuracy) { return String(wpm) + ' WPM with ' + String(accuracy) + '% accuracy'; }",
+      text: `A disciplined learner does not depend entirely on motivation before beginning practice. Real improvement in typing develops through repeated effort, controlled correction, and patient observation of mistakes over a long period of time. Many candidates feel enthusiastic during the first few days of preparation, but lose consistency when immediate results are not visible. Professional typing skill, however, is built gradually through daily repetition, stable rhythm, and continuous refinement of weak areas.
+
+Every practice session should begin with a calm mindset and a clear objective. Instead of attempting unrealistic speed immediately, focus first on maintaining clean spacing, accurate spelling, and smooth sentence flow. Candidates often waste energy by rushing through passages and repeatedly correcting avoidable errors. A more effective method is to type steadily while observing the structure of each sentence carefully. When accuracy improves, speed naturally becomes more stable because the fingers move with greater confidence and less hesitation.
+
+Government examinations such as SSC CHSL, SSC Stenographer, and clerical recruitment tests evaluate not only typing speed but also concentration and reliability under timed conditions. During long examinations, candidates who remain calm generally perform better than those who panic after making small mistakes. A single incorrect word should not break the rhythm of the entire paragraph. Complete the current sentence with controlled movement, then correct the error carefully without disturbing the formatting structure.
+
+Typing practice also develops mental discipline. Repeated exposure to administrative passages trains the mind to process official language more efficiently. Candidates become familiar with notices, memorandums, recruitment instructions, public communication formats, and office terminology commonly used in government records. This familiarity improves reading speed and reduces hesitation during examinations because the brain begins recognizing sentence patterns automatically.
+
+Consistency is more valuable than irregular bursts of excessive practice. Practicing for a short duration every day produces better long-term improvement than practicing aggressively for a few days and then stopping completely. Candidates should maintain a structured routine that includes typing drills, long-form passages, punctuation control, and accuracy review sessions. Weak keys and repeated spelling mistakes should be identified regularly so that corrective exercises can be practiced separately.
+
+Physical posture also influences typing performance significantly. The shoulders should remain relaxed, the wrists should not press heavily against the desk, and the eyes should remain focused on the source paragraph rather than the keyboard. Excessive tension slows down finger movement and increases fatigue during long passages. Controlled breathing and stable sitting posture help maintain concentration throughout extended typing sessions.
+
+Candidates should also understand that improvement rarely appears in a perfectly straight line. Some days may feel slower or more difficult than others, especially during advanced speed practice. This temporary inconsistency is normal and should not discourage continued effort. Long-term typing development depends on cumulative practice rather than short-term fluctuations in speed statistics. Even small daily improvements eventually create noticeable gains in rhythm, accuracy, and confidence.
+
+Reviewing completed practice sessions is equally important. After each typing attempt, candidates should examine repeated mistakes carefully. Incorrect spacing, missing punctuation, capitalization errors, and weak character combinations should be noted and practiced separately. Honest self-analysis allows candidates to strengthen weaknesses before they become permanent habits. Typists who consistently review their errors improve faster than those who focus only on raw speed numbers.
+
+Professional success in typing examinations comes from discipline, patience, and repetition. Candidates who practice calmly every day gradually develop finger memory strong enough to handle long official passages with confidence. Over time, typing becomes smoother, more accurate, and less mentally exhausting. Instead of comparing yourself constantly with others, focus on building a steady personal rhythm that improves little by little through regular effort.
+
+Return to practice each day with a clear mind and a willingness to improve. Every accurate line typed today contributes to better examination performance tomorrow. Through consistency, patience, and disciplined repetition, typing evolves from a difficult task into a reliable professional skill capable of supporting both competitive examinations and future administrative responsibilities.`,
     },
     {
       id: "eng-motivation-daily-01",
@@ -238,8 +272,23 @@ In competitive examinations, candidates who remain calm and maintain disciplined
       targetWPM: 30,
       accuracyGoal: 95,
       level: "Hindi SSC",
-      text: "कर्मचारी चयन परीक्षा में अभ्यर्थी को निर्धारित समय में दिए गए अनुच्छेद को सही और स्पष्ट रूप से टाइप करना होता है। गति के साथ शुद्धता बनाए रखना आवश्यक है। नियमित अभ्यास से उंगलियों की गति, ध्यान और आत्मविश्वास में सुधार होता है।",
-    },
+      text: `कर्मचारी चयन आयोग द्वारा आयोजित टाइपिंग एवं कौशल परीक्षाओं का उद्देश्य अभ्यर्थियों की व्यावहारिक कार्यक्षमता का मूल्यांकन करना होता है। इन परीक्षाओं में केवल गति ही महत्वपूर्ण नहीं मानी जाती, बल्कि शुद्धता, अनुशासन, एकाग्रता तथा लंबे समय तक स्थिर प्रदर्शन बनाए रखने की क्षमता भी समान रूप से आवश्यक होती है। सरकारी कार्यालयों में नियुक्त कर्मचारियों को प्रतिदिन नोटिस, पत्र, कार्यालय आदेश, रिपोर्ट, अभिलेख तथा विभिन्न प्रशासनिक दस्तावेज तैयार करने होते हैं। इसलिए परीक्षा प्रणाली इस प्रकार बनाई जाती है कि अभ्यर्थी वास्तविक कार्यालय वातावरण के अनुरूप टाइपिंग कौशल विकसित कर सकें।
+
+परीक्षा प्रारम्भ होने से पूर्व अभ्यर्थियों को निर्देशों को ध्यानपूर्वक पढ़ना चाहिए तथा यह सुनिश्चित करना चाहिए कि आवंटित कंप्यूटर और कीबोर्ड सही प्रकार से कार्य कर रहे हैं। परीक्षा कक्ष में प्रवेश के बाद अनावश्यक बातचीत, घबराहट या इधर-उधर ध्यान देने से बचना चाहिए। जैसे ही टाइमर प्रारम्भ होता है, अभ्यर्थी को पूरे ध्यान के साथ दिए गए अनुच्छेद को पढ़ते हुए संतुलित गति से टाइपिंग करनी चाहिए। कई अभ्यर्थी शुरुआत में अत्यधिक तेज गति अपनाने का प्रयास करते हैं, जिसके कारण बाद में त्रुटियाँ बढ़ जाती हैं और टाइपिंग की लय टूट जाती है। बेहतर प्रदर्शन के लिए आवश्यक है कि शुरुआत से ही नियंत्रित और स्थिर गति बनाए रखी जाए।
+
+सरकारी कार्य प्रणाली में प्रत्येक दस्तावेज का विशेष महत्व होता है। यदि किसी रिपोर्ट, आवेदन पत्र, कार्यालय आदेश या अभिलेख में गलत वर्तनी, गलत संख्या अथवा अनुचित विराम चिह्न दर्ज हो जाए, तो प्रशासनिक कार्यवाही प्रभावित हो सकती है। इसलिए टाइपिंग करते समय प्रत्येक शब्द, मात्रा, रिक्त स्थान तथा विराम चिह्न पर विशेष ध्यान देना आवश्यक है। शुद्ध टाइपिंग से न केवल अभिलेख व्यवस्थित रहते हैं, बल्कि विभागीय कार्यवाही भी समय पर पूरी हो पाती है।
+
+डिजिटल प्रशासन प्रणाली के विस्तार के साथ-साथ डेटा एंट्री और रिकॉर्ड प्रबंधन का महत्व लगातार बढ़ रहा है। विभिन्न मंत्रालयों और सरकारी विभागों में अब अधिकांश सूचनाएँ डिजिटल माध्यम से सुरक्षित रखी जाती हैं। भर्ती प्रक्रिया, पेंशन प्रबंधन, छात्रवृत्ति सत्यापन, सार्वजनिक शिकायत निवारण तथा वित्तीय अभिलेखों के संचालन में सही डेटा प्रविष्टि अत्यंत आवश्यक होती है। इसी कारण टाइपिंग कौशल को सरकारी सेवा का महत्वपूर्ण भाग माना जाता है।
+
+अभ्यर्थियों को प्रतिदिन नियमित अभ्यास करना चाहिए ताकि उंगलियों की गति, मानसिक एकाग्रता तथा शब्द पहचानने की क्षमता में सुधार हो सके। लंबे अनुच्छेदों का अभ्यास विशेष रूप से लाभकारी होता है क्योंकि इससे परीक्षा के दौरान निरंतर टाइपिंग करने की क्षमता विकसित होती है। अभ्यास करते समय केवल गति पर ध्यान देना पर्याप्त नहीं है। यदि टाइपिंग में बार-बार त्रुटियाँ होती हैं, तो वास्तविक परीक्षा में प्रदर्शन प्रभावित हो सकता है। इसलिए पहले शुद्धता विकसित करनी चाहिए और उसके बाद धीरे-धीरे गति बढ़ानी चाहिए।
+
+कार्यालयों में कार्यरत कर्मचारियों को प्रायः समय सीमा के भीतर महत्वपूर्ण दस्तावेज तैयार करने होते हैं। ऐसे में शांत मन, संतुलित टाइपिंग गति और सही प्रारूप बनाए रखने की आदत अत्यंत उपयोगी सिद्ध होती है। टाइपिंग करते समय बार-बार कीबोर्ड देखने से गति कम होती है और ध्यान भंग होता है। नियमित अभ्यास से उंगलियों की स्मृति विकसित होती है, जिससे बिना कीबोर्ड देखे टाइपिंग करना आसान हो जाता है। यही कौशल वास्तविक परीक्षा और कार्यालय कार्य दोनों में उपयोगी सिद्ध होता है।
+
+परीक्षा की तैयारी के दौरान अभ्यर्थियों को अपनी कमजोरियों का विश्लेषण भी करना चाहिए। जिन अक्षरों, शब्दों या मात्राओं में बार-बार गलती होती है, उनका अलग से अभ्यास करना चाहिए। इसी प्रकार विराम चिह्न, संख्या तथा अंग्रेजी शब्दों की टाइपिंग का भी नियमित अभ्यास आवश्यक है। अभ्यास के बाद अपने परिणामों की समीक्षा करने से यह समझने में सहायता मिलती है कि किन क्षेत्रों में सुधार की आवश्यकता है।
+
+सफल टाइपिस्ट वही होता है जो धैर्य और अनुशासन के साथ निरंतर अभ्यास करता है। केवल कुछ दिनों तक अत्यधिक अभ्यास करने से स्थायी सुधार नहीं होता। छोटी-छोटी दैनिक प्रगति ही लंबे समय में बेहतर गति और शुद्धता प्रदान करती है। यदि अभ्यर्थी शांत मन से नियमित अभ्यास करें, अपनी त्रुटियों को पहचानें, और संतुलित गति बनाए रखें, तो वे प्रतियोगी परीक्षाओं तथा भविष्य की सरकारी सेवाओं दोनों में उत्कृष्ट प्रदर्शन कर सकते हैं।
+
+टाइपिंग केवल परीक्षा पास करने का माध्यम नहीं है, बल्कि यह एक व्यावसायिक कौशल है जो प्रशासनिक कार्यों को व्यवस्थित और प्रभावी बनाता है। निरंतर अभ्यास, सही तकनीक और सकारात्मक दृष्टिकोण के माध्यम से कोई भी अभ्यर्थी अपनी टाइपिंग क्षमता को उच्च स्तर तक विकसित कर सकता है और सरकारी कार्य प्रणाली में दक्षता के साथ योगदान दे सकता है।`,    },
     {
       id: "hin-daily-challenge-01",
       title: "हिंदी दैनिक चुनौती",
