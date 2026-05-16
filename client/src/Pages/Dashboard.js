@@ -280,7 +280,9 @@ function Dashboard() {
                                         </div>
                                         <div className="min-w-0">
                                             <p className="truncate font-semibold text-white">{entry.userName || "Unknown"}</p>
-                                            <p className="mt-0.5 text-xs text-slate-500">{entry.correctWords || 0}/{entry.totalWords || 0} words correct</p>
+                                            <p className="mt-0.5 text-xs text-slate-500">{entry.comparisonMode === "characters"
+   ? "characters correct"
+   : "words correct"}</p>
                                         </div>
                                         <ScoreStat label="Accuracy" value={`${formatScoreNumber(entry.accuracy)}%`} tone="text-amber-200" />
                                         <ScoreStat label="Net WPM" value={formatScoreNumber(entry.netWPM)} tone="text-emerald-300" />
