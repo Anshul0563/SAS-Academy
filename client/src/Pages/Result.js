@@ -319,8 +319,7 @@ const calculateLocalResult = ({
   const correctCharacters = getCorrectStrokeCount(comparison, mode);
 
   const totalWords = originalUnits.length || 1;
-  const accuracyBase =
-    mode === "characters" ? expectedCharacters || 1 : totalWords;
+  const accuracyBase = correctWords + errors || totalWords;
   const accuracy = (correctWords / accuracyBase) * 100;
 
   return {

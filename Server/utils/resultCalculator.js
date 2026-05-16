@@ -149,7 +149,8 @@ function calculateResult(originalText, typedText, timeTaken = 1, options = {}) {
 
     const grossWPM = (typedCharacters / 5) / minutes;
     const netWPM = (correctCharacters / 5) / minutes;
-    const accuracy = Math.max(0, Math.min(100, (correctWords / originalWordCount) * 100));
+    const accuracyBase = correctWords + errors || originalWordCount;
+    const accuracy = Math.max(0, Math.min(100, (correctWords / accuracyBase) * 100));
 
     return {
         grossWPM: round(grossWPM),
