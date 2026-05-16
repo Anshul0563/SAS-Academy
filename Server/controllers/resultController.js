@@ -221,7 +221,7 @@ exports.getLeaderboard = async (req, res) => {
       { $group: { _id: "$userId", bestResult: { $first: "$$ROOT" } } },
       { $replaceRoot: { newRoot: "$bestResult" } },
       { $sort: { accuracy: -1, netWPM: -1, grossWPM: -1, createdAt: -1 } },
-      { $limit: 5 },
+      { $limit: 10 },
       {
         $lookup: {
           from: "users",

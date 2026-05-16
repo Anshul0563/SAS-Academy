@@ -364,112 +364,180 @@ function Dashboard() {
         </section>
 
         <section className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-400/10 text-amber-200">
-                  <Trophy size={19} />
-                </span>
-                <div>
-                  <h2 className="text-lg font-semibold">Score Board</h2>
-                  <p className="mt-0.5 text-xs text-slate-400">
-                    Top 5 students by accuracy, then net WPM. Auto refreshes
-                    live.
-                  </p>
-                </div>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-400/10 text-amber-200">
+                <Trophy size={19} />
+              </span>
+              <div>
+                <h2 className="text-lg font-semibold">Advanced Scoreboard</h2>
+                <p className="mt-0.5 text-xs text-slate-400">
+                  Ranked by accuracy, net WPM, gross speed, and latest best
+                  attempt.
+                </p>
               </div>
             </div>
-            <span className="rounded-md border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-xs font-semibold text-emerald-200">
-              Live Top 5
-            </span>
+            <div className="grid grid-cols-3 gap-2 text-center sm:min-w-[420px]">
+              <ScoreSummary
+                label="Avg accuracy"
+                value={`${formatScoreNumber(leaderboardStats.averageAccuracy)}%`}
+              />
+              <ScoreSummary
+                label="Avg net"
+                value={formatScoreNumber(leaderboardStats.averageNetWPM)}
+              />
+              <ScoreSummary
+                label="Fewest errors"
+                value={leaderboardStats.cleanestErrors}
+              />
+            </div>
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-md border border-white/10 bg-slate-950/35">
-            <div className="hidden grid-cols-[3.5rem_1.4fr_0.8fr_0.8fr_0.8fr_1.2fr] gap-3 border-b border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid">
-              <span>Rank</span>
-              <span>Student</span>
-              <span>Accuracy</span>
-              <span>Net WPM</span>
-              <span>Gross</span>
-              <span>Best Test</span>
+          {leaderboardLoading ? (
+            <div className="mt-4 rounded-md border border-white/10 bg-slate-950/35 p-4 text-sm text-slate-400">
+              Loading scoreboard...
             </div>
-
-            {leaderboardLoading ? (
-              <div className="p-4 text-sm text-slate-400">
-                Loading score board...
-              </div>
-            ) : leaderboard.length === 0 ? (
-              <div className="p-4 text-sm text-slate-400">
-                Scores will appear after students submit tests.
-              </div>
-            ) : (
-              <div className="divide-y divide-white/10">
-                {leaderboard.map((entry, index) => (
-                  <div
-                    key={entry._id}
-                    className="grid gap-3 px-4 py-3 text-sm md:grid-cols-[3.5rem_1.4fr_0.8fr_0.8fr_0.8fr_1.2fr] md:items-center"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold ${
-                          index === 0
-                            ? "bg-black-400 text-slate-950"
-                            : index === 1
-                              ? "bg-slate-300 text-slate-950"
-                              : index === 2
-                                ? "bg-orange-500 text-white"
-                                : "bg-white/10 text-slate-200"
-                        }`}
-                      >
-                        {index === 0
-                          ? "🥇"
-                          : index === 1
-                            ? "🥈"
-                            : index === 2
-                              ? "🥉"
-                              : `#${index + 1}`}
-                      </span>
-                    </div>
+          ) : leaderboard.length === 0 ? (
+            <div className="mt-4 rounded-md border border-white/10 bg-slate-950/35 p-4 text-sm text-slate-400">
+              Scores will appear after students submit tests.
+            </div>
+          ) : (
+            <>
+              <div className="mt-5 grid gap-3 lg:grid-cols-[0.9fr_1.4fr]">
+                <div className="rounded-md border border-amber-300/20 bg-amber-300/10 p-4">
+                  <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="truncate font-semibold text-white">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-amber-100">
+                        Current leader
+                      </p>
+                      <h3 className="mt-2 truncate text-2xl font-bold text-white">
+                        {topEntry.userName || "Unknown"}
+                      </h3>
+                      <p className="mt-1 truncate text-sm text-amber-100/80">
+                        {topEntry.testTitle || "Test"}
+                      </p>
+                    </div>
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-amber-300 text-slate-950">
+                      <Medal size={24} />
+                    </span>
+                  </div>
+                  <div className="mt-4 grid grid-cols-3 gap-2">
+                    <ScoreSummary
+                      label="Accuracy"
+                      value={`${formatScoreNumber(topEntry.accuracy)}%`}
+                      strong
+                    />
+                    <ScoreSummary
+                      label="Net WPM"
+                      value={formatScoreNumber(topEntry.netWPM)}
+                      strong
+                    />
+                    <ScoreSummary
+                      label="Rating"
+                      value={getCompositeScore(topEntry)}
+                      strong
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {leaderboard.slice(0, 3).map((entry, index) => (
+                    <div
+                      key={entry._id}
+                      className="rounded-md border border-white/10 bg-slate-950/45 p-3"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <RankBadge rank={index + 1} />
+                        <span className="rounded-md border border-white/10 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                          {getPerformanceLabel(entry)}
+                        </span>
+                      </div>
+                      <p className="mt-3 truncate font-semibold text-white">
                         {entry.userName || "Unknown"}
                       </p>
-                      <p className="mt-0.5 text-xs text-slate-500">
-                        {entry.correctWords || 0}/{entry.totalWords || 0}{" "}
-                        {entry.comparisonMode === "characters"
-                          ? "characters correct"
-                          : "words correct"}
-                      </p>{" "}
+                      <ScoreBar
+                        label="Accuracy"
+                        value={entry.accuracy}
+                        tone="bg-emerald-300"
+                      />
                     </div>
-                    <ScoreStat
-                      label="Accuracy"
-                      value={`${formatScoreNumber(entry.accuracy)}%`}
-                      tone="text-amber-200"
-                    />
-                    <ScoreStat
-                      label="Net WPM"
-                      value={formatScoreNumber(entry.netWPM)}
-                      tone="text-emerald-300"
-                    />
-                    <ScoreStat
-                      label="Gross"
-                      value={formatScoreNumber(entry.grossWPM)}
-                      tone="text-sky-300"
-                    />
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-slate-200">
-                        {entry.testTitle || "Test"}
-                      </p>
-                      <p className="mt-0.5 text-xs capitalize text-slate-500">
-                        {entry.testType || "practice"} /{" "}
-                        {(Number(entry.timeTaken || 0) / 60).toFixed(1)} min
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
+
+              <div className="mt-4 overflow-hidden rounded-md border border-white/10 bg-slate-950/35">
+                <div className="hidden grid-cols-[4rem_1.4fr_1fr_0.85fr_0.85fr_0.75fr_1.2fr] gap-3 border-b border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 xl:grid">
+                  <span>Rank</span>
+                  <span>Student</span>
+                  <span>Accuracy</span>
+                  <span>Net WPM</span>
+                  <span>Gross</span>
+                  <span>Errors</span>
+                  <span>Best attempt</span>
+                </div>
+
+                <div className="divide-y divide-white/10">
+                  {leaderboard.map((entry, index) => (
+                    <div
+                      key={entry._id}
+                      className="grid gap-3 px-4 py-3 text-sm xl:grid-cols-[4rem_1.4fr_1fr_0.85fr_0.85fr_0.75fr_1.2fr] xl:items-center"
+                    >
+                      <RankBadge rank={index + 1} />
+                      <div className="min-w-0">
+                        <div className="flex min-w-0 flex-wrap items-center gap-2">
+                          <p className="truncate font-semibold text-white">
+                            {entry.userName || "Unknown"}
+                          </p>
+                          <span className="rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                            {getPerformanceLabel(entry)}
+                          </span>
+                        </div>
+                        <p className="mt-0.5 text-xs text-slate-500">
+                          {entry.correctWords || 0}/{entry.totalWords || 0}{" "}
+                          correct
+                        </p>
+                      </div>
+                      <ScoreBar
+                        label="Accuracy"
+                        value={entry.accuracy}
+                        suffix="%"
+                        tone="bg-emerald-300"
+                      />
+                      <ScoreStat
+                        label="Net WPM"
+                        value={formatScoreNumber(entry.netWPM)}
+                        tone="text-emerald-300"
+                      />
+                      <ScoreStat
+                        label="Gross"
+                        value={formatScoreNumber(entry.grossWPM)}
+                        tone="text-sky-300"
+                      />
+                      <ScoreStat
+                        label="Errors"
+                        value={entry.errors || 0}
+                        tone={
+                          Number(entry.errors || 0) <=
+                          leaderboardStats.cleanestErrors
+                            ? "text-emerald-300"
+                            : "text-red-300"
+                        }
+                      />
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-slate-200">
+                          {entry.testTitle || "Test"}
+                        </p>
+                        <p className="mt-0.5 text-xs capitalize text-slate-500">
+                          {entry.testType || "practice"} /{" "}
+                          {formatDuration(entry.timeTaken)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </section>
 
         <section className="grid gap-4 lg:grid-cols-[0.9fr_1.2fr_0.9fr]">
@@ -630,6 +698,63 @@ function ScoreStat({ label, value, tone }) {
         {label}
       </p>
       <p className={`font-semibold ${tone}`}>{value}</p>
+    </div>
+  );
+}
+
+function ScoreSummary({ label, value, strong = false }) {
+  return (
+    <div className="rounded-md border border-white/10 bg-slate-950/45 px-3 py-2">
+      <p
+        className={`font-semibold ${strong ? "text-lg text-white" : "text-sm text-slate-100"}`}
+      >
+        {value}
+      </p>
+      <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function RankBadge({ rank }) {
+  const styles = {
+    1: "border-amber-300/40 bg-amber-300 text-slate-950",
+    2: "border-slate-200/40 bg-slate-200 text-slate-950",
+    3: "border-orange-400/40 bg-orange-400 text-slate-950",
+  };
+
+  return (
+    <span
+      className={`inline-flex h-9 w-11 items-center justify-center rounded-md border text-sm font-bold ${
+        styles[rank] || "border-white/10 bg-white/10 text-slate-200"
+      }`}
+    >
+      #{rank}
+    </span>
+  );
+}
+
+function ScoreBar({ label, value, suffix = "%", tone = "bg-emerald-300" }) {
+  const score = clampScore(value);
+
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500 xl:hidden">
+          {label}
+        </p>
+        <p className={`text-sm font-semibold ${getAccuracyTone(value)}`}>
+          {formatScoreNumber(value)}
+          {suffix}
+        </p>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-white/10">
+        <div
+          className={`h-full rounded-full ${tone}`}
+          style={{ width: `${score}%` }}
+        />
+      </div>
     </div>
   );
 }
