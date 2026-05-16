@@ -96,6 +96,21 @@ app.get("/api/protected", protect, (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/tests", testRoutes);
 app.use("/api/results", resultRoutes);
+
+// TEMP DEBUG: verify routes registered (useful for deployed env)
+app.get("/__debug/routes", (req, res) => {
+  const routes = [];
+  app._router?.stack?.forEach((layer) => {
+    if (layer.route) {
+      routes.push({
+        path: layer.route.path,
+        methods: Object.keys(layer.route.methods || {}),
+      });
+    }
+  });
+  res.json({ routes });
+});
+
 app.use("/api/upload", uploadRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
