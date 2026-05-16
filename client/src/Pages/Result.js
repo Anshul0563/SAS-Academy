@@ -75,6 +75,30 @@ const formatTime = (seconds = 0) => {
   return `${minutes}:${remainingSeconds}`;
 };
 
+const countWordStrokes = (words = []) => {
+  if (!words.length) {
+    return 0;
+  }
+
+  return (
+    words.reduce((total, word) => total + String(word || "").length, 0) +
+    words.length -
+    1
+  );
+};
+
+const getCorrectStrokeCount = (comparison, mode) => {
+  const correctItems = comparison.filter((item) => item.type === "correct");
+
+  if (mode === "characters") {
+    return correctItems.length;
+  }
+
+  return countWordStrokes(
+    correctItems.map((item) => item.typed || item.word || ""),
+  );
+};
+
 const buildLinearComparison = (originalUnits, typedUnits) => {
   const comparison = [];
 
@@ -153,72 +177,91 @@ const buildWordComparison = (originalWords, typedWords) => {
 
   const dp = Array.from({ length: rows + 1 }, () => Array(cols + 1).fill(0));
 
-  for (let i = 0; i <= rows; i += 1) {
-    dp[i][0] = i;
-  }
-
-  for (let j = 0; j <= cols; j += 1) {
-    dp[0][j] = j;
-  }
-
   for (let i = 1; i <= rows; i += 1) {
     for (let j = 1; j <= cols; j += 1) {
-      const cost = originalWords[i - 1] === typedWords[j - 1] ? 0 : 1;
+      if (originalWords[i - 1] === typedWords[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
 
-      dp[i][j] = Math.min(
-        dp[i - 1][j] + 1,
-        dp[i][j - 1] + 1,
-        dp[i - 1][j - 1] + cost,
-      );
+  const anchors = [];
+
+  let i = rows;
+  let j = cols;
+
+  while (i > 0 && j > 0) {
+    if (i > 0 && j > 0 && originalWords[i - 1] === typedWords[j - 1]) {
+      anchors.unshift({ originalIndex: i - 1, typedIndex: j - 1 });
+      i -= 1;
+      j -= 1;
+    } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+      i -= 1;
+    } else {
+      j -= 1;
     }
   }
 
   const comparison = [];
 
-  let i = rows;
-  let j = cols;
+  const appendGap = (originalStart, originalEnd, typedStart, typedEnd) => {
+    const originalGap = originalWords.slice(originalStart, originalEnd);
+    const typedGap = typedWords.slice(typedStart, typedEnd);
+    const pairedLength = Math.min(originalGap.length, typedGap.length);
 
-  while (i > 0 || j > 0) {
-    if (i > 0 && j > 0 && originalWords[i - 1] === typedWords[j - 1]) {
-      comparison.unshift({
-        expected: originalWords[i - 1],
-        typed: typedWords[j - 1],
-        word: typedWords[j - 1],
-        type: "correct",
-      });
-
-      i -= 1;
-      j -= 1;
-    } else if (j > 0 && dp[i][j] === dp[i][j - 1] + 1) {
-      comparison.unshift({
-        expected: "",
-        typed: typedWords[j - 1],
-        word: typedWords[j - 1],
-        type: "addition",
-      });
-
-      j -= 1;
-    } else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
-      comparison.unshift({
-        expected: originalWords[i - 1],
-        typed: "",
-        word: originalWords[i - 1],
-        type: "omission",
-      });
-
-      i -= 1;
-    } else {
-      comparison.unshift({
-        expected: originalWords[i - 1],
-        typed: typedWords[j - 1],
-        word: typedWords[j - 1],
+    for (let index = 0; index < pairedLength; index += 1) {
+      comparison.push({
+        expected: originalGap[index],
+        typed: typedGap[index],
+        word: typedGap[index],
         type: "spelling",
       });
-
-      i -= 1;
-      j -= 1;
     }
-  }
+
+    for (let index = pairedLength; index < originalGap.length; index += 1) {
+      comparison.push({
+        expected: originalGap[index],
+        typed: "",
+        word: originalGap[index],
+        type: "omission",
+      });
+    }
+
+    for (let index = pairedLength; index < typedGap.length; index += 1) {
+      comparison.push({
+        expected: "",
+        typed: typedGap[index],
+        word: typedGap[index],
+        type: "addition",
+      });
+    }
+  };
+
+  let originalCursor = 0;
+  let typedCursor = 0;
+
+  anchors.forEach((anchor) => {
+    appendGap(
+      originalCursor,
+      anchor.originalIndex,
+      typedCursor,
+      anchor.typedIndex,
+    );
+
+    comparison.push({
+      expected: originalWords[anchor.originalIndex],
+      typed: typedWords[anchor.typedIndex],
+      word: typedWords[anchor.typedIndex],
+      type: "correct",
+    });
+
+    originalCursor = anchor.originalIndex + 1;
+    typedCursor = anchor.typedIndex + 1;
+  });
+
+  appendGap(originalCursor, rows, typedCursor, cols);
 
   return comparison;
 };
@@ -273,21 +316,19 @@ const calculateLocalResult = ({
 
   const expectedCharacters = clean(originalText, options).length;
 
-  const correctCharacters = comparison
-    .filter((item) => item.type === "correct")
-    .reduce(
-      (total, item) => total + String(item.typed || item.word || "").length,
-      0,
-    );
+  const correctCharacters = getCorrectStrokeCount(comparison, mode);
 
   const totalWords = originalUnits.length || 1;
+  const accuracyBase =
+    mode === "characters" ? expectedCharacters || 1 : totalWords;
+  const accuracy = (correctWords / accuracyBase) * 100;
 
   return {
     grossWPM: round(typedCharacters / 5 / minutes),
 
     netWPM: round(correctCharacters / 5 / minutes),
 
-    accuracy: round(Math.max(0, ((totalWords - errors) / totalWords) * 100)),
+    accuracy: round(Math.max(0, Math.min(100, accuracy))),
 
     totalWords: originalUnits.length,
 

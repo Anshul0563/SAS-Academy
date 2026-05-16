@@ -25,56 +25,90 @@ function buildAlignment(originalWords, typedWords) {
     const cols = typedWords.length;
     const dp = Array.from({ length: rows + 1 }, () => Array(cols + 1).fill(0));
 
-    for (let i = 0; i <= rows; i++) dp[i][0] = i;
-    for (let j = 0; j <= cols; j++) dp[0][j] = j;
-
     for (let i = 1; i <= rows; i++) {
         for (let j = 1; j <= cols; j++) {
-            const substitutionCost = originalWords[i - 1] === typedWords[j - 1] ? 0 : 1;
-            dp[i][j] = Math.min(
-                dp[i - 1][j] + 1,
-                dp[i][j - 1] + 1,
-                dp[i - 1][j - 1] + substitutionCost
-            );
+            if (originalWords[i - 1] === typedWords[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+
+    const anchors = [];
+    let i = rows;
+    let j = cols;
+
+    while (i > 0 && j > 0) {
+        if (originalWords[i - 1] === typedWords[j - 1]) {
+            anchors.unshift({ originalIndex: i - 1, typedIndex: j - 1 });
+            i--;
+            j--;
+        } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+            i--;
+        } else {
+            j--;
         }
     }
 
     const comparison = [];
-    let i = rows;
-    let j = cols;
 
-    while (i > 0 || j > 0) {
-        if (
-            i > 0 &&
-            j > 0 &&
-            dp[i][j] === dp[i - 1][j - 1] + (originalWords[i - 1] === typedWords[j - 1] ? 0 : 1)
-        ) {
-            comparison.unshift({
-                expected: originalWords[i - 1],
-                typed: typedWords[j - 1],
-                word: typedWords[j - 1],
-                type: originalWords[i - 1] === typedWords[j - 1] ? "correct" : "spelling"
+    const appendGap = (originalStart, originalEnd, typedStart, typedEnd) => {
+        const originalGap = originalWords.slice(originalStart, originalEnd);
+        const typedGap = typedWords.slice(typedStart, typedEnd);
+        const pairedLength = Math.min(originalGap.length, typedGap.length);
+
+        for (let index = 0; index < pairedLength; index++) {
+            comparison.push({
+                expected: originalGap[index],
+                typed: typedGap[index],
+                word: typedGap[index],
+                type: "spelling"
             });
-            i--;
-            j--;
-        } else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
-            comparison.unshift({
-                expected: originalWords[i - 1],
+        }
+
+        for (let index = pairedLength; index < originalGap.length; index++) {
+            comparison.push({
+                expected: originalGap[index],
                 typed: "",
-                word: originalWords[i - 1],
+                word: originalGap[index],
                 type: "omission"
             });
-            i--;
-        } else {
-            comparison.unshift({
+        }
+
+        for (let index = pairedLength; index < typedGap.length; index++) {
+            comparison.push({
                 expected: "",
-                typed: typedWords[j - 1],
-                word: typedWords[j - 1],
+                typed: typedGap[index],
+                word: typedGap[index],
                 type: "addition"
             });
-            j--;
         }
-    }
+    };
+
+    let originalCursor = 0;
+    let typedCursor = 0;
+
+    anchors.forEach((anchor) => {
+        appendGap(
+            originalCursor,
+            anchor.originalIndex,
+            typedCursor,
+            anchor.typedIndex
+        );
+
+        comparison.push({
+            expected: originalWords[anchor.originalIndex],
+            typed: typedWords[anchor.typedIndex],
+            word: typedWords[anchor.typedIndex],
+            type: "correct"
+        });
+
+        originalCursor = anchor.originalIndex + 1;
+        typedCursor = anchor.typedIndex + 1;
+    });
+
+    appendGap(originalCursor, rows, typedCursor, cols);
 
     return comparison;
 }
@@ -115,7 +149,7 @@ function calculateResult(originalText, typedText, timeTaken = 1, options = {}) {
 
     const grossWPM = (typedCharacters / 5) / minutes;
     const netWPM = (correctCharacters / 5) / minutes;
-    const accuracy = Math.max(0, ((originalWordCount - errors) / originalWordCount) * 100);
+    const accuracy = Math.max(0, Math.min(100, (correctWords / originalWordCount) * 100));
 
     return {
         grossWPM: round(grossWPM),
