@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const { submitTest, getResults, getResultStats } = require("../controllers/resultController");
+const { submitTest, getResults, getLeaderboard, getResultStats } = require("../controllers/resultController");
 const { protect, isAdmin } = require("../middleware/authMiddleware");
 
 router.post("/submit", protect, submitTest);
+router.get("/leaderboard", protect, getLeaderboard);
 router.get("/", protect, isAdmin, getResults);
 router.get("/stats", protect, isAdmin, getResultStats);
 

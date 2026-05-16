@@ -77,6 +77,46 @@ exports.getResults = async (req, res) => {
     }
 };
 
+exports.getLeaderboard = async (req, res) => {
+    try {
+        const results = await Result.find()
+            .sort({ accuracy: -1, netWPM: -1, grossWPM: -1, createdAt: -1 })
+            .limit(50)
+            .populate("userId", "name email")
+            .populate("testId", "title type");
+
+        const seenUsers = new Set();
+        const leaderboard = [];
+
+        for (const result of results) {
+            const userKey = result.userId?._id?.toString() || result.userId?.toString();
+            if (!userKey || seenUsers.has(userKey)) continue;
+
+            seenUsers.add(userKey);
+            leaderboard.push({
+                _id: result._id,
+                userName: result.userId?.name || "Unknown",
+                testTitle: result.testId?.title || "Test",
+                testType: result.testId?.type || "",
+                grossWPM: result.grossWPM || 0,
+                netWPM: result.netWPM || 0,
+                accuracy: result.accuracy || 0,
+                correctWords: result.correctWords || 0,
+                totalWords: result.totalWords || 0,
+                errors: result.errorsDetails || 0,
+                timeTaken: result.timeTaken || 0,
+                createdAt: result.createdAt
+            });
+
+            if (leaderboard.length === 5) break;
+        }
+
+        res.json(leaderboard);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 exports.getResultStats = async (req, res) => {
     try {
         const totalResults = await Result.countDocuments();
