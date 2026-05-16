@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import API from "../api/axios";
+import { getUserAuthToken } from "../utils/authStorage";
 
 import {
     ArrowRight,
@@ -16,7 +17,8 @@ import {
     Search,
     ShieldCheck,
     Target,
-    TrendingUp
+    TrendingUp,
+    Trophy
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -31,10 +33,13 @@ const getDisplayDuration = (test) => {
     const duration = Number(test?.duration);
     return !duration || duration === 5 ? getDefaultDuration(test) : duration;
 };
+const formatScoreNumber = (value, digits = 1) => Number(value || 0).toFixed(digits);
 
 function Dashboard() {
     const navigate = useNavigate();
     const [tests, setTests] = useState([]);
+    const [leaderboard, setLeaderboard] = useState([]);
+    const [leaderboardLoading, setLeaderboardLoading] = useState(true);
     const [loading, setLoading] = useState(true);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -51,6 +56,40 @@ function Dashboard() {
         };
 
         fetchTests();
+    }, []);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        const fetchLeaderboard = async () => {
+            const token = getUserAuthToken();
+            if (!token) {
+                setLeaderboardLoading(false);
+                return;
+            }
+
+            try {
+                const res = await API.get("/results/leaderboard", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (!cancelled) {
+                    setLeaderboard(Array.isArray(res.data) ? res.data.slice(0, 5) : []);
+                }
+            } catch (err) {
+                console.error("Dashboard leaderboard error:", err);
+            } finally {
+                if (!cancelled) setLeaderboardLoading(false);
+            }
+        };
+
+        fetchLeaderboard();
+        const interval = setInterval(fetchLeaderboard, 30000);
+
+        return () => {
+            cancelled = true;
+            clearInterval(interval);
+        };
     }, []);
 
     const metrics = useMemo(() => {
@@ -191,6 +230,70 @@ function Dashboard() {
                     })}
                 </section>
 
+                <section className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-400/10 text-amber-200">
+                                    <Trophy size={19} />
+                                </span>
+                                <div>
+                                    <h2 className="text-lg font-semibold">Score Board</h2>
+                                    <p className="mt-0.5 text-xs text-slate-400">Top 5 students by accuracy, then net WPM. Auto refreshes live.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <span className="rounded-md border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-xs font-semibold text-emerald-200">
+                            Live Top 5
+                        </span>
+                    </div>
+
+                    <div className="mt-4 overflow-hidden rounded-md border border-white/10 bg-slate-950/35">
+                        <div className="hidden grid-cols-[3.5rem_1.4fr_0.8fr_0.8fr_0.8fr_1.2fr] gap-3 border-b border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid">
+                            <span>Rank</span>
+                            <span>Student</span>
+                            <span>Accuracy</span>
+                            <span>Net WPM</span>
+                            <span>Gross</span>
+                            <span>Best Test</span>
+                        </div>
+
+                        {leaderboardLoading ? (
+                            <div className="p-4 text-sm text-slate-400">Loading score board...</div>
+                        ) : leaderboard.length === 0 ? (
+                            <div className="p-4 text-sm text-slate-400">Scores will appear after students submit tests.</div>
+                        ) : (
+                            <div className="divide-y divide-white/10">
+                                {leaderboard.map((entry, index) => (
+                                    <div
+                                        key={entry._id}
+                                        className="grid gap-3 px-4 py-3 text-sm md:grid-cols-[3.5rem_1.4fr_0.8fr_0.8fr_0.8fr_1.2fr] md:items-center"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <span className={`flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold ${
+                                                index === 0 ? "bg-amber-400 text-slate-950" : "bg-white/10 text-slate-200"
+                                            }`}>
+                                                #{index + 1}
+                                            </span>
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="truncate font-semibold text-white">{entry.userName || "Unknown"}</p>
+                                            <p className="mt-0.5 text-xs text-slate-500">{entry.correctWords || 0}/{entry.totalWords || 0} words correct</p>
+                                        </div>
+                                        <ScoreStat label="Accuracy" value={`${formatScoreNumber(entry.accuracy)}%`} tone="text-amber-200" />
+                                        <ScoreStat label="Net WPM" value={formatScoreNumber(entry.netWPM)} tone="text-emerald-300" />
+                                        <ScoreStat label="Gross" value={formatScoreNumber(entry.grossWPM)} tone="text-sky-300" />
+                                        <div className="min-w-0">
+                                            <p className="truncate text-sm font-medium text-slate-200">{entry.testTitle || "Test"}</p>
+                                            <p className="mt-0.5 text-xs capitalize text-slate-500">{entry.testType || "practice"} / {Math.round(Number(entry.timeTaken || 0) / 60) || 1} min</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </section>
+
                 <section className="grid gap-4 lg:grid-cols-[0.9fr_1.2fr_0.9fr]">
                     <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
                         <h2 className="text-lg font-semibold">Quick Actions</h2>
@@ -296,6 +399,15 @@ function Dashboard() {
                     </div>
                 </section>
             </div>
+        </div>
+    );
+}
+
+function ScoreStat({ label, value, tone }) {
+    return (
+        <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 md:hidden">{label}</p>
+            <p className={`font-semibold ${tone}`}>{value}</p>
         </div>
     );
 }
