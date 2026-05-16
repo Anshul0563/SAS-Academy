@@ -7,6 +7,7 @@ import {
     LayoutDashboard,
     Headphones,
     FileText,
+    Keyboard,
     Bell,
     Menu,
     Settings
@@ -28,6 +29,7 @@ function Layout() {
         { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
         { name: "Dictation", icon: Headphones, path: "/dictations" },
         { name: "Transcription", icon: FileText, path: "/transcription" },
+        { name: "Typing Learning", icon: Keyboard, path: "/typing-learning" },
         { name: "Settings", icon: Settings, path: "/settings" },
     ];
 
