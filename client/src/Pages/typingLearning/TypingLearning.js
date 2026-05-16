@@ -420,87 +420,91 @@ function PracticePanel({
   onFullscreen,
 }) {
   return (
-    <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.7fr)]">
-      <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0">
-            <h2 className="text-lg font-semibold sm:text-xl">{config.label}</h2>
-            <p className="mt-1 text-xs text-slate-400">
-              {passage.title} / {passage.chapter || passage.level}
-            </p>
+    <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_260px]">
+      {/* MAIN PRACTICE AREA */}
+      <div className="min-w-0 rounded-3xl border border-white/10 bg-[#020817]/80 p-5 shadow-2xl backdrop-blur-xl sm:p-7">
+        {/* CLEAN HEADER */}
+        <div className="border-b border-white/10 pb-5">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                SSC Typing Practice
+              </p>
+
+              <h2 className="mt-2 text-2xl font-bold tracking-tight text-white">
+                {passage.title}
+              </h2>
+
+              <p className="mt-2 text-sm text-slate-400">
+                {passage.difficulty} • {passage.targetWPM} WPM •{" "}
+                {formatTime(timeLeft)}
+              </p>
+            </div>
+
+            {/* LANGUAGE TOGGLE */}
+            <div className="flex gap-2">
+              {["english", "hindi"].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => onLanguageChange(item)}
+                  className={`rounded-2xl px-5 py-2.5 text-sm font-semibold capitalize transition ${
+                    language === item
+                      ? "bg-indigo-600 text-white"
+                      : "border border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/10"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0 lg:justify-end">
-            {Object.keys(modeConfig).map((key) => (
-              <button
-                key={key}
-                onClick={() => onModeChange(key)}
-                className={`shrink-0 rounded-md px-3 py-2 text-xs font-semibold transition ${
-                  mode === key
-                    ? "bg-emerald-600 text-white"
-                    : "border border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/10"
-                }`}
-              >
-                {modeConfig[key].label}
-              </button>
-            ))}
+          {/* MINIMAL STATS */}
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-2xl border border-white/10 bg-[#0b1120]/70 p-4">
+              <p className="text-2xl font-bold text-white">
+                {formatTime(timeLeft)}
+              </p>
+
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-500">
+                Time
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-[#0b1120]/70 p-4">
+              <p className="text-2xl font-bold text-emerald-300">
+                {stats.wpm.toFixed(1)}
+              </p>
+
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-500">
+                WPM
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-[#0b1120]/70 p-4">
+              <p className="text-2xl font-bold text-amber-200">
+                {stats.accuracy.toFixed(1)}%
+              </p>
+
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-500">
+                Accuracy
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-[#0b1120]/70 p-4">
+              <p className="text-2xl font-bold text-red-300">{stats.errors}</p>
+
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-500">
+                Errors
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
-          {["english", "hindi"].map((item) => (
-            <button
-              key={item}
-              onClick={() => onLanguageChange(item)}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold capitalize ${
-                language === item
-                  ? "bg-indigo-600 text-white"
-                  : "border border-white/10 bg-white/[0.04] text-slate-300"
-              }`}
-            >
-              <Languages size={14} />
-              {item}
-            </button>
-          ))}
-
-          {passageSet.map((item, index) => (
-            <button
-              key={item.title}
-              onClick={() => onPassageChange(index)}
-              className={`max-w-[14rem] shrink-0 truncate rounded-md px-3 py-2 text-xs font-semibold sm:max-w-none ${
-                passageIndex === index
-                  ? "bg-white/15 text-white"
-                  : "border border-white/10 text-slate-300"
-              }`}
-            >
-              {item.title}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-4 grid grid-cols-2 gap-2 rounded-md border border-white/10 bg-slate-950/50 p-3 text-xs text-slate-300 sm:grid-cols-4">
-          <MetaItem
-            label="Difficulty"
-            value={passage.difficulty || "practice"}
-          />
-          <MetaItem label="Target" value={`${passage.targetWPM || 25} WPM`} />
-          <MetaItem
-            label="Accuracy goal"
-            value={`${passage.accuracyGoal || 94}%`}
-          />
-          <MetaItem label="Duration" value={formatTime(durationSeconds)} />
-        </div>
-
-        <StatsStrip
-          stats={stats}
-          timeLeft={timeLeft}
-          completed={completed}
-          backspaceDisabled={config.backspaceDisabled}
-          backspaces={backspaces}
-        />
-
+        {/* SOURCE PARAGRAPH */}
         <CharacterDisplay source={passage.text} typed={typedText} />
 
+        {/* TEXTAREA */}
         <textarea
           ref={inputRef}
           value={typedText}
@@ -511,55 +515,57 @@ function PracticePanel({
           autoCapitalize="off"
           autoComplete="off"
           placeholder="Start typing here..."
-          className="mt-4 h-36 w-full resize-none rounded-md border border-white/10 bg-slate-950/70 p-3 text-base leading-7 text-white outline-none transition focus:border-emerald-300/50 sm:h-40 sm:p-4"
+          className="mt-5 h-[42vh] min-h-[320px] w-full resize-none rounded-3xl border border-white/10 bg-[#020617]/95 px-6 py-6 text-[20px] leading-[3rem] tracking-normal text-white shadow-inner outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-emerald-300/40"
         />
 
-        <div className="mt-4 grid gap-2 sm:flex sm:flex-wrap sm:items-center">
+        {/* ACTIONS */}
+        <div className="mt-5 flex flex-wrap gap-3">
           <button
             onClick={onReset}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
           >
             <RotateCcw size={16} />
             Reset
           </button>
+
           <button
             onClick={onFullscreen}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10"
           >
             <Maximize2 size={16} />
             Fullscreen
           </button>
-          <button
-            onClick={onSave}
-            disabled={saving || !typedText}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <Save size={16} />
-            {saving ? "Saving..." : "Save attempt"}
-          </button>
-          {saveMessage && (
-            <span className="text-center text-sm font-semibold text-emerald-200 sm:text-left">
-              {saveMessage}
-            </span>
+
+          {completed && (
+            <button
+              onClick={onSave}
+              disabled={saving}
+              className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-black transition hover:bg-emerald-400 disabled:opacity-50"
+            >
+              <Save size={16} />
+              {saving ? "Saving..." : "Save Attempt"}
+            </button>
           )}
         </div>
+
+        {saveMessage && (
+          <p className="mt-4 text-sm text-emerald-300">{saveMessage}</p>
+        )}
       </div>
 
-      <div className="min-w-0 flex flex-col gap-4">
+      {/* CLEAN SIDE PANEL */}
+      <aside className="space-y-4 xl:sticky xl:top-24 xl:h-fit">
         <CoachCard
-          headline={completed ? "Attempt ready for review." : "Live coach"}
+          headline={
+            completed ? "Attempt completed" : "Focus on rhythm and accuracy"
+          }
           weakKeys={stats.weakKeys}
           tips={[
-            stats.accuracy < 90
-              ? "Accuracy Training is the best next round."
-              : "Speed Training is available for the next round.",
-            config.backspaceDisabled
-              ? "No-backspace discipline is active."
-              : "SSC mode will disable backspace.",
+            "Maintain steady rhythm while typing.",
+            "Avoid unnecessary corrections.",
           ]}
         />
-        <VirtualKeyboard activeKey={nextCharacter} />
-      </div>
+      </aside>
     </section>
   );
 }
