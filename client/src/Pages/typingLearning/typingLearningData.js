@@ -89,7 +89,21 @@ export const typingCurriculum = {
       targetWPM: 35,
       accuracyGoal: 95,
       level: "SSC CHSL DEST",
-      text: "The Staff Selection Commission conducts skill tests to assess the practical typing ability of candidates for clerical and data entry posts. During the test, candidates must maintain speed, accuracy, and composure. They should read the passage carefully, avoid unnecessary corrections, and type each word exactly as printed. In government offices, accurate data entry supports public service delivery, record maintenance, and timely communication between departments.",
+      text: `The Staff Selection Commission conducts skill examinations to assess whether candidates possess the typing discipline required for clerical and data entry responsibilities in government offices. During the examination process, candidates are expected to maintain composure, proper posture, and controlled finger movement while reproducing the passage exactly as printed on the screen. Accuracy is considered equally important as speed because government records must remain reliable for administrative use, audit procedures, and official communication between departments.
+
+In a modern administrative office, every document passes through multiple stages before final approval is granted. Incoming correspondence is first received at the inward section where the receiving clerk verifies the sender information, checks the number of enclosures, and records the date and time of receipt in the official movement register. After registration, the file is forwarded to the concerned branch according to the subject category and priority level assigned by the department. If any enclosure is missing or unreadable, the deficiency is noted immediately so that corrective action may be taken before the file progresses further.
+
+Candidates preparing for SSC typing examinations should understand that long-form typing practice develops more than just finger speed. It improves reading rhythm, concentration, formatting discipline, and the ability to maintain consistency under timed conditions. Many candidates begin typing rapidly during the initial minutes of practice but gradually lose control because their posture becomes unstable and their focus shifts away from accuracy. To prevent this issue, trainees should maintain a steady pace from the beginning of the passage and avoid striking the keys with unnecessary force. A relaxed hand movement produces cleaner typing and reduces fatigue during extended examinations.
+
+Government departments increasingly depend on digital record systems for public service delivery, recruitment management, pension processing, financial approvals, and internal coordination. Because of this transition, accurate data entry has become an essential professional skill. A single incorrect number, date, or spelling mistake may create confusion in the official record and delay further action. Therefore, candidates must develop the habit of reading each sentence carefully before typing it. They should observe punctuation marks, capitalization, spacing, and paragraph structure exactly as presented in the source material.
+
+The examination hall environment is designed to evaluate the candidate’s ability to work efficiently under pressure. Before the typing test begins, candidates are instructed to verify the allotted computer system, confirm that the keyboard is functioning correctly, and carefully read the instructions displayed on the screen. Once the timer starts, the candidate must focus entirely on the passage and avoid distractions caused by surrounding activity. Looking repeatedly at the keyboard slows down typing rhythm and interrupts concentration. Instead, candidates should rely on finger memory developed through consistent daily practice.
+
+In administrative offices, typed communication forms the backbone of internal workflow. Notices, memorandums, office orders, circulars, meeting agendas, and compliance reports are prepared every day for departmental coordination. These documents must remain readable, organized, and free from avoidable errors because they may later become part of permanent records. Employees who type with discipline and consistency are able to process files more efficiently and support faster public service operations.
+
+To improve examination performance, candidates should regularly practice long passages related to administrative procedures, recruitment systems, digital governance, and public communication. Practicing meaningful official content is more beneficial than repeating random words because it trains the mind to process structured information while maintaining typing rhythm. Candidates should also review their weak areas after each session, especially repeated spelling mistakes, punctuation errors, and spacing inconsistencies.
+
+The SSC typing examination is not merely a speed contest; it is an assessment of professional discipline, concentration, and reliability. Candidates who remain calm, maintain proper rhythm, and focus on accuracy generally achieve stronger results than those who attempt unrealistic speed. With regular practice, balanced posture, and careful observation of official formatting, typing gradually becomes smooth, controlled, and dependable for long-duration examination environments.`,
     },
     {
       id: "eng-advanced-ssc-steno-01",
@@ -273,7 +287,7 @@ export const typingCurriculum = {
       difficulty: "weekly",
       duration: 600,
       language: "english",
-      
+
       lessonType: "weekly-practice",
       targetWPM: 35,
       accuracyGoal: 95,
@@ -285,8 +299,12 @@ export const typingCurriculum = {
 export const passages = {
   english: [
     ...typingCurriculum.lessons.filter((item) => item.language === "english"),
-    ...typingCurriculum.aiExercises.filter((item) => item.language === "english"),
-    ...typingCurriculum.challenges.filter((item) => item.language === "english"),
+    ...typingCurriculum.aiExercises.filter(
+      (item) => item.language === "english",
+    ),
+    ...typingCurriculum.challenges.filter(
+      (item) => item.language === "english",
+    ),
   ],
   hindi: [
     ...typingCurriculum.lessons.filter((item) => item.language === "hindi"),
