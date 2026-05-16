@@ -627,35 +627,76 @@ function MetaItem({ label, value }) {
 }
 
 function CharacterDisplay({ source, typed }) {
+  const containerRef = useRef(null);
+  const activeRef = useRef(null);
+
   const typedChars = Array.from(typed);
 
-  return (
-    <div className="mt-4 max-h-64 overflow-y-auto rounded-md border border-white/10 bg-slate-950/70 p-3 text-base leading-8 sm:p-4 sm:text-lg sm:leading-9">
-      {Array.from(source).map((char, index) => {
-        const state = getCharacterState(char, typedChars[index]);
-        const active = index === typedChars.length;
-        const className =
-          state === "correct"
-            ? "bg-emerald-400/15 text-emerald-200"
-            : state === "wrong"
-              ? "bg-red-500/20 text-red-200 underline decoration-red-200 decoration-wavy"
-              : active
-                ? "bg-indigo-500/25 text-white"
-                : "text-slate-300";
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [typed]);
 
-        return (
-          <span
-            key={`${char}-${index}`}
-            className={`rounded px-[2px] ${className}`}
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
-        );
-      })}
+  return (
+    <div
+      ref={containerRef}
+      className="mt-5 max-h-[420px] overflow-y-auto rounded-3xl border border-white/10 bg-[#0b1120]/80 p-6 shadow-inner"
+    >
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+              Source Paragraph
+            </p>
+
+            <h3 className="mt-2 text-lg font-semibold text-white">
+              Maintain rhythm and accuracy
+            </h3>
+          </div>
+
+          <div className="rounded-full border border-indigo-400/20 bg-indigo-500/10 px-4 py-2 text-xs font-semibold text-indigo-100">
+            Live Tracking
+          </div>
+        </div>
+
+        <div className="rounded-2xl bg-[#020817]/80 p-5 sm:p-6">
+          <p className="break-words whitespace-pre-wrap text-[19px] leading-[2.9rem] tracking-normal text-slate-300 sm:text-[21px] sm:leading-[3.1rem]">
+            {Array.from(source).map((char, index) => {
+              const typedChar = typedChars[index];
+
+              const state = getCharacterState(char, typedChar);
+
+              const active = index === typedChars.length;
+
+              const className =
+                state === "correct"
+                  ? "text-emerald-200"
+                  : state === "wrong"
+                    ? "text-red-300"
+                    : active
+                      ? "bg-indigo-500/15 text-white"
+                      : "text-slate-500";
+
+              return (
+                <span
+                  ref={active ? activeRef : null}
+                  key={`${char}-${index}`}
+                  className={`px-[1px] transition-colors duration-100 ${className}`}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              );
+            })}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
-
 function LessonsPanel({ nextCharacter, language }) {
   return (
     <section className="grid min-w-0 gap-4 lg:grid-cols-[0.9fr_1.1fr]">
@@ -731,8 +772,14 @@ function AnalyticsPanel({ progress, coach, leaderboard, liveWeakKeys }) {
               label="Best Accuracy"
               value={`${Number(progress?.bestAccuracy || 0).toFixed(1)}%`}
             />
-            <ProgressStat label="Total Errors" value={progress?.totalErrors || 0} />
-            <ProgressStat label="Saved Attempts" value={progress?.attempts || 0} />
+            <ProgressStat
+              label="Total Errors"
+              value={progress?.totalErrors || 0}
+            />
+            <ProgressStat
+              label="Saved Attempts"
+              value={progress?.attempts || 0}
+            />
           </div>
         </div>
       </div>
@@ -799,28 +846,28 @@ function VirtualKeyboard({ activeKey }) {
 
       <div className="mt-4 overflow-x-auto pb-1">
         <div className="min-w-[19rem] space-y-2 sm:min-w-0">
-        {keyboardRows.map((row, rowIndex) => (
-          <div
-            key={row.join("")}
-            className={`flex justify-center gap-1 ${rowIndex === 1 ? "px-4 sm:pr-5" : ""}`}
-          >
-            {row.map((key) => {
-              const active = activeKey === key;
-              return (
-                <span
-                  key={key}
-                  className={`flex h-9 min-w-7 flex-1 items-center justify-center rounded-md border text-xs font-semibold sm:h-10 sm:min-w-9 sm:text-sm ${
-                    active
-                      ? "border-emerald-300 bg-emerald-400/20 text-emerald-100"
-                      : "border-white/10 bg-slate-950/60 text-slate-300"
-                  }`}
-                >
-                  {key}
-                </span>
-              );
-            })}
-          </div>
-        ))}
+          {keyboardRows.map((row, rowIndex) => (
+            <div
+              key={row.join("")}
+              className={`flex justify-center gap-1 ${rowIndex === 1 ? "px-4 sm:pr-5" : ""}`}
+            >
+              {row.map((key) => {
+                const active = activeKey === key;
+                return (
+                  <span
+                    key={key}
+                    className={`flex h-9 min-w-7 flex-1 items-center justify-center rounded-md border text-xs font-semibold sm:h-10 sm:min-w-9 sm:text-sm ${
+                      active
+                        ? "border-emerald-300 bg-emerald-400/20 text-emerald-100"
+                        : "border-white/10 bg-slate-950/60 text-slate-300"
+                    }`}
+                  >
+                    {key}
+                  </span>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </div>
     </div>
