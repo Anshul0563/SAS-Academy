@@ -419,11 +419,8 @@ function Result() {
           "/results/compact",
           {
             testId,
-            typedText,
             timeTaken: timeUsedSeconds,
-            backspaces,
-            keystrokes,
-            settings,
+            resultData: localResult,
           },
           {
             headers: {
