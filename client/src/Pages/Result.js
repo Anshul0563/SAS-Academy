@@ -152,18 +152,35 @@ const getComparisonWord = (item) => {
 };
 
 const groupComparisonForDisplay = (comparison = []) => {
-    return comparison.reduce((groups, item) => {
-        if (item.type === "addition" && groups.length) {
+    const groups = [];
+    let leadingAdditions = [];
+
+    comparison.forEach((item) => {
+        if (item.type === "addition" && !groups.length) {
+            leadingAdditions.push(item);
+            return;
+        }
+
+        if (item.type === "addition") {
             groups[groups.length - 1].additions.push(item);
-            return groups;
+            return;
         }
 
         groups.push({
-            base: item.type === "addition" ? null : item,
-            additions: item.type === "addition" ? [item] : []
+            base: item,
+            additions: leadingAdditions
         });
-        return groups;
-    }, []);
+        leadingAdditions = [];
+    });
+
+    if (leadingAdditions.length) {
+        groups.push({
+            base: null,
+            additions: leadingAdditions
+        });
+    }
+
+    return groups;
 };
 
 function Result() {
