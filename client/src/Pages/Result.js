@@ -821,52 +821,203 @@ function Result() {
         ref={resultRef}
         className="mx-auto flex max-w-7xl flex-col gap-5 px-3 py-5 sm:px-6 lg:px-8"
       >
-        {/* Rest UI remains same */}
+        <header className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                Typing Result
+              </p>
+              <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                Performance scorecard
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+                Review speed, accuracy, mistakes, and the word comparison for this attempt.
+              </p>
 
-        <div className="mt-4 max-h-[460px] overflow-y-auto rounded-md border border-white/10 bg-slate-950/70 p-4">
-          {data.comparison?.length ? (
-            <div
-              className={`flex flex-wrap items-start gap-x-1 gap-y-2 text-slate-200 ${
-                data.comparisonMode ===
-                "characters"
-                  ? "font-mono text-[15px] leading-7 break-all"
-                  : "text-base leading-9"
-              }`}
-            >
-              {data.comparison.map(
-                (item, index) => (
-                  <span
-                    key={index}
-                    className={getWordStyle(
-                      item.type
-                    )}
-                    title={
-                      item.expected &&
-                      item.typed
-                        ? `${item.expected} → ${item.typed}`
-                        : item.type ===
-                          "addition"
-                        ? "Extra typed item"
-                        : item.type ===
-                          "omission"
-                        ? "Missed item"
-                        : undefined
-                    }
+              <div
+                className={`mt-4 inline-flex max-w-full items-center gap-2 rounded-md border px-3 py-2 text-sm ${saveTone}`}
+              >
+                {data.saved ? (
+                  <CheckCircle2 size={16} className="shrink-0" />
+                ) : (
+                  <AlertTriangle size={16} className="shrink-0" />
+                )}
+                <span className="min-w-0 break-words">
+                  {data.saved
+                    ? "Result saved to database"
+                    : saveError || "Result calculated locally"}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold transition hover:bg-indigo-500"
+              >
+                <BarChart3 size={16} />
+                Dashboard
+              </button>
+              <button
+                onClick={() => navigate(`/typing/${localStorage.getItem("testId")}`)}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold transition hover:bg-emerald-500"
+              >
+                <RefreshCcw size={16} />
+                Retry
+              </button>
+              <button
+                onClick={downloadResult}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-semibold transition hover:bg-white/10"
+              >
+                <Download size={16} />
+                Download
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {scoreCards.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.label}
+                className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                    {item.label}
+                  </p>
+                  <Icon size={18} className={item.tone} />
+                </div>
+                <p className={`mt-4 text-4xl font-bold ${item.tone}`}>
+                  {item.value}
+                </p>
+                <p className="mt-2 text-sm text-slate-400">{item.detail}</p>
+              </div>
+            );
+          })}
+        </section>
+
+        <section className="grid gap-4 lg:grid-cols-[0.8fr_1.4fr]">
+          <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+            <h2 className="text-lg font-semibold">Scoring details</h2>
+
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {detailStats.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    className="rounded-md border border-white/10 bg-slate-950/70 p-3"
                   >
-                    {getComparisonWord(
-                      item
-                    )}
-                  </span>
-                )
+                    <div className="flex items-center gap-2 text-sm text-slate-400">
+                      <Icon size={15} className={item.tone} />
+                      {item.label}
+                    </div>
+                    <p className="mt-2 text-2xl font-semibold text-white">
+                      {item.value}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-4 rounded-md border border-white/10 bg-slate-950/70 p-3 text-sm leading-6 text-slate-300">
+              <p>
+                Typed strokes:{" "}
+                <span className="font-semibold text-white">{typedCharacters}</span>
+              </p>
+              <p>
+                Correct strokes:{" "}
+                <span className="font-semibold text-white">
+                  {data.correctCharacters || 0}
+                </span>
+              </p>
+              <p>
+                Expected strokes:{" "}
+                <span className="font-semibold text-white">
+                  {data.expectedCharacters || 0}
+                </span>
+              </p>
+              <p>
+                Comparison mode:{" "}
+                <span className="font-semibold capitalize text-white">
+                  {data.comparisonMode || "words"}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <h2 className="text-lg font-semibold">Word comparison</h2>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-300">
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                  Correct
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-red-300" />
+                  Mistake
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-sky-300" />
+                  Omission
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-amber-300" />
+                  Addition
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-4 max-h-[460px] overflow-y-auto rounded-md border border-white/10 bg-slate-950/70 p-4">
+              {data.comparison?.length ? (
+                <div
+                  className={`flex flex-wrap items-start gap-x-1 gap-y-2 text-slate-200 ${
+                    data.comparisonMode ===
+                    "characters"
+                      ? "font-mono text-[15px] leading-7 break-all"
+                      : "text-base leading-9"
+                  }`}
+                >
+                  {data.comparison.map(
+                    (item, index) => (
+                      <span
+                        key={index}
+                        className={getWordStyle(
+                          item.type
+                        )}
+                        title={
+                          item.expected &&
+                          item.typed
+                            ? `${item.expected} → ${item.typed}`
+                            : item.type ===
+                              "addition"
+                            ? "Extra typed item"
+                            : item.type ===
+                              "omission"
+                            ? "Missed item"
+                            : undefined
+                        }
+                      >
+                        {getComparisonWord(
+                          item
+                        )}
+                      </span>
+                    )
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-slate-400">
+                  No comparison data
+                  available.
+                </p>
               )}
             </div>
-          ) : (
-            <p className="text-sm text-slate-400">
-              No comparison data
-              available.
-            </p>
-          )}
-        </div>
+          </div>
+        </section>
       </div>
     </div>
   );
