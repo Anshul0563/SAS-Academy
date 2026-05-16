@@ -402,7 +402,7 @@ function Result() {
                             {comparisonGroups.length ? (
                                 <p className="text-base leading-9 text-slate-200">
                                     {comparisonGroups.map((group, groupIndex) => (
-                                        <span key={groupIndex} className="mr-1.5 inline-flex items-baseline gap-1 whitespace-nowrap align-baseline">
+                                        <span key={groupIndex} className="mr-1.5 inline-flex flex-wrap items-baseline gap-1 align-baseline">
                                             {group.base && (
                                                 <span
                                                     className={getWordStyle(group.base.type)}

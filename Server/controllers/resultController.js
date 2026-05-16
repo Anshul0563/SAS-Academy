@@ -3,6 +3,18 @@ const Result = require("../models/result");
 const calculateResult = require("../utils/resultCalculator");
 const mongoose = require("mongoose");
 
+const toCompactResult = ({ userId, testId, resultData, timeTaken }) => ({
+    userId,
+    testId,
+    accuracy: resultData.accuracy,
+    netWPM: resultData.netWPM,
+    grossWPM: resultData.grossWPM,
+    correctWords: resultData.correctWords,
+    totalWords: resultData.totalWords,
+    errorsDetails: resultData.errorsDetails,
+    timeTaken: Math.max(1, Number(timeTaken) || 1)
+});
+
 exports.submitTest = async (req, res) => {
     try {
         const { testId, typedText = "", timeTaken, backspaces = 0, keystrokes, settings = {} } = req.body;
@@ -30,41 +42,18 @@ exports.submitTest = async (req, res) => {
             }
         );
 
-        const savedResult = await Result.create({
+        const savedResult = await Result.create(toCompactResult({
             userId: req.user._id,
             testId,
-            grossWPM: resultData.grossWPM,
-            netWPM: resultData.netWPM,
-            accuracy: resultData.accuracy,
-            totalWords: resultData.totalWords,
-            typedWords: resultData.typedWords,
-            correctWords: resultData.correctWords,
-            errorsDetails: resultData.errorsDetails,
-            typedCharacters: resultData.typedCharacters,
-            expectedCharacters: resultData.expectedCharacters,
-            correctCharacters: resultData.correctCharacters,
-            errorPenaltyCharacters: resultData.errorPenaltyCharacters,
-            omissions: resultData.omissions,
-            additions: resultData.additions,
-            spelling: resultData.spelling,
-            capitalization: resultData.capitalization,
-            backspaces: Number(backspaces) || 0,
-            keystrokes: Number(keystrokes) || typedText.length,
-            timeTaken: Math.max(1, Number(timeTaken) || 1),
-            settings: {
-                backspace: Boolean(settings.backspace),
-                spellingMode: settings.spelling || settings.spellingMode || "full",
-                ignoreCase: Boolean(settings.ignoreCase || settings.caps === "none"),
-                ignorePunctuation: Boolean(settings.ignorePunctuation || settings.punctuation === "none"),
-                timeLimit: Number(settings.timeLimit || settings.time) || undefined
-            }
-        });
+            resultData,
+            timeTaken
+        }));
 
         res.json({
             _id: savedResult._id,
             ...resultData,
-            backspaces: savedResult.backspaces,
-            keystrokes: savedResult.keystrokes,
+            backspaces: Number(backspaces) || 0,
+            keystrokes: Number(keystrokes) || typedText.length,
             timeTaken: savedResult.timeTaken,
             saved: true
         });
@@ -106,37 +95,48 @@ exports.getResults = async (req, res) => {
 
 exports.getLeaderboard = async (req, res) => {
     try {
-        const results = await Result.find()
-            .sort({ accuracy: -1, netWPM: -1, grossWPM: -1, createdAt: -1 })
-            .limit(50)
-            .populate("userId", "name email")
-            .populate("testId", "title type");
-
-        const seenUsers = new Set();
-        const leaderboard = [];
-
-        for (const result of results) {
-            const userKey = result.userId?._id?.toString() || result.userId?.toString();
-            if (!userKey || seenUsers.has(userKey)) continue;
-
-            seenUsers.add(userKey);
-            leaderboard.push({
-                _id: result._id,
-                userName: result.userId?.name || "Unknown",
-                testTitle: result.testId?.title || "Test",
-                testType: result.testId?.type || "",
-                grossWPM: result.grossWPM || 0,
-                netWPM: result.netWPM || 0,
-                accuracy: result.accuracy || 0,
-                correctWords: result.correctWords || 0,
-                totalWords: result.totalWords || 0,
-                errors: result.errorsDetails || 0,
-                timeTaken: result.timeTaken || 0,
-                createdAt: result.createdAt
-            });
-
-            if (leaderboard.length === 5) break;
-        }
+        const leaderboard = await Result.aggregate([
+            { $match: { userId: { $ne: null } } },
+            { $sort: { accuracy: -1, netWPM: -1, grossWPM: -1, createdAt: -1 } },
+            { $group: { _id: "$userId", bestResult: { $first: "$$ROOT" } } },
+            { $replaceRoot: { newRoot: "$bestResult" } },
+            { $sort: { accuracy: -1, netWPM: -1, grossWPM: -1, createdAt: -1 } },
+            { $limit: 5 },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $lookup: {
+                    from: "tests",
+                    localField: "testId",
+                    foreignField: "_id",
+                    as: "test"
+                }
+            },
+            { $unwind: { path: "$user", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$test", preserveNullAndEmptyArrays: true } },
+            {
+                $project: {
+                    _id: 1,
+                    userName: { $ifNull: ["$user.name", "Unknown"] },
+                    testTitle: { $ifNull: ["$test.title", "Test"] },
+                    testType: { $ifNull: ["$test.type", ""] },
+                    grossWPM: { $ifNull: ["$grossWPM", 0] },
+                    netWPM: { $ifNull: ["$netWPM", 0] },
+                    accuracy: { $ifNull: ["$accuracy", 0] },
+                    correctWords: { $ifNull: ["$correctWords", 0] },
+                    totalWords: { $ifNull: ["$totalWords", 0] },
+                    errors: { $ifNull: ["$errorsDetails", 0] },
+                    timeTaken: { $ifNull: ["$timeTaken", 0] },
+                    createdAt: 1
+                }
+            }
+        ]);
 
         res.json(leaderboard);
     } catch (error) {
