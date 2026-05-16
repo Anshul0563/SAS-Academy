@@ -360,7 +360,7 @@ function Dashboard() {
                       <span
                         className={`flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold ${
                           index === 0
-                            ? "bg-yellow-400 text-slate-950"
+                            ? "bg-black-400 text-slate-950"
                             : index === 1
                               ? "bg-slate-300 text-slate-950"
                               : index === 2
