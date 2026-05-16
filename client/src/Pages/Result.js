@@ -431,7 +431,10 @@ function Result() {
 
         if (!cancelled) {
           setData({
+            ...localResult,
             ...res.data,
+            comparison: localResult.comparison,
+            comparisonMode: localResult.comparisonMode,
             saved: true,
           });
 
