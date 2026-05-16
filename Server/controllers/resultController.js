@@ -30,12 +30,24 @@ exports.submitTest = async (req, res) => {
             }
         );
 
-        const result = await Result.create({
-            userId: req.user.id,
+        const savedResult = await Result.create({
+            userId: req.user._id,
             testId,
-            typedText,
-            originalText: test.passage,
-            ...resultData,
+            grossWPM: resultData.grossWPM,
+            netWPM: resultData.netWPM,
+            accuracy: resultData.accuracy,
+            totalWords: resultData.totalWords,
+            typedWords: resultData.typedWords,
+            correctWords: resultData.correctWords,
+            errorsDetails: resultData.errorsDetails,
+            typedCharacters: resultData.typedCharacters,
+            expectedCharacters: resultData.expectedCharacters,
+            correctCharacters: resultData.correctCharacters,
+            errorPenaltyCharacters: resultData.errorPenaltyCharacters,
+            omissions: resultData.omissions,
+            additions: resultData.additions,
+            spelling: resultData.spelling,
+            capitalization: resultData.capitalization,
             backspaces: Number(backspaces) || 0,
             keystrokes: Number(keystrokes) || typedText.length,
             timeTaken: Math.max(1, Number(timeTaken) || 1),
@@ -48,11 +60,21 @@ exports.submitTest = async (req, res) => {
             }
         });
 
-        res.json(result);
+        res.json({
+            _id: savedResult._id,
+            ...resultData,
+            backspaces: savedResult.backspaces,
+            keystrokes: savedResult.keystrokes,
+            timeTaken: savedResult.timeTaken,
+            saved: true
+        });
 
     } catch (error) {
         console.error("Result submit error:", error);
-        res.status(500).json({ message: "Result could not be saved. Your score was calculated locally." });
+        res.status(500).json({
+            message: "Result could not be saved. Your score was calculated locally.",
+            detail: process.env.NODE_ENV === "production" ? undefined : error.message
+        });
     }
 };
 

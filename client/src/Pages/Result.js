@@ -199,7 +199,8 @@ function Result() {
                 setData(res.data);
             } catch (submitError) {
                 console.error("Result submit error:", submitError);
-                setError("Result was calculated locally, but it could not be saved right now.");
+                const serverMessage = submitError.response?.data?.detail || submitError.response?.data?.message || submitError.message;
+                setError(`Result was calculated locally, but it could not be saved right now. ${serverMessage ? `Reason: ${serverMessage}` : ""}`);
 
                 try {
                     const testRes = await API.get(`/tests/${testId}`);
