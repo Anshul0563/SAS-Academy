@@ -110,12 +110,20 @@ const AdminLayout = () => {
       } lg:translate-x-0 lg:sticky lg:top-0 lg:h-dvh`}>
         
         {/* Logo */}
-        <div className="p-6 border-b border-slate-700">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-            SAS Admin
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">Academy Control Center</p>
+        <div className="p-6 border-b border-slate-700 flex items-center gap-3">
+          <img
+            src="/logo.png"
+            alt="SAS Academy"
+            className="w-10 h-10 object-contain"
+          />
+          <div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              SAS Admin
+            </h1>
+            <p className="text-xs text-slate-400 mt-1">Academy Control Center</p>
+          </div>
         </div>
+
 
         {/* Menu */}
         <nav className="p-4 space-y-2">
