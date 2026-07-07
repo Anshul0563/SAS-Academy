@@ -189,7 +189,17 @@ exports.saveCompactResult = async (req, res) => {
 
 exports.getResults = async (req, res) => {
   try {
-    const results = await Result.find()
+    const range = String(req.query?.range || "all").toLowerCase();
+
+    const match = {};
+    if (range === "week") {
+      match.createdAt = { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) };
+    } else if (range === "month") {
+      // ~30 days
+      match.createdAt = { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) };
+    }
+
+    const results = await Result.find(match)
       .sort({ createdAt: -1 })
       .limit(100)
       .populate("userId", "name email")
@@ -214,6 +224,7 @@ exports.getResults = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.getLeaderboard = async (req, res) => {
   try {

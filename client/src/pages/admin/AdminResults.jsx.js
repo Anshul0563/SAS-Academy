@@ -12,15 +12,24 @@ const AdminResults = () => {
   const [dateFilter, setDateFilter] = useState('all');
 
   useEffect(() => {
-    fetchResults();
+    fetchResults(dateFilter);
     fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchResults = async () => {
+  useEffect(() => {
+    setLoading(true);
+    fetchResults(dateFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateFilter]);
+
+  const fetchResults = async (range = dateFilter) => {
+
     try {
       const token = getAdminAuthToken();
       const res = await API.get('/results', {
-        headers: { Authorization: `Bearer ${token}` }
+        params: { range },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setResults(res.data.slice(0, 50) || []); // Top 50 recent
     } catch (error) {
@@ -29,6 +38,7 @@ const AdminResults = () => {
       setLoading(false);
     }
   };
+
 
   const fetchStats = async () => {
     try {

@@ -1,10 +1,9 @@
-# TODO
+# TODO - Admin Results filter (all/week/month)
 
-- [ ] Fix admin/client layout left overflow by shifting main content when sidebar is fixed
-- [x] Update `client/src/components/admin/AdminLayout.jsx.js` to add `lg:ml-64` (or padding equivalent) to main wrapper so main doesn’t go under sidebar
+- [x] Update backend: `GET /results` support query param `range=all|week|month` and filter by `createdAt`.
+- [x] Update frontend: `AdminResults.jsx.js` to refetch results when `dateFilter` changes using `range` param.
+- [x] Ensure loading state updates correctly during refetch.
+- [ ] Quick manual test: switch dropdown values and verify table rows change.
 
-- [x] Update `client/src/components/Layout.js` to add desktop left offset (`md:ml-64` / `md:pl-64`) for the main wrapper
 
-- [x] Ensure no horizontal scrolling: keep `overflow-x-hidden` on relevant wrappers (already present)
 
-- [ ] Run frontend build/lint (if available) and verify admin + client panels
