@@ -27,6 +27,9 @@ const AdminResults = () => {
   const fetchResults = async (range = dateFilter) => {
     try {
       const token = getAdminAuthToken();
+      if (!token) {
+        throw new Error('Admin auth token missing');
+      }
       const res = await API.get('/results', {
         params: { range },
         headers: { Authorization: `Bearer ${token}` },
