@@ -85,11 +85,15 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="text-slate-400 text-sm">Loading...</div>
+      <div className="flex min-h-[50vh] items-center justify-center px-4">
+        <div className="flex items-center gap-3 rounded-2xl border border-slate-700/50 bg-slate-900/50 backdrop-blur-xl px-4 py-3 shadow-2xl">
+          <div className="w-5 h-5 border-2 border-emerald-500/40 border-t-emerald-500 rounded-full animate-spin" />
+          <div className="text-slate-200 text-sm font-medium">Loading dashboard...</div>
+        </div>
       </div>
     );
   }
+
 
 
   return (
