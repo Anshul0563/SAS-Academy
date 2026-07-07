@@ -5,5 +5,11 @@
 - [x] Ensure loading state updates correctly during refetch.
 - [ ] Quick manual test: switch dropdown values and verify table rows change.
 
+# TODO - Admin Results delete (row delete)
+
+- [x] Backend: add `DELETE /results/:id` (admin only).
+- [x] Frontend: add delete button in AdminResults rows + confirm + refetch.
+- [ ] Manual test: delete a row from All Time and verify it disappears.
+
 
 

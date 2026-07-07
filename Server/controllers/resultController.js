@@ -313,3 +313,26 @@ exports.getResultStats = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.deleteResult = async (req, res) => {
+  try {
+    const id = req.params?.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid result id" });
+    }
+
+    const deleted = await Result.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Result not found" });
+    }
+
+    res.json({ success: true, deletedId: deleted._id });
+  } catch (error) {
+    console.error("Delete result error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+

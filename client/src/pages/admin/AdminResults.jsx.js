@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../api/axios';
-import { BarChart3, Filter, Download, Calendar, TrendingUp, Award } from 'lucide-react';
+import { BarChart3, Filter, Download, Calendar, TrendingUp, Award, Trash2 } from 'lucide-react';
+
 import { getAdminAuthToken } from '../../utils/authStorage';
 
 import { motion } from 'framer-motion';
@@ -40,7 +41,28 @@ const AdminResults = () => {
   };
 
 
+  const handleDeleteResult = async (id) => {
+    const ok = window.confirm('Are you sure you want to delete this result?');
+    if (!ok) return;
+
+    try {
+      const token = getAdminAuthToken();
+      await API.delete(`/results/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // Refresh current filter
+      setLoading(true);
+      await fetchResults(dateFilter);
+      await fetchStats();
+    } catch (error) {
+      console.error('Error deleting result:', error);
+      alert('Failed to delete result');
+    }
+  };
+
   const fetchStats = async () => {
+
     try {
       const token = getAdminAuthToken();
       const res = await API.get('/results/stats', {
@@ -154,6 +176,7 @@ const AdminResults = () => {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Accuracy</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Score</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Date</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-700/50">
@@ -203,6 +226,15 @@ const AdminResults = () => {
                     </td>
                     <td className="px-6 py-4 text-xs text-slate-400">
                       {new Date(result.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleDeleteResult(result._id)}
+                        className="inline-flex items-center justify-center rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-400 transition hover:bg-red-500/20 hover:border-red-500"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </td>
                   </tr>
                 ))
