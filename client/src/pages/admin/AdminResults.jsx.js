@@ -25,16 +25,16 @@ const AdminResults = () => {
   }, [dateFilter]);
 
   const fetchResults = async (range = dateFilter) => {
-
     try {
       const token = getAdminAuthToken();
       const res = await API.get('/results', {
         params: { range },
         headers: { Authorization: `Bearer ${token}` },
       });
-      setResults(res.data.slice(0, 50) || []); // Top 50 recent
+      setResults(res.data?.slice(0, 50) || []); // Top 50 recent
     } catch (error) {
       console.error('Error fetching results:', error);
+      alert(error?.response?.data?.message || 'Failed to fetch results');
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ const AdminResults = () => {
 
     try {
       const token = getAdminAuthToken();
-      await API.delete(`/results/${id}`, {
+      const res = await API.delete(`/results/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -55,9 +55,15 @@ const AdminResults = () => {
       setLoading(true);
       await fetchResults(dateFilter);
       await fetchStats();
+
+      return res;
     } catch (error) {
       console.error('Error deleting result:', error);
-      alert('Failed to delete result');
+      alert(
+        error?.response?.data?.message ||
+          error?.message ||
+          'Failed to delete result'
+      );
     }
   };
 
