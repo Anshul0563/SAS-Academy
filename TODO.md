@@ -1,6 +1,6 @@
 # TODO - Premium Admin Login UI (logic unchanged)
 
-- [ ] Edit `client/src/Pages/AdminLogin.js` to redesign UI/UX (glassmorphism, dark luxury theme, framer motion, lucide icons, animations)
+- [x] Edit `client/src/Pages/AdminLogin.js` to redesign UI/UX (glassmorphism, dark luxury theme, framer motion, lucide icons, animations)
 - [ ] Ensure login logic remains byte-for-byte equivalent for:
   - API endpoint and request body
   - validation rules and error messages
