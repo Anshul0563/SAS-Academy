@@ -78,7 +78,7 @@ function Layout() {
                         <img
                             src="/logo.png"
                             alt="SAS Academy"
-                            className="w-9 h-9 object-contain"
+                            className="w-9 h-9 object-cover rounded-full"
                         />
                         <div className="text-xl font-semibold tracking-wide text-indigo-400">SAS Academy</div>
                     </div>
