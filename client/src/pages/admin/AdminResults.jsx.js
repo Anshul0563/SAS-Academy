@@ -45,8 +45,10 @@ const AdminResults = () => {
 
 
   const handleDeleteResult = async (id) => {
+    console.log('delete clicked id=', id);
     const ok = window.confirm('Are you sure you want to delete this result?');
     if (!ok) return;
+
 
     try {
       const token = getAdminAuthToken();
