@@ -177,8 +177,7 @@ const AdminResults = () => {
         animate={{ opacity: 1, y: 0 }}
         className="overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/50 shadow-2xl backdrop-blur-xl"
       >
-      <div className="overflow-x-auto">
-          <div style={{ pointerEvents: 'auto' }}>
+        <div className="overflow-x-auto" style={{ pointerEvents: 'auto' }}>
           <table className="w-full min-w-[760px]">
             <thead className="bg-slate-800/50">
               <tr>
