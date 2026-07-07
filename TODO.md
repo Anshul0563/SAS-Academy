@@ -1,15 +1,20 @@
-# TODO - Admin Results filter (all/week/month)
+# TODO
 
-- [x] Update backend: `GET /results` support query param `range=all|week|month` and filter by `createdAt`.
-- [x] Update frontend: `AdminResults.jsx.js` to refetch results when `dateFilter` changes using `range` param.
-- [x] Ensure loading state updates correctly during refetch.
-- [ ] Quick manual test: switch dropdown values and verify table rows change.
+## UI/UX Redesign - Admin & Student Login
+- [ ] Redesign Admin login page UI/UX (client/src/Pages/AdminLogin.js)
 
-# TODO - Admin Results delete (row delete)
+  - [ ] Two-panel/brand + form layout
+  - [ ] Better inputs (focus, floating labels)
+  - [ ] Password show/hide toggle
+  - [ ] Loading spinner + disabled states
+  - [ ] Improved error alert (aria-live)
+  - [ ] Consistent gradients/glass style
+- [ ] Redesign Student login page (client/src/Pages/Auth.js)
+  - [ ] Match the new visual system
+  - [ ] Keep existing auth logic intact
+  - [ ] Password show/hide already exists; polish focus/error/loading
 
-- [x] Backend: add `DELETE /results/:id` (admin only).
-- [x] Frontend: add delete button in AdminResults rows + confirm + refetch.
-- [ ] Manual test: delete a row from All Time and verify it disappears.
-
-
+- [ ] Test
+  - [ ] Run client build/dev and verify routes
+  - [ ] Validate login flows for admin and student
 
