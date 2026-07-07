@@ -74,9 +74,15 @@ function Layout() {
                 >
 
                     {/* LOGO */}
-                    <div className="px-6 py-6 text-xl font-semibold tracking-wide text-indigo-400">
-                        ⚡ SAS Academy
+                    <div className="px-6 py-6 flex items-center gap-3">
+                        <img
+                            src="/logo.png"
+                            alt="SAS Academy"
+                            className="w-9 h-9 object-contain"
+                        />
+                        <div className="text-xl font-semibold tracking-wide text-indigo-400">SAS Academy</div>
                     </div>
+
 
                     {/* MENU */}
                     <div className="px-3 space-y-2">
