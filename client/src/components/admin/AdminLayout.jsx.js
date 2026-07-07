@@ -104,7 +104,7 @@ const AdminLayout = () => {
   return (
     <div className="flex min-h-dvh bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-x-hidden">
       
-      {/* 🔥 SIDEBAR */}
+      {/*  SIDEBAR */}
       <div className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,16rem)] lg:w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transition-transform duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 lg:h-dvh`}>
@@ -115,7 +115,7 @@ const AdminLayout = () => {
           <img
             src="/logo.png"
             alt="SAS Academy"
-            className="w-10 h-10 object-contain"
+            className="w-10 h-10 object-cover rounded-full"
           />
           <div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
