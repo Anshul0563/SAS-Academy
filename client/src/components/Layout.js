@@ -65,7 +65,7 @@ function Layout() {
             {/* 🔥 SIDEBAR */}
             {!examMode && (
                 <div
-                    className={`fixed inset-y-0 left-0 md:sticky md:top-0 z-50 w-[min(80vw,16rem)] md:w-64 h-dvh
+                    className={`fixed inset-y-0 left-0 z-50 w-[min(80vw,16rem)] md:w-64 h-dvh
                     bg-white/5 backdrop-blur-2xl
                     border-r border-white/10
                     shadow-[0_0_40px_rgba(0,0,0,0.6)]
