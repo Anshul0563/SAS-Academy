@@ -172,7 +172,9 @@ const AdminLayout = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col lg:ml-64">
+
+
         
         {/* Top Navbar */}
         <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-30 px-3 py-3 sm:px-4">

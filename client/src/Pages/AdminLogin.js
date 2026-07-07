@@ -116,11 +116,7 @@ function AdminLogin() {
                     disabled={loading}
                     className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 p-3 rounded-lg font-semibold flex justify-center items-center hover:opacity-90 transition disabled:opacity-50"
                 >
-                    {loading ? (
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"></div>
-                    ) : (
-                        "Login"
-                    )}
+                    {"Login"}
                 </button>
 
                 {/* BACK TO USER LOGIN */}

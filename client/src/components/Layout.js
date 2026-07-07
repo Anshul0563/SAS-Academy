@@ -148,7 +148,8 @@ function Layout() {
                 />
             )}
 
-            <div className="flex-1 flex min-w-0 flex-col">
+            <div className="flex-1 flex min-w-0 flex-col md:ml-64">
+
 
                 {/* 🔥 FLOATING TOPBAR */}
                 {!examMode && (
