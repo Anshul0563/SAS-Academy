@@ -4,7 +4,7 @@
   "description": "Typing practice, transcription tests, dictation tests, WPM scoring, and SSC-style exam preparation.",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/png"
     },
