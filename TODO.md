@@ -1,20 +1,13 @@
-# TODO
+# TODO - Premium Admin Login UI (logic unchanged)
 
-## UI/UX Redesign - Admin & Student Login
-- [x] Redesign Admin login page UI/UX (client/src/Pages/AdminLogin.js)
-
-  - [ ] Two-panel/brand + form layout
-  - [ ] Better inputs (focus, floating labels)
-  - [ ] Password show/hide toggle
-  - [ ] Loading spinner + disabled states
-  - [ ] Improved error alert (aria-live)
-  - [ ] Consistent gradients/glass style
-- [ ] Redesign Student login page (client/src/Pages/Auth.js)
-  - [ ] Match the new visual system
-  - [ ] Keep existing auth logic intact
-  - [ ] Password show/hide already exists; polish focus/error/loading
-
-- [ ] Test
-  - [ ] Run client build/dev and verify routes
-  - [ ] Validate login flows for admin and student
+- [ ] Edit `client/src/Pages/AdminLogin.js` to redesign UI/UX (glassmorphism, dark luxury theme, framer motion, lucide icons, animations)
+- [ ] Ensure login logic remains byte-for-byte equivalent for:
+  - API endpoint and request body
+  - validation rules and error messages
+  - loading/error state behavior
+  - role check and storeAdminAuth call
+  - navigation routes (`/admin` and back-to-user `/`)
+- [ ] Keep event handlers and state variables intact (only UI wiring that does not affect submit)
+- [ ] Add UI-only elements (Remember Me checkbox, Forgot Password link UI-only)
+- [ ] Verify build/tests run successfully
 
