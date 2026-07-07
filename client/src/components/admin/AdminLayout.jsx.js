@@ -107,7 +107,8 @@ const AdminLayout = () => {
       {/* 🔥 SIDEBAR */}
       <div className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,16rem)] lg:w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transition-transform duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 lg:sticky lg:top-0 lg:h-dvh`}>
+      } lg:translate-x-0 lg:h-dvh`}>
+
         
         {/* Logo */}
         <div className="p-6 border-b border-slate-700 flex items-center gap-3">
