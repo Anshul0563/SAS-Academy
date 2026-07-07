@@ -50,10 +50,12 @@ const AdminResults = () => {
     try {
       const token = getAdminAuthToken();
       console.log('delete token present?', Boolean(token));
+      console.log('delete token length?', token?.length);
 
       const res = await API.delete(`/results/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
 
 
       // Refresh current filter
