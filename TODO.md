@@ -1,7 +1,7 @@
 # TODO
 
 ## UI/UX Redesign - Admin & Student Login
-- [ ] Redesign Admin login page UI/UX (client/src/Pages/AdminLogin.js)
+- [x] Redesign Admin login page UI/UX (client/src/Pages/AdminLogin.js)
 
   - [ ] Two-panel/brand + form layout
   - [ ] Better inputs (focus, floating labels)
