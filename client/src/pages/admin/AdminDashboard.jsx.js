@@ -86,14 +86,11 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-          className="w-16 h-16 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full"
-        />
+        <div className="text-slate-400 text-sm">Loading...</div>
       </div>
     );
   }
+
 
   return (
     <div className="space-y-5 sm:space-y-6 lg:space-y-8">
