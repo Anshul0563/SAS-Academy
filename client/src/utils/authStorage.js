@@ -72,9 +72,14 @@ export const getAdminAuthToken = () => {
   const adminToken = localStorage.getItem("adminToken");
   if (adminToken) return adminToken;
 
+  // Backward compatibility: some flows may only store the legacy `token`.
   const adminUser = getStoredAdminUser();
-  if (adminUser?.role === "admin") {
-    return localStorage.getItem("token") || "";
+  const legacyToken = localStorage.getItem("token") || "";
+
+  // Accept legacy token if we can confirm the stored admin user or if there is any legacy token.
+  // This prevents accidental 401s caused by storage mismatch.
+  if (legacyToken && (!adminUser || adminUser?.role === "admin")) {
+    return legacyToken;
   }
 
   return "";
