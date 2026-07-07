@@ -47,8 +47,11 @@ const StatsCard = ({ title, value, change, icon: Icon, route, color = 'indigo' }
 
       {/* Click indicator */}
       {route && (
-        <div className="absolute inset-0 rounded-2xl bg-white/5 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        <div
+          className="absolute inset-0 rounded-2xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+        />
       )}
+
     </motion.div>
   );
 };

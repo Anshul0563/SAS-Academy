@@ -40,7 +40,7 @@ const AdminStudents = () => {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent sm:text-3xl">
-            👥 Students Management
+             Students Management
           </h1>
           <p className="text-slate-400">Manage student accounts and performance</p>
         </div>

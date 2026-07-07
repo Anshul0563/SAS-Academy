@@ -48,7 +48,7 @@ const AdminResults = () => {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent sm:text-3xl">
-            <span>📊</span> Results Analytics
+             Results Analytics
           </h1>
           <p className="text-slate-400">Student performance overview and insights</p>
         </div>
