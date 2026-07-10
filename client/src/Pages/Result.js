@@ -564,8 +564,8 @@ function Result() {
 
   if (!data) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-slate-950 text-white">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-emerald-400/30 border-t-emerald-300" />
+      <div className="sas-shell flex items-center justify-center text-white">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-cyan-300/30 border-t-cyan-300" />
       </div>
     );
   }
@@ -670,27 +670,27 @@ function Result() {
   };
 
   return (
-    <div className="min-h-dvh bg-[#020617] text-white">
+    <div className="sas-shell text-white">
       <div
         ref={resultRef}
         className="mx-auto flex max-w-7xl flex-col gap-5 px-3 py-5 sm:px-6 lg:px-8"
       >
-        <header className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+        <header className="sas-panel p-5 sm:p-6">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+              <p className="sas-kicker">
                 Typing Result
               </p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
                 Performance scorecard
               </h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
                 Review speed, accuracy, mistakes, and the word comparison for
                 this attempt.
               </p>
 
               <div
-                className={`mt-4 inline-flex max-w-full items-center gap-2 rounded-md border px-3 py-2 text-sm ${saveTone}`}
+                className={`mt-4 inline-flex max-w-full items-center gap-2 rounded-2xl border px-3 py-2 text-sm ${saveTone}`}
               >
                 {data.saved ? (
                   <CheckCircle2 size={16} className="shrink-0" />
@@ -739,7 +739,7 @@ function Result() {
             return (
               <div
                 key={item.label}
-                className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl"
+                className="sas-card p-4"
               >
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
@@ -757,7 +757,7 @@ function Result() {
         </section>
 
         <section className="grid gap-4 lg:grid-cols-[0.8fr_1.4fr]">
-          <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+          <div className="sas-card p-4">
             <h2 className="text-lg font-semibold">Scoring details</h2>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
@@ -808,7 +808,7 @@ function Result() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+          <div className="sas-card p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-lg font-semibold">Word comparison</h2>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-300">

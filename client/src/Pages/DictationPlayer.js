@@ -148,11 +148,11 @@ function DictationPlayer() {
     }
 
     return (
-        <div className="min-h-screen bg-[#020617] text-white px-4 py-6">
+        <div className="sas-shell px-4 py-6 text-white">
             <div className="mx-auto max-w-4xl space-y-5">
                 <button
                     onClick={() => navigate(-1)}
-                    className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"
+                    className="sas-button-secondary px-3 py-2"
                 >
                     <ArrowLeft size={16} />
                     Back
@@ -161,11 +161,11 @@ function DictationPlayer() {
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="rounded-2xl border border-white/10 bg-slate-900/70 p-5 shadow-2xl sm:p-8"
+                    className="sas-panel p-5 sm:p-8"
                 >
                     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                         <div className="flex items-start gap-3">
-                            <div className="rounded-xl bg-indigo-500/15 p-3 text-indigo-300">
+                            <div className="rounded-2xl bg-cyan-300/10 p-3 text-cyan-200">
                                 <Headphones />
                             </div>
                             <div>
@@ -176,14 +176,14 @@ function DictationPlayer() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-300">
+                        <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-slate-300">
                             <Clock size={16} />
                             {formatTime(currentTime)} / {formatTime(duration)}
                         </div>
                     </div>
 
                     {!audioSrc ? (
-                        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-200">
+                        <div className="rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-200">
                             No audio file is attached to this dictation.
                         </div>
                     ) : (
@@ -207,7 +207,7 @@ function DictationPlayer() {
                             />
 
                             {error && (
-                                <div className="mb-5 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-200">
+                                <div className="mb-5 rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-200">
                                     {error}
                                 </div>
                             )}
@@ -221,14 +221,14 @@ function DictationPlayer() {
                                     value={currentTime}
                                     onChange={seekTo}
                                     disabled={!ready}
-                                    className="w-full accent-indigo-500"
+                                    className="w-full accent-cyan-300"
                                 />
 
                                 <div className="flex items-center justify-center gap-3">
                                     <button
                                         onClick={() => seekBy(-10)}
                                         disabled={!ready}
-                                        className="rounded-full border border-white/10 bg-white/5 p-3 hover:bg-white/10 disabled:opacity-40"
+                                        className="rounded-full border border-white/10 bg-white/[0.05] p-3 transition hover:bg-white/10 disabled:opacity-40"
                                         aria-label="Rewind 10 seconds"
                                     >
                                         <RotateCcw size={20} />
@@ -237,7 +237,7 @@ function DictationPlayer() {
                                     <button
                                         onClick={togglePlay}
                                         disabled={!ready}
-                                        className="rounded-full bg-indigo-600 p-5 text-white shadow-lg hover:bg-indigo-500 disabled:opacity-40"
+                                        className="rounded-full bg-cyan-300 p-5 text-slate-950 shadow-[0_14px_34px_rgba(34,211,238,0.2)] transition hover:bg-cyan-200 disabled:opacity-40"
                                         aria-label={playing ? "Pause audio" : "Play audio"}
                                     >
                                         {playing ? <Pause size={28} /> : <Play size={28} />}
@@ -246,7 +246,7 @@ function DictationPlayer() {
                                     <button
                                         onClick={() => seekBy(10)}
                                         disabled={!ready}
-                                        className="rounded-full border border-white/10 bg-white/5 p-3 hover:bg-white/10 disabled:opacity-40"
+                                        className="rounded-full border border-white/10 bg-white/[0.05] p-3 transition hover:bg-white/10 disabled:opacity-40"
                                         aria-label="Forward 10 seconds"
                                     >
                                         <RotateCw size={20} />
@@ -254,12 +254,12 @@ function DictationPlayer() {
                                 </div>
 
                                 <div className="grid gap-4 sm:grid-cols-2">
-                                    <label className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                                    <label className="sas-card p-4 text-sm text-slate-300">
                                         Playback Speed
                                         <select
                                             value={playbackRate}
                                             onChange={(event) => setPlaybackRate(Number(event.target.value))}
-                                            className="mt-2 w-full rounded-lg border border-white/10 bg-slate-950 p-2 text-white outline-none"
+                                            className="sas-input mt-2 p-2"
                                         >
                                             {[0.75, 0.9, 1, 1.1, 1.25, 1.5].map((rate) => (
                                                 <option key={rate} value={rate}>{rate}x</option>
@@ -267,7 +267,7 @@ function DictationPlayer() {
                                         </select>
                                     </label>
 
-                                    <label className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                                    <label className="sas-card p-4 text-sm text-slate-300">
                                         <span className="flex items-center gap-2">
                                             <Volume2 size={16} />
                                             Volume {Math.round(volume * 100)}%
@@ -279,7 +279,7 @@ function DictationPlayer() {
                                             step="0.05"
                                             value={volume}
                                             onChange={(event) => setVolume(Number(event.target.value))}
-                                            className="mt-3 w-full accent-indigo-500"
+                                            className="mt-3 w-full accent-cyan-300"
                                         />
                                     </label>
                                 </div>

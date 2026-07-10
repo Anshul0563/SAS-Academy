@@ -78,24 +78,23 @@ function TypingTest() {
     };
 
     return (
-        <div className="min-h-dvh bg-[#020617] px-3 py-3 text-white sm:px-6 sm:py-4">
+        <div className="sas-shell px-3 py-3 text-white sm:px-6 sm:py-4">
 
-            {/* HEADER */}
-            <div className="mb-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+            <div className="sas-panel mb-4 flex flex-col items-start justify-between gap-3 p-4 sm:flex-row sm:items-center">
 
-                <h1 className="text-lg sm:text-xl font-bold">
+                <h1 className="text-lg font-bold sm:text-xl">
                     Typing Test
                 </h1>
 
                 <div className="flex items-center gap-3">
 
-                    <span className="bg-green-500 px-3 py-1 rounded text-xs sm:text-sm">
+                    <span className="rounded-xl bg-emerald-300 px-3 py-1 text-xs font-semibold text-slate-950 sm:text-sm">
                         {Math.floor(time / 60)}:{String(time % 60).padStart(2, "0")}
                     </span>
 
                     <button
                         onClick={handleExit}
-                        className="bg-red-500 px-3 py-1 rounded text-xs sm:text-sm hover:bg-red-600"
+                        className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-1 text-xs text-red-100 transition hover:bg-red-500/20 sm:text-sm"
                     >
                         Exit
                     </button>
@@ -104,18 +103,16 @@ function TypingTest() {
 
             </div>
 
-            {/* STATS */}
-            <div className="mb-4 flex flex-wrap gap-2 text-xs text-gray-300 sm:gap-4 sm:text-sm">
+            <div className="mb-4 flex flex-wrap gap-2 text-xs text-slate-300 sm:gap-3 sm:text-sm">
 
-                <span>Words: {words}</span>
-                <span>Keystrokes: {keystrokes}</span>
-                <span>Gross WPM: {liveWpm}</span>
-                <span>Backspace: {backspaceCount}</span>
+                <span className="rounded-full bg-white/[0.06] px-3 py-1">Words: {words}</span>
+                <span className="rounded-full bg-white/[0.06] px-3 py-1">Keystrokes: {keystrokes}</span>
+                <span className="rounded-full bg-white/[0.06] px-3 py-1">Gross WPM: {liveWpm}</span>
+                <span className="rounded-full bg-white/[0.06] px-3 py-1">Backspace: {backspaceCount}</span>
 
             </div>
 
-            {/* TEXT AREA */}
-            <div className="rounded-xl border border-white/10 bg-[#020617]/80 p-3 shadow-xl backdrop-blur-xl sm:rounded-2xl sm:p-5">
+            <div className="sas-panel p-3 sm:p-5">
 
                 <textarea
                     value={inputText}
@@ -138,18 +135,17 @@ function TypingTest() {
                         }
                     }}
                     placeholder="Start typing here..."
-                    className="h-[58vh] w-full resize-none bg-transparent text-sm outline-none sm:h-[62vh] sm:text-base md:h-[65vh]"
+                    className="h-[58vh] w-full resize-none bg-transparent text-sm leading-8 text-slate-100 outline-none placeholder:text-slate-500 sm:h-[62vh] sm:text-base md:h-[65vh]"
                     style={{ fontSize: `${settings.fontSize || 20}px` }}
                 />
 
             </div>
 
-            {/* SUBMIT */}
             <div className="flex justify-center mt-6">
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 p-3 text-sm font-semibold transition hover:bg-green-600 sm:w-[60%] sm:text-lg lg:w-[30%]"
+                    className="sas-button-primary w-full p-3 text-sm sm:w-[60%] sm:text-lg lg:w-[30%]"
                 >
                     Submit Test
                 </button>

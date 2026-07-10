@@ -134,7 +134,7 @@ function TestSettings() {
     return (
         <div className="text-white">
             <div className="mx-auto max-w-6xl space-y-5">
-                <header className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+                <header className="sas-panel p-5 sm:p-6">
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                         <div>
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">Typing setup</p>
@@ -146,7 +146,7 @@ function TestSettings() {
 
                         <button
                             onClick={handleStart}
-                            className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+                            className="inline-flex items-center justify-center gap-2 sas-button-primary px-5"
                         >
                             Start Test <ArrowRight size={18} />
                         </button>
@@ -157,7 +157,7 @@ function TestSettings() {
                     <motion.div
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl"
+                        className="sas-card p-4"
                     >
                         <div className="flex items-center gap-2">
                             <SlidersHorizontal size={18} className="text-emerald-300" />
@@ -200,7 +200,7 @@ function TestSettings() {
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.05 }}
-                        className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl"
+                        className="sas-card p-4"
                     >
                         <div className="flex items-center gap-2">
                             <Shield size={18} className="text-sky-300" />
@@ -278,7 +278,7 @@ function TestSettings() {
                 </section>
 
                 <section className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-                    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+                    <div className="sas-card p-4">
                         <div className="flex items-center gap-2">
                             <Clock3 size={18} className="text-amber-200" />
                             <h2 className="text-lg font-semibold">Timing and Reading</h2>
@@ -324,7 +324,7 @@ function TestSettings() {
                         </div>
                     </div>
 
-                    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+                    <div className="sas-card p-4">
                         <div className="flex items-center gap-2">
                             <Type size={18} className="text-violet-200" />
                             <h2 className="text-lg font-semibold">Live Preview</h2>
@@ -364,7 +364,7 @@ function TestSettings() {
                         </p>
                         <button
                             onClick={handleStart}
-                            className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+                            className="inline-flex items-center justify-center gap-2 sas-button-primary px-5"
                         >
                             Start Test <ArrowRight size={18} />
                         </button>

@@ -57,7 +57,7 @@ function SscStenoList() {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-5 text-white">
-      <header className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-6">
+      <header className="sas-card p-4 sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
@@ -88,7 +88,7 @@ function SscStenoList() {
         </div>
       </header>
 
-      <section className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+      <section className="sas-card p-4">
         <div className="grid gap-3 lg:grid-cols-[1fr_auto_auto]">
           <label className="relative block">
             <Search
@@ -135,7 +135,7 @@ function SscStenoList() {
               onClick={() => setCategory(item)}
               className={`shrink-0 rounded-md px-3 py-2 text-xs font-semibold transition ${
                 category === item
-                  ? "bg-indigo-600 text-white"
+                  ? "bg-cyan-300 text-slate-950"
                   : "border border-white/10 text-slate-300 hover:bg-white/10"
               }`}
             >
@@ -152,7 +152,7 @@ function SscStenoList() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.03 }}
-            className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl transition hover:border-emerald-300/30 hover:bg-white/[0.06] sm:p-5"
+            className="sas-card p-4 transition hover:border-emerald-300/30 hover:bg-white/[0.06] sm:p-5"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -174,7 +174,7 @@ function SscStenoList() {
 
               <button
                 onClick={() => navigate(`/typing-learning/ssc-steno/${paragraph.id}`)}
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold transition hover:bg-emerald-500"
+                className="sas-button-primary shrink-0 px-4"
               >
                 Start
                 <ArrowRight size={16} />
@@ -194,7 +194,7 @@ function SscStenoList() {
       </section>
 
       {!filteredParagraphs.length && (
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-6 text-sm text-slate-400">
+        <div className="sas-card p-6 text-sm text-slate-400">
           No SSC Steno paragraph matched the selected filters.
         </div>
       )}

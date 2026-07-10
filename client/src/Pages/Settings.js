@@ -64,7 +64,7 @@ function Settings() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-5 text-white">
-      <header className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+      <header className="sas-panel p-5 sm:p-6">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-500/15 text-indigo-300">
             <SettingsIcon size={22} />
@@ -83,7 +83,7 @@ function Settings() {
       )}
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+        <div className="sas-card p-4 sm:p-5">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <Type size={18} className="text-emerald-300" />
             Typing Defaults
@@ -127,7 +127,7 @@ function Settings() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+        <div className="sas-card p-4 sm:p-5">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <SlidersHorizontal size={18} className="text-sky-300" />
             Review Rules
@@ -178,7 +178,7 @@ function Settings() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+      <section className="sas-card p-4 sm:p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold">Local Data</h2>
@@ -204,7 +204,7 @@ function Settings() {
           </button>
           <button
             onClick={handleSave}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+            className="inline-flex items-center justify-center gap-2 sas-button-primary px-5"
           >
             <Save size={17} />
             Save Settings

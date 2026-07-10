@@ -46,34 +46,30 @@ function TranscriptionView() {
     }, [id]);
 
     return (
-        <div className="min-h-dvh bg-[#020617] px-3 text-white sm:px-6">
+        <div className="sas-shell px-3 text-white sm:px-6">
 
-            {/* HEADER */}
             <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 py-4 sm:flex-row sm:items-center">
 
-                {/* BACK */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-2 text-gray-400 hover:text-white transition text-sm sm:text-base"
+                    className="sas-button-secondary px-3 py-2"
                 >
                     <ChevronLeft size={18} />
                     Back
                 </button>
 
-                {/* TITLE */}
                 <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-                    <FileText className="text-indigo-400" size={18} />
+                    <FileText className="text-cyan-300" size={18} />
                     <h1 className="text-base sm:text-xl font-bold">
                         Transcription Preview
                     </h1>
                 </div>
 
-                {/* FONT CONTROLS */}
-                <div className="flex items-center gap-2 sm:gap-3 bg-white/5 px-3 py-2 rounded-xl border border-white/10">
+                <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-2 sm:gap-3">
 
                     <button
                         onClick={() => setFontSize(Math.max(14, fontSize - 2))}
-                        className="hover:bg-white/10 p-2 rounded"
+                        className="rounded-xl p-2 transition hover:bg-white/10"
                     >
                         <ZoomOut size={16} />
                     </button>
@@ -82,7 +78,7 @@ function TranscriptionView() {
 
                     <button
                         onClick={() => setFontSize(Math.min(36, fontSize + 2))}
-                        className="hover:bg-white/10 p-2 rounded"
+                        className="rounded-xl p-2 transition hover:bg-white/10"
                     >
                         <ZoomIn size={16} />
                     </button>
@@ -91,13 +87,12 @@ function TranscriptionView() {
 
             </div>
 
-            {/* CONTENT */}
             <div className="max-w-5xl mx-auto pb-8">
 
                 {loading ? (
                     <div className="flex flex-col items-center justify-center h-[50vh]">
-                        <div className="w-12 h-12 border-4 border-gray-700 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-                        <p className="text-gray-400 text-sm sm:text-base">
+                        <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-slate-700 border-t-cyan-300"></div>
+                        <p className="text-sm text-slate-400 sm:text-base">
                             Loading passage...
                         </p>
                     </div>
@@ -105,7 +100,7 @@ function TranscriptionView() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="max-h-[65vh] overflow-y-auto rounded-xl border border-white/10 bg-white/5 p-4 shadow-xl sm:max-h-[70vh] sm:rounded-2xl sm:p-6 md:p-8 lg:p-10"
+                        className="sas-panel max-h-[65vh] overflow-y-auto p-4 sm:max-h-[70vh] sm:p-6 md:p-8 lg:p-10"
                         style={{
                             fontSize: `${fontSize}px`,
                             lineHeight: 1.8,
@@ -113,7 +108,7 @@ function TranscriptionView() {
                         }}
                     >
 
-                        <div className="text-gray-100 text-justify space-y-4">
+                        <div className="space-y-4 text-justify text-slate-100">
 
                             {text.split("\n").map((line, i) => (
                                 <p key={i}>
@@ -128,8 +123,7 @@ function TranscriptionView() {
 
             </div>
 
-            {/* FOOTER */}
-            <div className="text-center text-gray-500 text-xs sm:text-sm pb-6">
+            <div className="pb-6 text-center text-xs text-slate-500 sm:text-sm">
                 Tip: Adjust font size for better readability
             </div>
 

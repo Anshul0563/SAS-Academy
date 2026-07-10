@@ -211,7 +211,7 @@ function TypingLearning() {
   return (
     <div ref={containerRef} className="min-h-dvh text-white">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:gap-5">
-        <header className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-6">
+        <header className="sas-card p-4 sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
@@ -233,7 +233,7 @@ function TypingLearning() {
                   onClick={() => setActiveTab(tab)}
                   className={`shrink-0 rounded-lg px-4 py-2 text-sm font-semibold transition ${
                     activeTab === tab
-                      ? "bg-indigo-600 text-white"
+                      ? "bg-cyan-300 text-slate-950"
                       : "border border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/10"
                   }`}
                 >
@@ -359,7 +359,7 @@ function DashboardPanel({ progress, leaderboard, stats, onStart }) {
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={() => onStart("practice")}
-                className="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500"
+                className="sas-button-primary px-6"
               >
                 Start Practice
               </button>
@@ -515,7 +515,7 @@ function PracticePanel({
                   onClick={() => onLanguageChange(item)}
                   className={`rounded-2xl px-5 py-2.5 text-sm font-semibold capitalize transition ${
                     language === item
-                      ? "bg-indigo-600 text-white"
+                      ? "bg-cyan-300 text-slate-950"
                       : "border border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/10"
                   }`}
                 >
@@ -766,7 +766,7 @@ function CharacterDisplay({ source, typed }) {
 function LessonsPanel({ nextCharacter, language }) {
   return (
     <section className="grid min-w-0 gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-      <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+      <div className="min-w-0 sas-card p-4 sm:p-5">
         <div className="flex items-start gap-3 sm:items-center">
           <span className="flex h-10 w-10 items-center justify-center rounded-md bg-emerald-400/10 text-emerald-300">
             <CheckCircle2 size={19} />
@@ -802,7 +802,7 @@ function LessonsPanel({ nextCharacter, language }) {
 
       <div className="min-w-0 flex flex-col gap-4">
         <VirtualKeyboard activeKey={nextCharacter} />
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+        <div className="sas-card p-4 sm:p-5">
           <div className="flex items-start gap-3 sm:items-center">
             <Languages className="text-sky-300" size={19} />
             <h2 className="text-lg font-semibold">Hindi + English support</h2>
@@ -827,7 +827,7 @@ function AnalyticsPanel({ progress, coach, leaderboard, liveWeakKeys }) {
           tips={coach.tips}
           trend={coach.trend}
         />
-        <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+        <div className="sas-card p-4 sm:p-5">
           <h2 className="text-lg font-semibold">User progress tracking</h2>
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             <ProgressStat
@@ -857,7 +857,7 @@ function AnalyticsPanel({ progress, coach, leaderboard, liveWeakKeys }) {
 
 function CoachCard({ headline, weakKeys = [], tips = [], trend }) {
   return (
-    <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+    <div className="min-w-0 sas-card p-4 sm:p-5">
       <div className="flex items-start gap-3 sm:items-center">
         <span className="flex h-10 w-10 items-center justify-center rounded-md bg-fuchsia-400/10 text-fuchsia-200">
           <Brain size={19} />
@@ -904,7 +904,7 @@ function CoachCard({ headline, weakKeys = [], tips = [], trend }) {
 
 function VirtualKeyboard({ activeKey }) {
   return (
-    <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+    <div className="min-w-0 sas-card p-4 sm:p-5">
       <div className="flex items-center gap-3">
         <Keyboard className="text-emerald-300" size={19} />
         <h2 className="text-lg font-semibold">Virtual keyboard</h2>
@@ -942,7 +942,7 @@ function VirtualKeyboard({ activeKey }) {
 
 function LeaderboardPanel({ leaderboard, compact = false }) {
   return (
-    <div className="min-w-0 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+    <div className="min-w-0 sas-card p-4 sm:p-5">
       <div className="flex items-start gap-3 sm:items-center">
         <span className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-400/10 text-amber-200">
           <Trophy size={19} />

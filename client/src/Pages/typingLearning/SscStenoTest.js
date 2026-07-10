@@ -397,7 +397,7 @@ function InfoPanel({ paragraph, backspaces }) {
   ];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+    <div className="sas-card p-4">
       <h2 className="text-lg font-semibold">Exam details</h2>
       <div className="mt-4 grid grid-cols-2 gap-2">
         {items.map(([label, value]) => (
@@ -418,7 +418,7 @@ function InfoPanel({ paragraph, backspaces }) {
 
 function LiveMistakes({ stats }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl">
+    <div className="sas-card p-4">
       <h2 className="text-lg font-semibold">Live error tracking</h2>
       <div className="mt-4 flex flex-wrap gap-2">
         {stats.weakKeys.length ? (
@@ -441,7 +441,7 @@ function LiveMistakes({ stats }) {
 function ResultAnalytics({ stats, suggestions, paragraph }) {
   return (
     <section className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+      <div className="sas-card p-4 sm:p-5">
         <div className="flex items-center gap-3">
           <CheckCircle2 className="text-emerald-300" size={20} />
           <h2 className="text-xl font-semibold">Result analytics</h2>
@@ -481,7 +481,7 @@ function ResultAnalytics({ stats, suggestions, paragraph }) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+      <div className="sas-card p-4 sm:p-5">
         <div className="flex items-center gap-3">
           <Brain className="text-fuchsia-200" size={20} />
           <h2 className="text-xl font-semibold">Smart performance analysis</h2>
