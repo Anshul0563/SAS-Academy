@@ -11,7 +11,8 @@ import {
     Mic2,
     Bell,
     Menu,
-    Settings
+    Settings,
+    LogOut
 } from "lucide-react";
 
 function Layout() {
@@ -57,35 +58,30 @@ function Layout() {
     }, []);
 
     return (
-        <div className="flex min-h-dvh bg-[#030712] text-white overflow-x-hidden">
+        <div className="sas-shell flex overflow-x-hidden">
 
-            {/* 🔥 BACKGROUND GLOW */}
-            <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_#1e293b,_#020617)]"></div>
-
-            {/* 🔥 SIDEBAR */}
             {!examMode && (
                 <div
                     className={`fixed inset-y-0 left-0 z-50 w-[min(80vw,16rem)] md:w-64 h-dvh
-                    bg-white/5 backdrop-blur-2xl
-                    border-r border-white/10
-                    shadow-[0_0_40px_rgba(0,0,0,0.6)]
+                    border-r border-white/10 bg-slate-950/78 backdrop-blur-2xl
+                    shadow-[24px_0_70px_rgba(0,0,0,0.26)]
                     transition-transform duration-300
                     ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
                 >
 
-                    {/* LOGO */}
-                    <div className="px-6 py-6 flex items-center gap-3">
+                    <div className="px-5 py-5 flex items-center gap-3 border-b border-white/10">
                         <img
                             src="/logo.png"
                             alt="SAS Academy"
-                            className="w-9 h-9 object-cover rounded-full"
+                            className="h-10 w-10 rounded-2xl border border-white/10 bg-white/[0.06] object-contain p-1.5"
                         />
-                        <div className="text-xl font-semibold tracking-wide text-indigo-400">SAS Academy</div>
+                        <div>
+                            <div className="text-lg font-semibold text-white">SAS Academy</div>
+                            <div className="text-xs text-slate-500">Practice Console</div>
+                        </div>
                     </div>
 
-
-                    {/* MENU */}
-                    <div className="px-3 space-y-2">
+                    <div className="px-3 py-5 space-y-1.5">
                         {menu.map((item, i) => {
                             const Icon = item.icon;
                             const active = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
@@ -97,17 +93,17 @@ function Layout() {
                                             navigate(item.path);
                                             setSidebarOpen(false);
                                         }}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-300
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer transition-all duration-200
                                         ${active
-                                                ? "bg-indigo-500/20 text-indigo-400 shadow-inner"
-                                                : "text-gray-400 hover:bg-white/10 hover:text-white hover:translate-x-1"
+                                                ? "border border-cyan-300/15 bg-cyan-300/10 text-cyan-100 shadow-[0_12px_28px_rgba(34,211,238,0.08)]"
+                                                : "text-slate-400 hover:bg-white/[0.06] hover:text-white"
                                             }`}
                                     >
                                         <Icon size={18} />
-                                        <span>{item.name}</span>
+                                        <span className="text-sm font-medium">{item.name}</span>
                                     </div>
                                     {item.children && active && (
-                                        <div className="mt-1 space-y-1 pl-7">
+                                        <div className="mt-1 space-y-1 pl-5">
                                             {item.children.map((child) => {
                                                 const ChildIcon = child.icon;
                                                 const childActive = location.pathname === child.path || location.pathname.startsWith(`${child.path}/`);
@@ -119,10 +115,10 @@ function Layout() {
                                                             navigate(child.path);
                                                             setSidebarOpen(false);
                                                         }}
-                                                        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm cursor-pointer transition
+                                                        className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm cursor-pointer transition
                                                         ${childActive
-                                                                ? "bg-emerald-500/15 text-emerald-300"
-                                                                : "text-gray-500 hover:bg-white/10 hover:text-white"
+                                                                ? "bg-emerald-400/10 text-emerald-200"
+                                                                : "text-slate-500 hover:bg-white/[0.06] hover:text-white"
                                                             }`}
                                                     >
                                                         <ChildIcon size={15} />
@@ -140,7 +136,6 @@ function Layout() {
                 </div>
             )}
 
-            {/* 🔥 MAIN */}
             {sidebarOpen && !examMode && (
                 <div
                     className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
@@ -150,45 +145,43 @@ function Layout() {
 
             <div className="flex-1 flex min-w-0 flex-col md:ml-64">
 
-
-                {/* 🔥 FLOATING TOPBAR */}
                 {!examMode && (
-                    <div className="sticky top-0 z-30 mx-3 mt-3 rounded-xl
-                        bg-white/5 backdrop-blur-xl border border-white/10
-                        shadow-lg px-3 py-3 sm:mx-4 sm:px-5 flex justify-between items-center">
+                    <div className="sticky top-0 z-30 mx-3 mt-3 rounded-2xl
+                        border border-white/10 bg-slate-950/65 backdrop-blur-xl
+                        shadow-[0_16px_42px_rgba(0,0,0,0.18)] px-3 py-3 sm:mx-4 sm:px-5 flex justify-between items-center">
 
-                        {/* LEFT */}
                         <div className="flex items-center gap-3">
-                            <Menu
-                                className="cursor-pointer md:hidden"
+                            <button
+                                className="grid h-10 w-10 place-items-center rounded-xl bg-white/[0.06] text-slate-200 md:hidden"
                                 onClick={() => setSidebarOpen(true)}
-                            />
-                            <h1 className="truncate text-sm text-gray-300 capitalize">
-                                {location.pathname.replace("/", "") || "dashboard"}
-                            </h1>
+                            >
+                                <Menu size={19} />
+                            </button>
+                            <div>
+                                <p className="sas-kicker hidden sm:block">Workspace</p>
+                                <h1 className="truncate text-sm font-semibold capitalize text-white sm:text-base">
+                                    {(location.pathname.replace("/", "").replaceAll("/", " / ") || "dashboard")}
+                                </h1>
+                            </div>
                         </div>
 
-                        {/* RIGHT */}
                         <div className="flex shrink-0 items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
 
-                            {/* 🔔 */}
-                            <div className="p-2 rounded-full bg-white/10 hover:bg-white/20 cursor-pointer transition">
+                            <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/[0.06] text-slate-300 transition hover:bg-white/[0.1]">
                                 <Bell size={16} />
                             </div>
 
-                            {/* 👤 USER */}
                             <div
                                 onClick={() => setOpen(!open)}
-                                className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center cursor-pointer shadow-lg"
+                                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-cyan-300 text-sm font-bold text-slate-950 shadow-[0_12px_28px_rgba(34,211,238,0.18)]"
                             >
                                 {userData.name ? userData.name[0] : "U"}
                             </div>
 
-                            {/* DROPDOWN */}
                             {open && (
-                                <div className="absolute right-0 top-12 w-48 bg-[#020617]/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+                                <div className="absolute right-0 top-12 w-52 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-xl">
 
-                                    <div className="px-4 py-3 text-xs text-gray-400 border-b border-white/10">
+                                    <div className="border-b border-white/10 px-4 py-3 text-xs text-slate-400">
                                         {userData.email || "No email"}
                                     </div>
 
@@ -197,15 +190,17 @@ function Layout() {
                                             navigate("/settings");
                                             setOpen(false);
                                         }}
-                                        className="px-4 py-3 text-slate-300 cursor-pointer hover:bg-white/10 transition"
+                                        className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm text-slate-300 transition hover:bg-white/[0.06]"
                                     >
+                                        <Settings size={16} />
                                         Settings
                                     </div>
 
                                     <div
                                         onClick={handleLogout}
-                                        className="px-4 py-3 text-red-400 cursor-pointer hover:bg-red-500/10 transition"
+                                        className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm text-red-300 transition hover:bg-red-500/10"
                                     >
+                                        <LogOut size={16} />
                                         Logout
                                     </div>
 
@@ -217,7 +212,6 @@ function Layout() {
                     </div>
                 )}
 
-                {/* CONTENT */}
                 <main className="min-w-0 flex-1 p-3 pt-4 sm:p-5 lg:p-6">
                     <Outlet />
                 </main>
