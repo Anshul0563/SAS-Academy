@@ -39,7 +39,7 @@ function Layout() {
                 { name: "SSC Steno Test", icon: Mic2, path: "/typing-learning/ssc-steno" },
             ],
         },
-        { name: "Settings", icon: Settings, path: "/settings" },
+        
     ];
 
     const handleLogout = () => {
