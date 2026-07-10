@@ -19,9 +19,24 @@ function Auth() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const canSubmit = isLogin
+    ? email.trim() && password
+    : name.trim() && email.trim() && password;
+
+  const switchMode = (mode) => {
+    setIsLogin(mode === "login");
+    setError("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+
+    if (!canSubmit) {
+      setError("Please fill all fields.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -78,45 +93,33 @@ function Auth() {
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        <div className="sas-panel sas-glass-edge relative grid overflow-hidden rounded-[2rem] p-0 md:grid-cols-[0.95fr_1fr]">
-          <div className="relative hidden min-h-[600px] overflow-hidden border-r border-white/10 p-8 md:flex md:flex-col md:justify-between">
+        <div className="sas-panel sas-glass-edge relative grid overflow-hidden rounded-[2rem] p-0 md:grid-cols-[0.82fr_1fr]">
+          <div className="relative hidden min-h-[560px] overflow-hidden border-r border-white/10 p-8 md:grid md:place-items-center">
             <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(34,211,238,0.28),transparent_34%),radial-gradient(circle_at_78%_80%,rgba(167,139,250,0.18),transparent_34%)]" />
             <div aria-hidden="true" className="absolute inset-8 rounded-[2rem] border border-white/10" />
+            <motion.div
+              aria-hidden="true"
+              className="absolute h-72 w-72 rounded-full border border-cyan-200/10"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              aria-hidden="true"
+              className="absolute h-48 w-48 rounded-full border border-emerald-200/10"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
 
-            <div className="relative">
-              <div className="flex items-center gap-3">
-                <div className="grid h-14 w-14 place-items-center rounded-3xl border border-white/10 bg-white/[0.08] shadow-inner">
-                  <img src="/logo.png" alt="SAS Academy" className="h-9 w-9 object-contain" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-400">SAS Academy</p>
-                  <h1 className="text-2xl font-semibold text-white">Practice Portal</h1>
-                </div>
+            <div className="relative text-center">
+              <div className="mx-auto grid h-28 w-28 place-items-center rounded-[2rem] border border-white/10 bg-white/[0.08] shadow-[0_24px_80px_rgba(34,211,238,0.14)] backdrop-blur-xl">
+                <img src="/logo.png" alt="SAS Academy" className="h-20 w-20 object-contain" />
               </div>
-
-              <div className="mt-14 max-w-sm">
-                <p className="sas-kicker">Typing Lab</p>
-                <h2 className="mt-4 text-4xl font-bold leading-tight tracking-tight text-white">
-                  Faster practice, cleaner focus.
-                </h2>
-              </div>
-            </div>
-
-            <div className="relative grid grid-cols-3 gap-3">
-              {["Speed", "Accuracy", "Focus"].map((item, index) => (
-                <motion.div
-                  key={item}
-                  className="rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-center text-sm font-semibold text-slate-200"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 3 + index * 0.35, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  {item}
-                </motion.div>
-              ))}
+              <h1 className="mt-6 text-3xl font-semibold text-white">SAS Academy</h1>
+              <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-200" />
             </div>
           </div>
 
-          <div className="relative flex min-h-[580px] items-center p-5 sm:p-8">
+          <div className="relative flex min-h-[540px] items-center p-5 sm:p-8">
             <div className="mx-auto w-full max-w-sm">
               <div className="mb-8 md:hidden">
                 <div className="flex items-center gap-3">
@@ -130,11 +133,32 @@ function Auth() {
                 </div>
               </div>
 
-              <div className="mb-7 hidden md:block">
-                <p className="sas-kicker">{isLogin ? "Student Login" : "Create Account"}</p>
+              <div className="mb-7">
+                <p className="sas-kicker hidden md:block">Student Access</p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">
-                  {isLogin ? "Welcome back" : "Start practicing"}
+                  {isLogin ? "Login" : "Register"}
                 </h2>
+
+                <div className="mt-5 grid grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
+                  <button
+                    type="button"
+                    onClick={() => switchMode("login")}
+                    className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                      isLogin ? "bg-cyan-300 text-slate-950" : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    Login
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => switchMode("register")}
+                    className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                      !isLogin ? "bg-cyan-300 text-slate-950" : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    Register
+                  </button>
+                </div>
               </div>
 
               <AnimatePresence mode="wait">
@@ -164,10 +188,13 @@ function Auth() {
                     <span className="relative block">
                       <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                       <input
+                        name="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="sas-input h-[54px] pl-11"
                         placeholder="Your name"
+                        autoComplete="name"
+                        required={!isLogin}
                       />
                     </span>
                   </label>
@@ -178,11 +205,14 @@ function Auth() {
                   <span className="relative block">
                     <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                     <input
+                      name="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="sas-input h-[54px] pl-11"
                       placeholder="student@example.com"
+                      autoComplete="email"
+                      required
                     />
                   </span>
                 </label>
@@ -192,11 +222,14 @@ function Auth() {
                   <span className="relative block">
                     <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                     <input
+                      name="password"
                       type={showPass ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="sas-input h-[54px] pl-11 pr-14"
                       placeholder="Enter password"
+                      autoComplete={isLogin ? "current-password" : "new-password"}
+                      required
                     />
                     <button
                       type="button"
@@ -211,25 +244,14 @@ function Auth() {
 
                 <motion.button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !canSubmit}
                   whileHover={loading ? undefined : { y: -2 }}
                   whileTap={loading ? undefined : { scale: 0.985 }}
-                  className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-60"
+                  className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   {loading ? <Loader2 size={19} className="animate-spin" /> : null}
                   {loading ? "Please wait" : isLogin ? "Login" : "Register"}
                 </motion.button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsLogin(!isLogin);
-                    setError("");
-                  }}
-                  className="sas-button-secondary h-12 w-full"
-                >
-                  {isLogin ? "Create an account" : "Already have an account? Login"}
-                </button>
               </form>
             </div>
           </div>
