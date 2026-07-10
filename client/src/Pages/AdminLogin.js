@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
     Shield,
     KeyRound,
-    Building2,
     Sparkles,
     LayoutDashboard,
     Users,
