@@ -86,8 +86,8 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center px-4">
-        <div className="flex items-center gap-3 rounded-2xl border border-slate-700/50 bg-slate-900/50 backdrop-blur-xl px-4 py-3 shadow-2xl">
-          <div className="w-5 h-5 border-2 border-emerald-500/40 border-t-emerald-500 rounded-full animate-spin" />
+        <div className="sas-panel flex items-center gap-3 px-4 py-3">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-cyan-300/30 border-t-cyan-300" />
           <div className="text-slate-200 text-sm font-medium">Loading dashboard...</div>
         </div>
       </div>
@@ -106,8 +106,9 @@ const AdminDashboard = () => {
         className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
       >
         <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-indigo-100 to-slate-200 bg-clip-text text-transparent sm:text-3xl lg:text-4xl">
-            Welcome back, {dashboardData.adminName} 👋
+          <p className="sas-kicker">Overview</p>
+          <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+            Welcome back, {dashboardData.adminName}
           </h1>
           <p className="text-slate-400 mt-2">Your academy overview at a glance</p>
         </div>
@@ -115,7 +116,7 @@ const AdminDashboard = () => {
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-medium text-white shadow-xl transition-all hover:bg-emerald-700 sm:px-6"
+            className="sas-button-primary sm:px-6"
             onClick={() => navigate('/admin/add-test')}
           >
             <Plus className="w-4 h-4" />
@@ -124,7 +125,7 @@ const AdminDashboard = () => {
           
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="flex items-center justify-center gap-2 rounded-xl border border-slate-600 px-4 py-3 text-sm font-medium text-slate-300 transition-all hover:bg-slate-800 hover:text-white sm:px-6"
+            className="sas-button-secondary sm:px-6"
           >
             <Download className="w-4 h-4" />
             Export Report
@@ -175,10 +176,10 @@ const AdminDashboard = () => {
         className="grid grid-cols-1 gap-5 xl:grid-cols-2 lg:gap-8"
       >
         {/* Performance Chart */}
-        <div className="flex flex-col rounded-2xl border border-slate-700/50 bg-slate-900/50 p-4 shadow-2xl backdrop-blur-xl sm:p-6 lg:p-8">
+        <div className="sas-panel flex flex-col p-4 sm:p-6 lg:p-8">
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-lg font-bold text-white sm:text-xl">Performance Trend</h2>
-            <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">
+            <span className="rounded-full bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-200">
               +{dashboardData.testGrowth || 12.4}% growth
             </span>
           </div>
@@ -186,7 +187,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <div className="flex flex-col rounded-2xl border border-slate-700/50 bg-slate-900/50 p-4 shadow-2xl backdrop-blur-xl sm:p-6 lg:p-8">
+        <div className="sas-panel flex flex-col p-4 sm:p-6 lg:p-8">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-lg font-bold text-white sm:text-xl">Recent Activity</h2>
             <span className="text-xs text-slate-400">Live updates</span>
@@ -201,7 +202,7 @@ const AdminDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         className="grid grid-cols-1 gap-4 md:grid-cols-3"
       >
-        <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 p-5 sm:p-6 lg:p-8">
+        <div className="sas-card p-5 sm:p-6 lg:p-8">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 sm:h-16 sm:w-16">
               <TrendingUp className="w-8 h-8 text-emerald-400" />
@@ -213,7 +214,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-500/10 to-blue-600/10 p-5 sm:p-6 lg:p-8">
+        <div className="sas-card p-5 sm:p-6 lg:p-8">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/20 sm:h-16 sm:w-16">
               <Clock className="w-8 h-8 text-blue-400" />
@@ -226,7 +227,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/10 to-purple-600/10 p-5 sm:p-6 lg:p-8">
+        <div className="sas-card p-5 sm:p-6 lg:p-8">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-500/20 sm:h-16 sm:w-16">
               <Users className="w-8 h-8 text-purple-400" />

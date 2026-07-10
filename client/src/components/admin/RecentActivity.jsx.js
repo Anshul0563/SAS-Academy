@@ -43,9 +43,9 @@ const RecentActivity = ({ activities = [] }) => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="group flex items-start gap-3 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-700/50 transition-all cursor-pointer hover:shadow-lg"
+          className="sas-card sas-card-hover group flex cursor-pointer items-start gap-3 p-4"
         >
-          <div className="flex-shrink-0 w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mt-1">
+          <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-white/[0.06]">
 {getIcon(activity.type, activity.testType)}
           </div>
           
@@ -58,7 +58,7 @@ const RecentActivity = ({ activities = [] }) => {
             </p>
           </div>
           
-          <div className="flex flex-col items-end gap-1 text-xs text-slate-400 ml-auto">
+          <div className="ml-auto flex flex-col items-end gap-1 text-xs text-slate-400">
             <span>{activity.time || 'Just now'}</span>
             <Clock className="w-3 h-3" />
           </div>
@@ -66,8 +66,8 @@ const RecentActivity = ({ activities = [] }) => {
       ))}
       
       {recent.length === 0 && (
-        <div className="text-center py-8">
-          <div className="w-16 h-16 bg-slate-800/50 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <div className="py-8 text-center">
+          <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/[0.04]">
             <Activity className="w-8 h-8 text-slate-500" />
           </div>
           <p className="text-slate-400">No recent activity</p>
