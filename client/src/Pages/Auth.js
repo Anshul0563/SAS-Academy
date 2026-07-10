@@ -110,12 +110,19 @@ function Auth() {
                   {isLogin ? "Login" : "Register"}
                 </h2>
 
-                <div className="mt-4 grid grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
+                <div className="relative mt-4 grid grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
+                  <motion.span
+                    layout
+                    className={`absolute top-1 h-[calc(100%-8px)] w-[calc(50%-4px)] rounded-xl bg-cyan-300 shadow-[0_10px_26px_rgba(34,211,238,0.18)] ${
+                      isLogin ? "left-1" : "left-[calc(50%)]"
+                    }`}
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
                   <button
                     type="button"
                     onClick={() => switchMode("login")}
-                    className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
-                      isLogin ? "bg-cyan-300 text-slate-950" : "text-slate-400 hover:text-white"
+                    className={`relative z-10 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                      isLogin ? "text-slate-950" : "text-slate-400 hover:text-white"
                     }`}
                   >
                     Login
@@ -123,8 +130,8 @@ function Auth() {
                   <button
                     type="button"
                     onClick={() => switchMode("register")}
-                    className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
-                      !isLogin ? "bg-cyan-300 text-slate-950" : "text-slate-400 hover:text-white"
+                    className={`relative z-10 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                      !isLogin ? "text-slate-950" : "text-slate-400 hover:text-white"
                     }`}
                   >
                     Register
@@ -152,7 +159,7 @@ function Auth() {
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="relative h-[344px] overflow-hidden">
+              <form onSubmit={handleSubmit} className="relative h-[372px]">
                 <AnimatePresence mode="wait" initial={false}>
                   {isLogin ? (
                     <motion.div
@@ -161,7 +168,7 @@ function Auth() {
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
                       transition={{ duration: 0.24, ease: "easeOut" }}
-                      className="absolute inset-x-0 top-[34px] space-y-4"
+                      className="absolute inset-x-0 top-[48px] space-y-4"
                     >
                       <label className="block text-left">
                         <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
