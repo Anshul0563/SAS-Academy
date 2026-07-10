@@ -10,7 +10,6 @@ import {
     Loader2,
     Lock,
     Mail,
-    ShieldCheck,
 } from "lucide-react";
 
 import API from "../api/axios";
@@ -102,7 +101,7 @@ function AdminLogin() {
                 initial={{ opacity: 0, y: 18, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.55, ease: "easeOut" }}
-                className="relative w-full max-w-5xl"
+                className="relative w-full max-w-[430px]"
             >
                 <motion.div
                     aria-hidden="true"
@@ -111,76 +110,19 @@ function AdminLogin() {
                     transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
                 />
 
-                <div className="sas-panel sas-glass-edge relative grid overflow-hidden rounded-[2rem] p-0 md:grid-cols-[1fr_0.9fr]">
-                    <div className="relative hidden min-h-[610px] overflow-hidden border-r border-white/10 p-8 md:flex md:flex-col md:justify-between">
-                        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(34,211,238,0.28),transparent_34%),radial-gradient(circle_at_80%_75%,rgba(110,231,183,0.18),transparent_32%)]" />
-                        <div aria-hidden="true" className="absolute inset-8 rounded-[2rem] border border-white/10" />
-                        <div aria-hidden="true" className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-cyan-300/10 blur-3xl" />
-                        <div aria-hidden="true" className="absolute -bottom-24 right-4 h-80 w-80 rounded-full bg-emerald-300/10 blur-3xl" />
-
-                        <div className="relative">
-                            <div className="flex items-center gap-3">
-                                <div className="grid h-14 w-14 place-items-center rounded-full border border-white/10 bg-white/[0.08] shadow-inner">
-                                    <img src="/logo.png" alt="SAS Academy" className="h-9 w-9 rounded-full object-contain" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-slate-400">SAS Academy</p>
-                                    <h1 className="text-2xl font-semibold text-white">Admin Console</h1>
-                                </div>
-                            </div>
-
-                            <div className="mt-14 max-w-sm">
-                                <p className="sas-kicker">Secure Access</p>
-                                <h2 className="mt-4 text-4xl font-bold leading-tight tracking-tight text-white">
-                                    Manage tests with a sharper control room.
-                                </h2>
-                            </div>
-                        </div>
-
-                        <div className="relative rounded-[1.6rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl backdrop-blur-xl">
-                            <div className="mb-4 flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                                    <ShieldCheck size={17} className="text-emerald-200" />
-                                    Protected session
-                                </div>
-                                <span className="h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.9)]" />
-                            </div>
-                            <div className="space-y-3">
-                                {[78, 54, 88].map((width, index) => (
-                                    <motion.div
-                                        key={width}
-                                        className="h-2 rounded-full bg-white/10"
-                                        initial={{ opacity: 0.35 }}
-                                        animate={{ opacity: [0.35, 0.75, 0.35] }}
-                                        transition={{ duration: 2.2, repeat: Infinity, delay: index * 0.22 }}
-                                    >
-                                        <div
-                                            className="h-full rounded-full bg-gradient-to-r from-cyan-200 to-emerald-200"
-                                            style={{ width: `${width}%` }}
-                                        />
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="relative flex min-h-[580px] items-center p-5 sm:p-8">
+                <div className="sas-panel sas-glass-edge relative overflow-hidden rounded-[2rem] p-5 sm:p-8">
                         <div className="mx-auto w-full max-w-sm">
-                            <div className="mb-8 md:hidden">
-                                <div className="flex items-center gap-3">
-                                    <div className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06]">
-                                        <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 rounded-full object-contain" />
-                                    </div>
-                                    <div>
-                                        <h1 className="text-xl font-semibold text-white">SAS Academy</h1>
-                                        <p className="text-sm text-slate-400">Admin Login</p>
-                                    </div>
+                            <div className="mb-7 flex flex-col items-center text-center">
+                                <div className="grid h-20 w-20 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_20px_60px_rgba(34,211,238,0.16)]">
+                                    <img src="/logo.png" alt="SAS Academy" className="h-14 w-14 rounded-full object-contain" />
                                 </div>
+                                <h1 className="mt-4 text-2xl font-semibold leading-none text-white">SAS Academy</h1>
+                                <p className="mt-2 text-sm text-slate-400">Admin Panel</p>
+                                <div className="mt-4 h-px w-24 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
                             </div>
 
-                            <div className="mb-7 hidden md:block">
-                                <p className="sas-kicker">Admin Login</p>
-                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">Welcome back</h2>
+                            <div className="mb-7 text-center">
+                                <h2 className="text-3xl font-bold tracking-tight text-white">Login</h2>
                             </div>
 
                             <AnimatePresence mode="wait">
@@ -272,7 +214,6 @@ function AdminLogin() {
                             </form>
                         </div>
                     </div>
-                </div>
             </motion.section>
         </main>
     );

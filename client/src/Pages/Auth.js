@@ -84,7 +84,7 @@ function Auth() {
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="relative w-full max-w-5xl"
+        className="relative w-full max-w-[430px]"
       >
         <motion.div
           aria-hidden="true"
@@ -93,35 +93,18 @@ function Auth() {
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        <div className="sas-panel sas-glass-edge relative grid overflow-hidden rounded-[2rem] p-0 md:grid-cols-[0.82fr_1fr]">
-          <div className="relative hidden min-h-[560px] overflow-hidden border-r border-white/10 p-8 md:grid md:place-items-center">
-            <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(34,211,238,0.28),transparent_34%),radial-gradient(circle_at_78%_80%,rgba(167,139,250,0.18),transparent_34%)]" />
-
-            <div className="relative flex w-full max-w-xs flex-col items-center text-center">
-              <div className="mx-auto grid h-28 w-28 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_24px_80px_rgba(34,211,238,0.16)] backdrop-blur-xl">
-                <img src="/logo.png" alt="SAS Academy" className="h-20 w-20 rounded-full object-contain" />
-              </div>
-              <h1 className="mt-6 text-center text-3xl font-semibold leading-none text-white">SAS Academy</h1>
-              <div className="mt-5 h-1 w-24 rounded-full bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-200" />
-            </div>
-          </div>
-
-          <div className="relative flex min-h-[540px] items-start justify-center p-5 pt-8 sm:p-8 sm:pt-10">
-            <div className="mx-auto w-full max-w-[360px]">
-              <div className="mb-8 md:hidden">
-                <div className="flex items-center gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06]">
-                    <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 rounded-full object-contain" />
-                  </div>
-                  <div>
-                    <h1 className="text-xl font-semibold text-white">SAS Academy</h1>
-                    <p className="text-sm text-slate-400">{isLogin ? "Student Login" : "Create Account"}</p>
-                  </div>
+        <div className="sas-panel sas-glass-edge relative overflow-hidden rounded-[2rem] p-5 sm:p-8">
+          <div className="mx-auto w-full max-w-[360px]">
+              <div className="mb-7 flex flex-col items-center text-center">
+                <div className="grid h-20 w-20 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_20px_60px_rgba(34,211,238,0.16)]">
+                  <img src="/logo.png" alt="SAS Academy" className="h-14 w-14 rounded-full object-contain" />
                 </div>
+                <h1 className="mt-4 text-2xl font-semibold leading-none text-white">SAS Academy</h1>
+                <p className="mt-2 text-sm text-slate-400">Student Panel</p>
+                <div className="mt-4 h-px w-24 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
               </div>
 
               <div className="mb-7 text-center">
-                <p className="sas-kicker hidden md:block">Student Access</p>
                 <h2 className="mt-3 text-3xl font-bold leading-none tracking-tight text-white">
                   {isLogin ? "Login" : "Register"}
                 </h2>
