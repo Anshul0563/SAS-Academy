@@ -5,39 +5,41 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --sas-bg: #070a12;
+    --sas-bg: #050812;
     --sas-panel: rgba(15, 23, 42, 0.72);
     --sas-panel-strong: rgba(2, 6, 23, 0.82);
     --sas-border: rgba(148, 163, 184, 0.16);
     --sas-muted: #94a3b8;
     --sas-cyan: #67e8f9;
     --sas-emerald: #6ee7b7;
+    --sas-violet: #a78bfa;
   }
 }
 
 @layer components {
   .sas-shell {
-    @apply relative min-h-dvh overflow-hidden bg-[#070a12] text-slate-100;
+    @apply relative min-h-dvh overflow-hidden bg-[#050812] text-slate-100;
   }
 
   .sas-shell::before {
     content: "";
     @apply pointer-events-none fixed inset-0 -z-10;
     background:
-      radial-gradient(circle at 20% 0%, rgba(14, 165, 233, 0.18), transparent 34%),
-      radial-gradient(circle at 80% 10%, rgba(16, 185, 129, 0.12), transparent 30%),
+      radial-gradient(circle at 18% -10%, rgba(34, 211, 238, 0.24), transparent 34%),
+      radial-gradient(circle at 86% 8%, rgba(167, 139, 250, 0.18), transparent 31%),
+      radial-gradient(circle at 56% 112%, rgba(16, 185, 129, 0.15), transparent 36%),
       linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
-      #070a12;
+      #050812;
     background-size: auto, auto, 46px 46px, 46px 46px, auto;
   }
 
   .sas-panel {
-    @apply rounded-2xl border border-white/10 bg-slate-950/55 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-xl;
+    @apply rounded-[1.35rem] border border-white/10 bg-slate-950/60 shadow-[0_26px_90px_rgba(0,0,0,0.34)] backdrop-blur-2xl;
   }
 
   .sas-card {
-    @apply rounded-2xl border border-white/10 bg-white/[0.045] shadow-[0_14px_40px_rgba(0,0,0,0.18)] transition duration-200;
+    @apply rounded-[1.15rem] border border-white/10 bg-white/[0.055] shadow-[0_16px_46px_rgba(0,0,0,0.22)] transition duration-200;
   }
 
   .sas-card-hover {
@@ -45,7 +47,7 @@
   }
 
   .sas-input {
-    @apply w-full rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50 focus:bg-white/[0.07] focus:ring-4 focus:ring-cyan-300/10;
+    @apply w-full rounded-2xl border border-white/10 bg-white/[0.055] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/55 focus:bg-white/[0.08] focus:ring-4 focus:ring-cyan-300/10;
   }
 
   .sas-button {
@@ -53,7 +55,7 @@
   }
 
   .sas-button-primary {
-    @apply sas-button bg-cyan-300 text-slate-950 shadow-[0_14px_34px_rgba(34,211,238,0.2)] hover:bg-cyan-200 focus:ring-cyan-300/25;
+    @apply sas-button bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-200 text-slate-950 shadow-[0_16px_42px_rgba(34,211,238,0.24)] hover:brightness-110 focus:ring-cyan-300/25;
   }
 
   .sas-button-secondary {
@@ -62,6 +64,67 @@
 
   .sas-kicker {
     @apply text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200;
+  }
+
+  .sas-aurora {
+    @apply pointer-events-none absolute inset-0 overflow-hidden;
+  }
+
+  .sas-aurora::before,
+  .sas-aurora::after {
+    content: "";
+    position: absolute;
+    inset: auto;
+    width: 38rem;
+    height: 38rem;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.42;
+    transform: translateZ(0);
+    animation: sas-float 9s ease-in-out infinite;
+  }
+
+  .sas-aurora::before {
+    left: -12rem;
+    top: -10rem;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.42), transparent 62%);
+  }
+
+  .sas-aurora::after {
+    right: -13rem;
+    bottom: -12rem;
+    background: radial-gradient(circle, rgba(110, 231, 183, 0.34), transparent 62%);
+    animation-duration: 11s;
+    animation-direction: reverse;
+  }
+
+  .sas-lift {
+    @apply transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(0,0,0,0.36)];
+  }
+
+  .sas-glass-edge {
+    @apply relative overflow-hidden;
+  }
+
+  .sas-glass-edge::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-8 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.9), rgba(167, 139, 250, 0.55), transparent);
+  }
+
+  .sas-dot-grid {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
+    background-size: 18px 18px;
+    mask-image: radial-gradient(circle at 50% 50%, black, transparent 68%);
+  }
+}
+
+@keyframes sas-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(24px, 18px, 0) scale(1.06);
   }
 }
 
