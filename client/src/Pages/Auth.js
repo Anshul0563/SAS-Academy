@@ -123,7 +123,7 @@ function Auth() {
             </div>
           </div>
 
-          <div className="relative flex min-h-[540px] items-center p-5 sm:p-8">
+          <div className="relative flex min-h-[540px] items-start justify-center p-5 pt-8 sm:p-8 sm:pt-10">
             <div className="mx-auto w-full max-w-[360px]">
               <div className="mb-8 md:hidden">
                 <div className="flex items-center gap-3">
@@ -187,34 +187,32 @@ function Auth() {
               </AnimatePresence>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="h-[84px]">
-                  <AnimatePresence initial={false}>
-                    {!isLogin && (
-                      <motion.label
-                        key="name-field"
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: 0.18 }}
-                        className="block text-left"
-                      >
-                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
-                        <span className="relative block">
-                          <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                          <input
-                            name="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="sas-input h-[54px] pl-11"
-                            placeholder="Your name"
-                            autoComplete="name"
-                            required={!isLogin}
-                          />
-                        </span>
-                      </motion.label>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <AnimatePresence initial={false}>
+                  {!isLogin && (
+                    <motion.label
+                      key="name-field"
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.18 }}
+                      className="block text-left"
+                    >
+                      <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
+                      <span className="relative block">
+                        <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <input
+                          name="name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="sas-input h-[54px] pl-11"
+                          placeholder="Your name"
+                          autoComplete="name"
+                          required={!isLogin}
+                        />
+                      </span>
+                    </motion.label>
+                  )}
+                </AnimatePresence>
 
                 <label className="block text-left">
                   <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
