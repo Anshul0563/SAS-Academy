@@ -187,23 +187,34 @@ function Auth() {
               </AnimatePresence>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {!isLogin && (
-                  <label className="block text-left">
-                    <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
-                    <span className="relative block">
-                      <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                      <input
-                        name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="sas-input h-[54px] pl-11"
-                        placeholder="Your name"
-                        autoComplete="name"
-                        required={!isLogin}
-                      />
-                    </span>
-                  </label>
-                )}
+                <div className="h-[84px]">
+                  <AnimatePresence initial={false}>
+                    {!isLogin && (
+                      <motion.label
+                        key="name-field"
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.18 }}
+                        className="block text-left"
+                      >
+                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
+                        <span className="relative block">
+                          <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          <input
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="sas-input h-[54px] pl-11"
+                            placeholder="Your name"
+                            autoComplete="name"
+                            required={!isLogin}
+                          />
+                        </span>
+                      </motion.label>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 <label className="block text-left">
                   <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
