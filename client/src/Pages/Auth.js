@@ -114,17 +114,17 @@ function Auth() {
               className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/15"
             />
 
-            <div className="relative text-center">
+            <div className="relative flex w-full max-w-xs flex-col items-center text-center">
               <div className="mx-auto grid h-28 w-28 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_24px_80px_rgba(34,211,238,0.16)] backdrop-blur-xl">
                 <img src="/logo.png" alt="SAS Academy" className="h-20 w-20 rounded-full object-contain" />
               </div>
-              <h1 className="mt-6 text-3xl font-semibold text-white">SAS Academy</h1>
-              <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-200" />
+              <h1 className="mt-6 text-center text-3xl font-semibold leading-none text-white">SAS Academy</h1>
+              <div className="mt-5 h-1 w-24 rounded-full bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-200" />
             </div>
           </div>
 
           <div className="relative flex min-h-[540px] items-center p-5 sm:p-8">
-            <div className="mx-auto w-full max-w-sm">
+            <div className="mx-auto w-full max-w-[360px]">
               <div className="mb-8 md:hidden">
                 <div className="flex items-center gap-3">
                   <div className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06]">
@@ -137,13 +137,14 @@ function Auth() {
                 </div>
               </div>
 
-              <div className="mb-7">
+              <div className="mb-7 text-center">
                 <p className="sas-kicker hidden md:block">Student Access</p>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">
+                <h2 className="mt-3 text-3xl font-bold leading-none tracking-tight text-white">
                   {isLogin ? "Login" : "Register"}
                 </h2>
+                <div className="mx-auto mt-4 h-px w-20 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
 
-                <div className="mt-5 grid grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
+                <div className="mt-6 grid grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
                   <button
                     type="button"
                     onClick={() => switchMode("login")}
@@ -187,8 +188,8 @@ function Auth() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {!isLogin && (
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-slate-300">Full Name</span>
+                  <label className="block text-left">
+                    <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
                     <span className="relative block">
                       <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                       <input
@@ -204,8 +205,8 @@ function Auth() {
                   </label>
                 )}
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-slate-300">Email</span>
+                <label className="block text-left">
+                  <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
                   <span className="relative block">
                     <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                     <input
@@ -221,8 +222,8 @@ function Auth() {
                   </span>
                 </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-slate-300">Password</span>
+                <label className="block text-left">
+                  <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
                   <span className="relative block">
                     <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                     <input
