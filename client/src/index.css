@@ -2,6 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    color-scheme: dark;
+    --sas-bg: #070a12;
+    --sas-panel: rgba(15, 23, 42, 0.72);
+    --sas-panel-strong: rgba(2, 6, 23, 0.82);
+    --sas-border: rgba(148, 163, 184, 0.16);
+    --sas-muted: #94a3b8;
+    --sas-cyan: #67e8f9;
+    --sas-emerald: #6ee7b7;
+  }
+}
+
+@layer components {
+  .sas-shell {
+    @apply relative min-h-dvh overflow-hidden bg-[#070a12] text-slate-100;
+  }
+
+  .sas-shell::before {
+    content: "";
+    @apply pointer-events-none fixed inset-0 -z-10;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(14, 165, 233, 0.18), transparent 34%),
+      radial-gradient(circle at 80% 10%, rgba(16, 185, 129, 0.12), transparent 30%),
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+      #070a12;
+    background-size: auto, auto, 46px 46px, 46px 46px, auto;
+  }
+
+  .sas-panel {
+    @apply rounded-2xl border border-white/10 bg-slate-950/55 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-xl;
+  }
+
+  .sas-card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.045] shadow-[0_14px_40px_rgba(0,0,0,0.18)] transition duration-200;
+  }
+
+  .sas-card-hover {
+    @apply hover:-translate-y-0.5 hover:border-cyan-200/20 hover:bg-white/[0.07];
+  }
+
+  .sas-input {
+    @apply w-full rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/50 focus:bg-white/[0.07] focus:ring-4 focus:ring-cyan-300/10;
+  }
+
+  .sas-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus:ring-4;
+  }
+
+  .sas-button-primary {
+    @apply sas-button bg-cyan-300 text-slate-950 shadow-[0_14px_34px_rgba(34,211,238,0.2)] hover:bg-cyan-200 focus:ring-cyan-300/25;
+  }
+
+  .sas-button-secondary {
+    @apply sas-button border border-white/10 bg-white/[0.045] text-slate-200 hover:bg-white/[0.08] focus:ring-white/10;
+  }
+
+  .sas-kicker {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200;
+  }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -22,7 +85,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #030712;
+  background: var(--sas-bg);
   overflow-x: hidden;
 }
 
@@ -45,8 +108,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-/* 🔥 CUSTOM SCROLLBAR FOR COMPARISON */
-./* Hide scrollbar */
+/* Hide scrollbar */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
