@@ -299,7 +299,6 @@ function Auth() {
               </form>
             </div>
           </div>
-        </div>
       </motion.section>
     </main>
   );
