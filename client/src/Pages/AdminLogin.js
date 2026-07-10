@@ -110,19 +110,20 @@ function AdminLogin() {
                     transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
                 />
 
-                <div className="sas-panel sas-glass-edge relative overflow-hidden rounded-[2rem] p-5 sm:p-8">
+                <div className="sas-panel sas-glass-edge relative overflow-hidden rounded-[2rem] p-5 sm:p-6">
                         <div className="mx-auto w-full max-w-sm">
-                            <div className="mb-7 flex flex-col items-center text-center">
-                                <div className="grid h-20 w-20 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_20px_60px_rgba(34,211,238,0.16)]">
-                                    <img src="/logo.png" alt="SAS Academy" className="h-14 w-14 rounded-full object-contain" />
+                            <div className="mb-5 flex items-center gap-3 text-left">
+                                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_18px_48px_rgba(34,211,238,0.14)]">
+                                    <img src="/logo.png" alt="SAS Academy" className="h-11 w-11 rounded-full object-contain" />
                                 </div>
-                                <h1 className="mt-4 text-2xl font-semibold leading-none text-white">SAS Academy</h1>
-                                <p className="mt-2 text-sm text-slate-400">Admin Panel</p>
-                                <div className="mt-4 h-px w-24 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
+                                <div className="min-w-0">
+                                    <h1 className="text-xl font-semibold leading-none text-white">SAS Academy</h1>
+                                    <p className="mt-1.5 text-sm text-slate-400">Admin Panel</p>
+                                </div>
                             </div>
 
-                            <div className="mb-7 text-center">
-                                <h2 className="text-3xl font-bold tracking-tight text-white">Login</h2>
+                            <div className="mb-5 text-center">
+                                <h2 className="text-2xl font-bold tracking-tight text-white">Login</h2>
                             </div>
 
                             <AnimatePresence mode="wait">
