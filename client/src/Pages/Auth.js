@@ -96,23 +96,6 @@ function Auth() {
         <div className="sas-panel sas-glass-edge relative grid overflow-hidden rounded-[2rem] p-0 md:grid-cols-[0.82fr_1fr]">
           <div className="relative hidden min-h-[560px] overflow-hidden border-r border-white/10 p-8 md:grid md:place-items-center">
             <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(34,211,238,0.28),transparent_34%),radial-gradient(circle_at_78%_80%,rgba(167,139,250,0.18),transparent_34%)]" />
-            <div aria-hidden="true" className="absolute inset-8 rounded-[2rem] border border-white/10" />
-            <motion.div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/10"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-200/10"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            />
-            <div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/15"
-            />
 
             <div className="relative flex w-full max-w-xs flex-col items-center text-center">
               <div className="mx-auto grid h-28 w-28 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_24px_80px_rgba(34,211,238,0.16)] backdrop-blur-xl">
