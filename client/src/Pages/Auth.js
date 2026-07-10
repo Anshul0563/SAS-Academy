@@ -159,7 +159,7 @@ function Auth() {
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="relative h-[372px]">
+              <form onSubmit={handleSubmit} className="relative h-[330px]">
                 <AnimatePresence mode="wait" initial={false}>
                   {isLogin ? (
                     <motion.div
@@ -168,10 +168,10 @@ function Auth() {
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
                       transition={{ duration: 0.24, ease: "easeOut" }}
-                      className="absolute inset-x-0 top-[48px] space-y-4"
+                      className="absolute inset-x-0 top-[40px] space-y-3"
                     >
                       <label className="block text-left">
-                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
+                        <span className="mb-1.5 block pl-1 text-sm font-medium text-slate-300">Email</span>
                         <span className="relative block">
                           <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                           <input
@@ -179,7 +179,7 @@ function Auth() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="sas-input h-[54px] pl-11"
+                            className="sas-input h-[50px] pl-11"
                             placeholder="student@example.com"
                             autoComplete="email"
                             required
@@ -188,7 +188,7 @@ function Auth() {
                       </label>
 
                       <label className="block text-left">
-                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
+                        <span className="mb-1.5 block pl-1 text-sm font-medium text-slate-300">Password</span>
                         <span className="relative block">
                           <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                           <input
@@ -196,7 +196,7 @@ function Auth() {
                             type={showPass ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="sas-input h-[54px] pl-11 pr-14"
+                            className="sas-input h-[50px] pl-11 pr-14"
                             placeholder="Enter password"
                             autoComplete="current-password"
                             required
@@ -217,7 +217,7 @@ function Auth() {
                         disabled={loading || !canSubmit}
                         whileHover={loading ? undefined : { y: -2 }}
                         whileTap={loading ? undefined : { scale: 0.985 }}
-                        className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
+                        className="sas-button-primary h-[50px] w-full disabled:cursor-not-allowed disabled:opacity-45"
                       >
                         {loading ? <Loader2 size={19} className="animate-spin" /> : null}
                         {loading ? "Please wait" : "Login"}
@@ -230,17 +230,17 @@ function Auth() {
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
                       transition={{ duration: 0.24, ease: "easeOut" }}
-                      className="absolute inset-x-0 top-0 space-y-4"
+                      className="absolute inset-x-0 top-0 space-y-3"
                     >
                       <label className="block text-left">
-                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
+                        <span className="mb-1.5 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
                         <span className="relative block">
                           <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                           <input
                             name="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="sas-input h-[54px] pl-11"
+                            className="sas-input h-[50px] pl-11"
                             placeholder="Your name"
                             autoComplete="name"
                             required={!isLogin}
@@ -249,7 +249,7 @@ function Auth() {
                       </label>
 
                       <label className="block text-left">
-                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
+                        <span className="mb-1.5 block pl-1 text-sm font-medium text-slate-300">Email</span>
                         <span className="relative block">
                           <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                           <input
@@ -257,7 +257,7 @@ function Auth() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="sas-input h-[54px] pl-11"
+                            className="sas-input h-[50px] pl-11"
                             placeholder="student@example.com"
                             autoComplete="email"
                             required
@@ -266,7 +266,7 @@ function Auth() {
                       </label>
 
                       <label className="block text-left">
-                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
+                        <span className="mb-1.5 block pl-1 text-sm font-medium text-slate-300">Password</span>
                         <span className="relative block">
                           <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                           <input
@@ -274,7 +274,7 @@ function Auth() {
                             type={showPass ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="sas-input h-[54px] pl-11 pr-14"
+                            className="sas-input h-[50px] pl-11 pr-14"
                             placeholder="Enter password"
                             autoComplete="new-password"
                             required
@@ -295,7 +295,7 @@ function Auth() {
                         disabled={loading || !canSubmit}
                         whileHover={loading ? undefined : { y: -2 }}
                         whileTap={loading ? undefined : { scale: 0.985 }}
-                        className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
+                        className="sas-button-primary h-[50px] w-full disabled:cursor-not-allowed disabled:opacity-45"
                       >
                         {loading ? <Loader2 size={19} className="animate-spin" /> : null}
                         {loading ? "Please wait" : "Register"}
