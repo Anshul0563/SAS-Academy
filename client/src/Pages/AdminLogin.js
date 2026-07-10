@@ -120,8 +120,8 @@ function AdminLogin() {
 
                         <div className="relative">
                             <div className="flex items-center gap-3">
-                                <div className="grid h-14 w-14 place-items-center rounded-3xl border border-white/10 bg-white/[0.08] shadow-inner">
-                                    <img src="/logo.png" alt="SAS Academy" className="h-9 w-9 object-contain" />
+                                <div className="grid h-14 w-14 place-items-center rounded-full border border-white/10 bg-white/[0.08] shadow-inner">
+                                    <img src="/logo.png" alt="SAS Academy" className="h-9 w-9 rounded-full object-contain" />
                                 </div>
                                 <div>
                                     <p className="text-sm text-slate-400">SAS Academy</p>
@@ -168,8 +168,8 @@ function AdminLogin() {
                         <div className="mx-auto w-full max-w-sm">
                             <div className="mb-8 md:hidden">
                                 <div className="flex items-center gap-3">
-                                    <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.06]">
-                                        <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 object-contain" />
+                                    <div className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06]">
+                                        <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 rounded-full object-contain" />
                                     </div>
                                     <div>
                                         <h1 className="text-xl font-semibold text-white">SAS Academy</h1>

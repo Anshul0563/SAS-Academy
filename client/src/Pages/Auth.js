@@ -99,20 +99,24 @@ function Auth() {
             <div aria-hidden="true" className="absolute inset-8 rounded-[2rem] border border-white/10" />
             <motion.div
               aria-hidden="true"
-              className="absolute h-72 w-72 rounded-full border border-cyan-200/10"
+              className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/10"
               animate={{ rotate: 360 }}
               transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
             />
             <motion.div
               aria-hidden="true"
-              className="absolute h-48 w-48 rounded-full border border-emerald-200/10"
+              className="absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-200/10"
               animate={{ rotate: -360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             />
+            <div
+              aria-hidden="true"
+              className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/15"
+            />
 
             <div className="relative text-center">
-              <div className="mx-auto grid h-28 w-28 place-items-center rounded-[2rem] border border-white/10 bg-white/[0.08] shadow-[0_24px_80px_rgba(34,211,238,0.14)] backdrop-blur-xl">
-                <img src="/logo.png" alt="SAS Academy" className="h-20 w-20 object-contain" />
+              <div className="mx-auto grid h-28 w-28 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_24px_80px_rgba(34,211,238,0.16)] backdrop-blur-xl">
+                <img src="/logo.png" alt="SAS Academy" className="h-20 w-20 rounded-full object-contain" />
               </div>
               <h1 className="mt-6 text-3xl font-semibold text-white">SAS Academy</h1>
               <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-cyan-200 via-sky-300 to-emerald-200" />
@@ -123,8 +127,8 @@ function Auth() {
             <div className="mx-auto w-full max-w-sm">
               <div className="mb-8 md:hidden">
                 <div className="flex items-center gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.06]">
-                    <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 object-contain" />
+                  <div className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06]">
+                    <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 rounded-full object-contain" />
                   </div>
                   <div>
                     <h1 className="text-xl font-semibold text-white">SAS Academy</h1>
