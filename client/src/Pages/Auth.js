@@ -186,93 +186,150 @@ function Auth() {
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="relative h-[312px]">
-                <AnimatePresence initial={false}>
-                  {!isLogin && (
-                    <motion.label
-                      key="name-field"
-                      initial={{ opacity: 0, y: -6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      transition={{ duration: 0.18 }}
-                      className="absolute inset-x-0 top-0 block text-left"
+              <form onSubmit={handleSubmit} className="relative h-[360px] overflow-hidden">
+                <AnimatePresence mode="wait" initial={false}>
+                  {isLogin ? (
+                    <motion.div
+                      key="login-fields"
+                      initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
+                      transition={{ duration: 0.24, ease: "easeOut" }}
+                      className="absolute inset-x-0 top-[56px] space-y-4"
                     >
-                      <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
-                      <span className="relative block">
-                        <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                        <input
-                          name="name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="sas-input h-[54px] pl-11"
-                          placeholder="Your name"
-                          autoComplete="name"
-                          required={!isLogin}
-                        />
-                      </span>
-                    </motion.label>
+                      <label className="block text-left">
+                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
+                        <span className="relative block">
+                          <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          <input
+                            name="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="sas-input h-[54px] pl-11"
+                            placeholder="student@example.com"
+                            autoComplete="email"
+                            required
+                          />
+                        </span>
+                      </label>
+
+                      <label className="block text-left">
+                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
+                        <span className="relative block">
+                          <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          <input
+                            name="password"
+                            type={showPass ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="sas-input h-[54px] pl-11 pr-14"
+                            placeholder="Enter password"
+                            autoComplete="current-password"
+                            required
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPass(!showPass)}
+                            aria-label={showPass ? "Hide password" : "Show password"}
+                            className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl text-slate-400 transition hover:bg-white/10 hover:text-white"
+                          >
+                            {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </span>
+                      </label>
+
+                      <motion.button
+                        type="submit"
+                        disabled={loading || !canSubmit}
+                        whileHover={loading ? undefined : { y: -2 }}
+                        whileTap={loading ? undefined : { scale: 0.985 }}
+                        className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
+                      >
+                        {loading ? <Loader2 size={19} className="animate-spin" /> : null}
+                        {loading ? "Please wait" : "Login"}
+                      </motion.button>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="register-fields"
+                      initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
+                      transition={{ duration: 0.24, ease: "easeOut" }}
+                      className="absolute inset-x-0 top-0 space-y-4"
+                    >
+                      <label className="block text-left">
+                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
+                        <span className="relative block">
+                          <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          <input
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="sas-input h-[54px] pl-11"
+                            placeholder="Your name"
+                            autoComplete="name"
+                            required={!isLogin}
+                          />
+                        </span>
+                      </label>
+
+                      <label className="block text-left">
+                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
+                        <span className="relative block">
+                          <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          <input
+                            name="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="sas-input h-[54px] pl-11"
+                            placeholder="student@example.com"
+                            autoComplete="email"
+                            required
+                          />
+                        </span>
+                      </label>
+
+                      <label className="block text-left">
+                        <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
+                        <span className="relative block">
+                          <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          <input
+                            name="password"
+                            type={showPass ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="sas-input h-[54px] pl-11 pr-14"
+                            placeholder="Enter password"
+                            autoComplete="new-password"
+                            required
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPass(!showPass)}
+                            aria-label={showPass ? "Hide password" : "Show password"}
+                            className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl text-slate-400 transition hover:bg-white/10 hover:text-white"
+                          >
+                            {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </span>
+                      </label>
+
+                      <motion.button
+                        type="submit"
+                        disabled={loading || !canSubmit}
+                        whileHover={loading ? undefined : { y: -2 }}
+                        whileTap={loading ? undefined : { scale: 0.985 }}
+                        className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
+                      >
+                        {loading ? <Loader2 size={19} className="animate-spin" /> : null}
+                        {loading ? "Please wait" : "Register"}
+                      </motion.button>
+                    </motion.div>
                   )}
                 </AnimatePresence>
-
-                <label
-                  className="absolute inset-x-0 block text-left transition-transform duration-200 ease-out"
-                  style={{ transform: `translateY(${isLogin ? 0 : 86}px)` }}
-                >
-                  <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
-                  <span className="relative block">
-                    <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                    <input
-                      name="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="sas-input h-[54px] pl-11"
-                      placeholder="student@example.com"
-                      autoComplete="email"
-                      required
-                    />
-                  </span>
-                </label>
-
-                <label
-                  className="absolute inset-x-0 block text-left transition-transform duration-200 ease-out"
-                  style={{ transform: `translateY(${isLogin ? 86 : 172}px)` }}
-                >
-                  <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
-                  <span className="relative block">
-                    <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                    <input
-                      name="password"
-                      type={showPass ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="sas-input h-[54px] pl-11 pr-14"
-                      placeholder="Enter password"
-                      autoComplete={isLogin ? "current-password" : "new-password"}
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPass(!showPass)}
-                      aria-label={showPass ? "Hide password" : "Show password"}
-                      className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl text-slate-400 transition hover:bg-white/10 hover:text-white"
-                    >
-                      {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
-                  </span>
-                </label>
-
-                <motion.button
-                  type="submit"
-                  disabled={loading || !canSubmit}
-                  whileHover={loading ? undefined : { y: -2 }}
-                  whileTap={loading ? undefined : { scale: 0.985 }}
-                  className="sas-button-primary absolute inset-x-0 h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
-                  style={{ transform: `translateY(${isLogin ? 172 : 258}px)` }}
-                >
-                  {loading ? <Loader2 size={19} className="animate-spin" /> : null}
-                  {loading ? "Please wait" : isLogin ? "Login" : "Register"}
-                </motion.button>
               </form>
             </div>
           </div>
