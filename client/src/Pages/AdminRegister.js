@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { AlertCircle, Loader2, Lock, Mail, UserRound } from "lucide-react";
 
 function AdminRegister() {
     const navigate = useNavigate();
@@ -62,76 +63,94 @@ function AdminRegister() {
     };
 
     return (
-        <div className="flex min-h-dvh items-center justify-center bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e293b] px-3 py-5 text-white">
-
+        <main className="sas-shell grid place-items-center px-4 py-8">
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/10 p-5 shadow-2xl backdrop-blur-xl sm:p-8"
+                className="sas-panel relative w-full max-w-[430px] overflow-hidden p-6 sm:p-7"
             >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
 
-                <h2 className="mb-6 text-center text-2xl font-bold sm:text-3xl">
-                    Admin Register
-                </h2>
+                <div className="mb-7 flex items-center gap-3">
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.06]">
+                        <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 object-contain" />
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-semibold text-white">SAS Academy</h1>
+                        <p className="text-sm text-slate-400">Admin Register</p>
+                    </div>
+                </div>
 
-                {/* ERROR */}
                 {error && (
-                    <div className="bg-red-500/20 text-red-300 p-2 mb-4 rounded text-sm text-center">
-                        {error}
+                    <div className="mb-5 flex items-start gap-3 rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+                        <AlertCircle size={17} className="mt-0.5 shrink-0" />
+                        <span>{error}</span>
                     </div>
                 )}
 
-                {/* NAME */}
-                <input
-                    name="name"
-                    placeholder="Full Name"
-                    value={form.name}
-                    onChange={handleChange}
-                    className="w-full p-3 mb-4 bg-transparent border border-white/20 rounded-lg outline-none focus:border-indigo-500"
-                />
+                <div className="space-y-4">
+                    <label className="block">
+                        <span className="mb-2 block text-sm font-medium text-slate-300">Full Name</span>
+                        <span className="relative block">
+                            <UserRound size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                            <input
+                                name="name"
+                                placeholder="Your name"
+                                value={form.name}
+                                onChange={handleChange}
+                                className="sas-input h-[52px] pl-11"
+                            />
+                        </span>
+                    </label>
 
-                {/* EMAIL */}
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full p-3 mb-4 bg-transparent border border-white/20 rounded-lg outline-none focus:border-indigo-500"
-                />
+                    <label className="block">
+                        <span className="mb-2 block text-sm font-medium text-slate-300">Email</span>
+                        <span className="relative block">
+                            <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                            <input
+                                name="email"
+                                type="email"
+                                placeholder="admin@example.com"
+                                value={form.email}
+                                onChange={handleChange}
+                                className="sas-input h-[52px] pl-11"
+                            />
+                        </span>
+                    </label>
 
-                {/* PASSWORD */}
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    value={form.password}
-                    onChange={handleChange}
-                    className="w-full p-3 mb-4 bg-transparent border border-white/20 rounded-lg outline-none focus:border-indigo-500"
-                />
+                    <label className="block">
+                        <span className="mb-2 block text-sm font-medium text-slate-300">Password</span>
+                        <span className="relative block">
+                            <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="Enter password"
+                                value={form.password}
+                                onChange={handleChange}
+                                className="sas-input h-[52px] pl-11"
+                            />
+                        </span>
+                    </label>
 
-                {/* BUTTON */}
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 p-3 rounded-lg font-semibold flex justify-center items-center"
-                >
-                    {loading ? (
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                        "Register"
-                    )}
-                </button>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="sas-button-primary h-[52px] w-full disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        {loading ? <Loader2 size={19} className="animate-spin" /> : null}
+                        {loading ? "Creating" : "Register"}
+                    </button>
 
-                {/* LOGIN LINK */}
-                <p
-                    onClick={() => navigate("/admin-login")}
-                    className="text-sm mt-5 text-center cursor-pointer text-gray-400 hover:text-white"
-                >
-                    Already admin? Login
-                </p>
-
+                    <button
+                        type="button"
+                        onClick={() => navigate("/admin-login")}
+                        className="sas-button-secondary h-12 w-full"
+                    >
+                        Already admin? Login
+                    </button>
+                </div>
             </form>
-        </div>
+        </main>
     );
 }
 

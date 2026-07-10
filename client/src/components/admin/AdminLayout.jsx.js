@@ -102,32 +102,28 @@ const AdminLayout = () => {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <div className="flex min-h-dvh bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-x-hidden">
+    <div className="sas-shell flex overflow-x-hidden">
       
-      {/*  SIDEBAR */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,16rem)] lg:w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transition-transform duration-300 ease-in-out ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,16rem)] lg:w-64 border-r border-white/10 bg-slate-950/78 backdrop-blur-2xl shadow-[24px_0_70px_rgba(0,0,0,0.26)] transition-transform duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 lg:h-dvh`}>
 
-        
-        {/* Logo */}
-        <div className="p-6 border-b border-slate-700 flex items-center gap-3">
+        <div className="border-b border-white/10 p-5 flex items-center gap-3">
           <img
             src="/logo.png"
             alt="SAS Academy"
-            className="w-10 h-10 object-cover rounded-full"
+            className="h-10 w-10 rounded-2xl border border-white/10 bg-white/[0.06] object-contain p-1.5"
           />
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-lg font-semibold text-white">
               SAS Admin
             </h1>
-            <p className="text-xs text-slate-400 mt-1">Academy Control Center</p>
+            <p className="text-xs text-slate-500">Control Center</p>
           </div>
         </div>
 
 
-        {/* Menu */}
-        <nav className="p-4 space-y-2">
+        <nav className="p-3 py-5 space-y-1.5">
           {menu.map((item, i) => {
             const Icon = item.icon;
             return (
@@ -137,16 +133,16 @@ const AdminLayout = () => {
                   navigate(item.path);
                   setSidebarOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 group ${
+                className={`w-full flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 group ${
                   item.active 
-                    ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-lg shadow-indigo-500/25' 
-                    : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                    ? 'border border-cyan-300/15 bg-cyan-300/10 text-cyan-100 shadow-[0_12px_28px_rgba(34,211,238,0.08)]' 
+                    : 'text-slate-400 hover:bg-white/[0.06] hover:text-white'
                 }`}
               >
                 <Icon size={18} />
-                <span className="font-medium">{item.title}</span>
+                <span className="text-sm font-medium">{item.title}</span>
                 {Number(item.badge) > 0 && (
-                  <span className="ml-auto text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-full">
+                  <span className="ml-auto rounded-full bg-cyan-300/10 px-2 py-1 text-xs text-cyan-100">
                     {item.badge}
                   </span>
                 )}
@@ -155,10 +151,9 @@ const AdminLayout = () => {
           })}
         </nav>
 
-        {/* Footer */}
         <div className="absolute bottom-6 left-6 right-6">
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-400">v2.0 • SAS Academy</p>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
+            <p className="text-xs text-slate-500">SAS Academy</p>
           </div>
         </div>
       </div>
@@ -171,49 +166,47 @@ const AdminLayout = () => {
         />
       )}
 
-      {/* Main Content */}
       <div className="flex-1 min-w-0 flex flex-col lg:ml-64">
 
 
         
-        {/* Top Navbar */}
-        <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-30 px-3 py-3 sm:px-4">
+        <header className="sticky top-0 z-30 mx-3 mt-3 rounded-2xl border border-white/10 bg-slate-950/65 px-3 py-3 shadow-[0_16px_42px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:mx-4 sm:px-5">
           <div className="flex items-center justify-between gap-3">
             
-            {/* Left: Mobile Menu + Breadcrumbs */}
             <div className="flex min-w-0 items-center gap-3 sm:gap-4">
               <button
                 onClick={toggleSidebar}
-                className="lg:hidden p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 text-slate-300"
+                className="grid h-10 w-10 place-items-center rounded-xl bg-white/[0.06] text-slate-200 lg:hidden"
               >
                 {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <div className="hidden min-w-0 text-sm text-slate-400 font-medium md:block">
-                <span className="text-white">Dashboard</span> / Overview
+              <div className="min-w-0">
+                <p className="sas-kicker hidden sm:block">Admin</p>
+                <div className="truncate text-sm font-semibold capitalize text-white sm:text-base">
+                  {location.pathname.replace('/admin', 'dashboard').replaceAll('/', ' / ')}
+                </div>
               </div>
             </div>
 
-            {/* Right: Notifications + Profile */}
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-              <button className="p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 text-slate-300 relative">
+              <button className="relative grid h-10 w-10 place-items-center rounded-xl bg-white/[0.06] text-slate-300 transition hover:bg-white/[0.1]">
                 <Bell size={18} />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-xs rounded-full flex items-center justify-center font-bold">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-400 text-[10px] font-bold text-slate-950">
                   3
                 </span>
               </button>
 
-              <div className="flex items-center gap-3 p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 cursor-pointer relative group" onClick={() => setUserOpen(!userOpen)}>
-                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
+              <div className="relative flex cursor-pointer items-center gap-3 rounded-xl bg-white/[0.06] p-1.5 pr-3 transition hover:bg-white/[0.1]" onClick={() => setUserOpen(!userOpen)}>
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-300 text-sm font-bold text-slate-950">
                   {safeUser.name[0]}
                 </div>
                 <span className="hidden max-w-28 truncate text-sm font-medium text-slate-200 sm:inline">{safeUser.name}</span>
               </div>
 
-              {/* User Dropdown */}
               {userOpen && (
-                <div className="absolute top-full right-0 mt-2 w-48 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl py-2">
+                <div className="absolute right-4 top-16 w-48 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/95 py-2 shadow-2xl backdrop-blur-xl">
                   <button 
-                    className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 flex items-center gap-2"
+                    className="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-red-300 transition hover:bg-red-500/10"
                     onClick={logout}
                   >
                     <LogOut size={16} />
@@ -225,7 +218,6 @@ const AdminLayout = () => {
           </div>
         </header>
 
-        {/* Page Content */}
         <main className="min-w-0 flex-1 overflow-x-hidden p-3 sm:p-5 lg:p-6">
           <Outlet />
         </main>
