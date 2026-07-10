@@ -186,7 +186,7 @@ function Auth() {
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="relative h-[312px]">
                 <AnimatePresence initial={false}>
                   {!isLogin && (
                     <motion.label
@@ -195,7 +195,7 @@ function Auth() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -6 }}
                       transition={{ duration: 0.18 }}
-                      className="block text-left"
+                      className="absolute inset-x-0 top-0 block text-left"
                     >
                       <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Full Name</span>
                       <span className="relative block">
@@ -214,7 +214,10 @@ function Auth() {
                   )}
                 </AnimatePresence>
 
-                <label className="block text-left">
+                <label
+                  className="absolute inset-x-0 block text-left transition-transform duration-200 ease-out"
+                  style={{ transform: `translateY(${isLogin ? 0 : 86}px)` }}
+                >
                   <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Email</span>
                   <span className="relative block">
                     <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -231,7 +234,10 @@ function Auth() {
                   </span>
                 </label>
 
-                <label className="block text-left">
+                <label
+                  className="absolute inset-x-0 block text-left transition-transform duration-200 ease-out"
+                  style={{ transform: `translateY(${isLogin ? 86 : 172}px)` }}
+                >
                   <span className="mb-2 block pl-1 text-sm font-medium text-slate-300">Password</span>
                   <span className="relative block">
                     <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -261,7 +267,8 @@ function Auth() {
                   disabled={loading || !canSubmit}
                   whileHover={loading ? undefined : { y: -2 }}
                   whileTap={loading ? undefined : { scale: 0.985 }}
-                  className="sas-button-primary h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
+                  className="sas-button-primary absolute inset-x-0 h-[54px] w-full disabled:cursor-not-allowed disabled:opacity-45"
+                  style={{ transform: `translateY(${isLogin ? 172 : 258}px)` }}
                 >
                   {loading ? <Loader2 size={19} className="animate-spin" /> : null}
                   {loading ? "Please wait" : isLogin ? "Login" : "Register"}
