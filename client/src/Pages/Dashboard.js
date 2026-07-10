@@ -246,17 +246,17 @@ function Dashboard() {
   ];
 
   return (
-    <div className="text-white">
+    <div className="mx-auto max-w-7xl text-white">
       <div className="mx-auto max-w-7xl space-y-5">
         <section className="grid gap-4 lg:grid-cols-[1.45fr_0.85fr]">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6"
+            className="sas-panel p-5 sm:p-6"
           >
             <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                <p className="sas-kicker">
                   {formatDate()}
                 </p>
                 <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -264,13 +264,13 @@ function Dashboard() {
                     ? `Welcome back, ${user.name}`
                     : "Typing Practice Dashboard"}
                 </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
                   Choose a test, configure exam rules, and track a clean scoring
                   flow built around speed, accuracy, and consistency.
                 </p>
               </div>
 
-              <div className="rounded-md border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
+              <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100">
                 <div className="flex items-center gap-2 font-semibold">
                   <ShieldCheck size={16} />
                   Exam Mode Ready
@@ -285,27 +285,27 @@ function Dashboard() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => navigate(quickPracticePath)}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+                className="sas-button-primary px-5"
               >
                 <Play size={18} /> Start Practice
               </button>
               <button
                 onClick={() => navigate("/transcription")}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-semibold transition hover:bg-white/10"
+                className="sas-button-secondary px-5"
               >
                 <Search size={18} /> Browse Library
               </button>
             </div>
           </motion.div>
 
-          <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-xl sm:p-6">
+          <div className="sas-panel p-5 sm:p-6">
             <p className="text-sm font-semibold text-slate-200">
               Recommended Next
             </p>
             {featuredTest ? (
               <div className="mt-4">
                 <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
-                  <span className="rounded bg-white/10 px-2 py-1 capitalize">
+                  <span className="rounded-full bg-white/10 px-2 py-1 capitalize">
                     {featuredTest.type || "practice"}
                   </span>
                   <span>{getDisplayDuration(featuredTest)} min</span>
@@ -324,7 +324,7 @@ function Dashboard() {
                         : `/typing-settings/${featuredTest._id}`,
                     )
                   }
-                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
+                  className="sas-button-primary mt-5 w-full px-4"
                 >
                   Continue <ArrowRight size={16} />
                 </button>
@@ -345,10 +345,10 @@ function Dashboard() {
             return (
               <div
                 key={item.label}
-                className="rounded-lg border border-white/10 bg-white/[0.035] p-4"
+                className="sas-card p-4"
               >
                 <div
-                  className={`mb-4 flex h-10 w-10 items-center justify-center rounded-md ${item.bg}`}
+                  className={`mb-4 flex h-10 w-10 items-center justify-center rounded-2xl ${item.bg}`}
                 >
                   <Icon className={item.tone} size={19} />
                 </div>
@@ -363,10 +363,10 @@ function Dashboard() {
           })}
         </section>
 
-        <section className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-xl sm:p-5">
+        <section className="sas-panel p-4 sm:p-5">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-md bg-amber-400/10 text-amber-200">
+              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-400/10 text-amber-200">
                 <Trophy size={19} />
               </span>
               <div>
@@ -394,17 +394,17 @@ function Dashboard() {
           </div>
 
           {leaderboardLoading ? (
-            <div className="mt-4 rounded-md border border-white/10 bg-slate-950/35 p-4 text-sm text-slate-400">
+            <div className="sas-card mt-4 p-4 text-sm text-slate-400">
               Loading scoreboard...
             </div>
           ) : leaderboard.length === 0 ? (
-            <div className="mt-4 rounded-md border border-white/10 bg-slate-950/35 p-4 text-sm text-slate-400">
+            <div className="sas-card mt-4 p-4 text-sm text-slate-400">
               Scores will appear after students submit tests.
             </div>
           ) : (
             <>
               <div className="mt-5 grid gap-3 lg:grid-cols-[0.9fr_1.4fr]">
-                <div className="rounded-md border border-amber-300/20 bg-amber-300/10 p-4">
+                <div className="rounded-2xl border border-amber-300/20 bg-amber-300/10 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-xs font-semibold uppercase tracking-wide text-amber-100">
@@ -417,7 +417,7 @@ function Dashboard() {
                         {topEntry.testTitle || "Test"}
                       </p>
                     </div>
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-amber-300 text-slate-950">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-300 text-slate-950">
                       <Medal size={24} />
                     </span>
                   </div>
@@ -444,7 +444,7 @@ function Dashboard() {
                   {leaderboard.slice(0, 3).map((entry, index) => (
                     <div
                       key={entry._id}
-                      className="rounded-md border border-white/10 bg-slate-950/45 p-3"
+                      className="sas-card p-3"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <RankBadge rank={index + 1} />
