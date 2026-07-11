@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Bell, Check, Megaphone, X } from "lucide-react";
+import { Bell, Megaphone, X } from "lucide-react";
 
 import API from "../api/axios";
 
@@ -118,14 +118,6 @@ function NotificationsMenu({
             <p className="text-sm font-semibold text-white">Notifications</p>
             {visibleAnnouncement && (
               <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={markRead}
-                  className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
-                  aria-label="Mark as read"
-                >
-                  <Check size={16} />
-                </button>
                 {clearable && (
                   <button
                     type="button"
