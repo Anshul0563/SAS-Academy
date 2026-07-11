@@ -61,35 +61,14 @@ const AdminSettings = () => {
     setMessage('');
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setLoading(true);
     try {
       const saved = saveAdminSettings(settings);
-      let finalSettings = saved;
-
-      const token = getAdminAuthToken();
-      if (token) {
-        const res = await API.put(
-          '/announcements',
-          {
-            enabled: saved.announcementEnabled,
-            text: saved.announcementText,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        finalSettings = {
-          ...saved,
-          announcementEnabled: Boolean(res.data?.announcement?.enabled),
-          announcementText: res.data?.announcement?.text || '',
-        };
-      }
-
-      setSettings(finalSettings);
-      saveAdminSettings(finalSettings);
-      setMessage('Settings saved. Announcement and notifications updated.');
+      setSettings(saved);
+      setMessage('Settings saved. Use Submit Announcement to publish notifications.');
     } catch (error) {
-      setMessage(error.response?.data?.message || 'Error saving settings.');
+      setMessage('Error saving settings.');
     } finally {
       setLoading(false);
     }
