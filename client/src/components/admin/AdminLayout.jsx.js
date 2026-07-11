@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import API from '../../api/axios';
 import { clearAdminAuth, getAdminAuthToken } from '../../utils/authStorage';
+import NotificationsMenu from '../NotificationsMenu';
 import { 
   LayoutDashboard, 
   Users, 
@@ -10,8 +11,7 @@ import {
   Settings, 
   LogOut,
   Menu,
-  X,
-  Bell 
+  X
 } from 'lucide-react';
 
 const AdminLayout = () => {
@@ -189,12 +189,7 @@ const AdminLayout = () => {
             </div>
 
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-              <button className="relative grid h-10 w-10 place-items-center rounded-xl bg-white/[0.06] text-slate-300 transition hover:bg-white/[0.1]">
-                <Bell size={18} />
-                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-400 text-[10px] font-bold text-slate-950">
-                  3
-                </span>
-              </button>
+              <NotificationsMenu storageKey="sasAdminReadNotifications" />
 
               <div className="relative flex cursor-pointer items-center gap-3 rounded-xl bg-white/[0.06] p-1.5 pr-3 transition hover:bg-white/[0.1]" onClick={() => setUserOpen(!userOpen)}>
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-300 text-sm font-bold text-slate-950">

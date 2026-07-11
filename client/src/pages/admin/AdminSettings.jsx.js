@@ -7,6 +7,8 @@ import {
   saveAdminSettings,
   ADMIN_SETTINGS_KEY,
 } from '../../utils/settingsStorage';
+import API from '../../api/axios';
+import { getAdminAuthToken } from '../../utils/authStorage';
 
 const AdminSettings = () => {
   const [settings, setSettings] = useState(defaultAdminSettings);
@@ -14,7 +16,39 @@ const AdminSettings = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    setSettings(getAdminSettings());
+    let mounted = true;
+
+    const loadSettings = async () => {
+      const localSettings = getAdminSettings();
+      setSettings(localSettings);
+
+      try {
+        const token = getAdminAuthToken();
+        if (!token) return;
+
+        const res = await API.get('/announcements', {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { t: Date.now() },
+        });
+        const announcement = res.data?.announcement;
+
+        if (mounted && announcement) {
+          setSettings((prev) => ({
+            ...prev,
+            announcementEnabled: Boolean(announcement.enabled),
+            announcementText: announcement.text || '',
+          }));
+        }
+      } catch (error) {
+        console.error('Announcement settings load error:', error.message);
+      }
+    };
+
+    loadSettings();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const handleChange = (e) => {
@@ -26,14 +60,35 @@ const AdminSettings = () => {
     setMessage('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
     try {
       const saved = saveAdminSettings(settings);
-      setSettings(saved);
-      setMessage('Settings saved. New test forms will use these defaults.');
-    } catch {
-      setMessage('Error saving settings.');
+      let finalSettings = saved;
+
+      const token = getAdminAuthToken();
+      if (token) {
+        const res = await API.put(
+          '/announcements',
+          {
+            enabled: saved.announcementEnabled,
+            text: saved.announcementText,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        finalSettings = {
+          ...saved,
+          announcementEnabled: Boolean(res.data?.announcement?.enabled),
+          announcementText: res.data?.announcement?.text || '',
+        };
+      }
+
+      setSettings(finalSettings);
+      saveAdminSettings(finalSettings);
+      setMessage('Settings saved. Announcement and notifications updated.');
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Error saving settings.');
     } finally {
       setLoading(false);
     }
@@ -119,7 +174,7 @@ const AdminSettings = () => {
         <SettingsPanel title="Communication" icon={Bell}>
           <ToggleField label="Email notifications" name="emailNotifications" checked={settings.emailNotifications} onChange={handleChange} />
           <ToggleField label="Show announcement" name="announcementEnabled" checked={settings.announcementEnabled} onChange={handleChange} />
-          <TextAreaField label="Announcement text" name="announcementText" value={settings.announcementText} onChange={handleChange} />
+          <TextAreaField label="Announcement text" name="announcementText" value={settings.announcementText} maxLength={1000} onChange={handleChange} />
         </SettingsPanel>
       </div>
 
@@ -180,17 +235,23 @@ function TextField({ label, name, value, onChange }) {
   );
 }
 
-function TextAreaField({ label, name, value, onChange }) {
+function TextAreaField({ label, name, value, maxLength, onChange }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm font-medium text-slate-300">{label}</span>
       <textarea
         name={name}
         value={value}
+        maxLength={maxLength}
         onChange={onChange}
         rows={4}
         className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-white outline-none transition focus:border-blue-500"
       />
+      {maxLength && (
+        <span className="mt-1 block text-right text-xs text-slate-500">
+          {String(value || '').length}/{maxLength}
+        </span>
+      )}
     </label>
   );
 }

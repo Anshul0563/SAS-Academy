@@ -9,11 +9,11 @@ import {
     FileText,
     Keyboard,
     Mic2,
-    Bell,
     Menu,
     Settings,
     LogOut
 } from "lucide-react";
+import NotificationsMenu from "./NotificationsMenu";
 
 function Layout() {
 
@@ -167,9 +167,7 @@ function Layout() {
 
                         <div className="flex shrink-0 items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
 
-                            <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/[0.06] text-slate-300 transition hover:bg-white/[0.1]">
-                                <Bell size={16} />
-                            </div>
+                            <NotificationsMenu storageKey="sasStudentReadNotifications" />
 
                             <div
                                 onClick={() => setOpen(!open)}
