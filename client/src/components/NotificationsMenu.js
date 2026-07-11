@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Bell, Check, Megaphone } from "lucide-react";
+import { Bell, Check, Megaphone, X } from "lucide-react";
 
 import API from "../api/axios";
 
@@ -11,11 +11,18 @@ const readStoredIds = (key) => {
   }
 };
 
-function NotificationsMenu({ storageKey = "sasReadNotifications" }) {
+function NotificationsMenu({
+  storageKey = "sasReadNotifications",
+  clearable = false,
+}) {
   const [open, setOpen] = useState(false);
   const [announcement, setAnnouncement] = useState(null);
   const [readNotificationIds, setReadNotificationIds] = useState(() =>
     readStoredIds(storageKey),
+  );
+  const dismissKey = `${storageKey}:dismissed`;
+  const [dismissedNotificationIds, setDismissedNotificationIds] = useState(() =>
+    readStoredIds(dismissKey),
   );
   const menuRef = useRef(null);
 
@@ -62,6 +69,9 @@ function NotificationsMenu({ storageKey = "sasReadNotifications" }) {
   const hasUnread = Boolean(
     notificationId && !readNotificationIds.includes(notificationId),
   );
+  const visibleAnnouncement = Boolean(
+    announcement && !dismissedNotificationIds.includes(notificationId),
+  );
 
   const markRead = () => {
     if (!notificationId) return;
@@ -69,6 +79,18 @@ function NotificationsMenu({ storageKey = "sasReadNotifications" }) {
     const nextIds = Array.from(new Set([...readNotificationIds, notificationId]));
     setReadNotificationIds(nextIds);
     localStorage.setItem(storageKey, JSON.stringify(nextIds));
+  };
+
+  const clearNotification = () => {
+    if (!notificationId) return;
+
+    const nextDismissedIds = Array.from(
+      new Set([...dismissedNotificationIds, notificationId]),
+    );
+    setDismissedNotificationIds(nextDismissedIds);
+    localStorage.setItem(dismissKey, JSON.stringify(nextDismissedIds));
+    markRead();
+    setAnnouncement(null);
   };
 
   const handleToggle = () => {
@@ -94,19 +116,31 @@ function NotificationsMenu({ storageKey = "sasReadNotifications" }) {
         <div className="absolute right-0 top-12 z-50 w-[min(88vw,22rem)] overflow-hidden rounded-2xl border border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-xl">
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
             <p className="text-sm font-semibold text-white">Notifications</p>
-            {announcement && (
-              <button
-                type="button"
-                onClick={markRead}
-                className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
-                aria-label="Mark as read"
-              >
-                <Check size={16} />
-              </button>
+            {visibleAnnouncement && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={markRead}
+                  className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
+                  aria-label="Mark as read"
+                >
+                  <Check size={16} />
+                </button>
+                {clearable && (
+                  <button
+                    type="button"
+                    onClick={clearNotification}
+                    className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition hover:bg-red-500/10 hover:text-red-200"
+                    aria-label="Clear notification"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
             )}
           </div>
 
-          {announcement ? (
+          {visibleAnnouncement ? (
             <div className="p-3">
               <div className="rounded-xl border border-cyan-300/15 bg-cyan-300/10 p-4">
                 <div className="mb-2 flex items-center gap-2 text-cyan-100">

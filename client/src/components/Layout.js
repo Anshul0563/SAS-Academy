@@ -167,7 +167,7 @@ function Layout() {
 
                         <div className="flex shrink-0 items-center gap-2 sm:gap-4 relative" ref={dropdownRef}>
 
-                            <NotificationsMenu storageKey="sasStudentReadNotifications" />
+                            <NotificationsMenu storageKey="sasStudentReadNotifications" clearable />
 
                             <div
                                 onClick={() => setOpen(!open)}
