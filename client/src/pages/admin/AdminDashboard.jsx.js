@@ -18,6 +18,7 @@ import StatsCard from '../../components/admin/StatsCard';
 import RecentActivity from '../../components/admin/RecentActivity';
 import TestPerformanceChart from '../../components/admin/TestPerformanceChart';
 import { getAdminSettings } from '../../utils/settingsStorage';
+import PageLoader from '../../components/PageLoader';
 
 const emptyDashboard = {
   totalStudents: 0,
@@ -36,9 +37,9 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchDashboardData = useCallback(async () => {
+  const fetchDashboardData = useCallback(async ({ silent = false } = {}) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const token = getAdminAuthToken();
       
       if (!token) {
@@ -79,18 +80,16 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchDashboardData();
     const refreshMs = Math.max(10, Number(getAdminSettings().dashboardRefreshSeconds) || 30) * 1000;
-    const interval = setInterval(fetchDashboardData, refreshMs);
+    const interval = setInterval(() => fetchDashboardData({ silent: true }), refreshMs);
     return () => clearInterval(interval);
   }, [fetchDashboardData]);
 
   if (loading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center px-4">
-        <div className="sas-panel flex items-center gap-3 px-4 py-3">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-cyan-300/30 border-t-cyan-300" />
-          <div className="text-slate-200 text-sm font-medium">Loading dashboard...</div>
-        </div>
-      </div>
+      <PageLoader
+        title="Loading admin dashboard"
+        subtitle="Fetching students, tests, attempts, charts, and recent activity..."
+      />
     );
   }
 

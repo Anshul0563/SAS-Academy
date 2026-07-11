@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import API from "../api/axios";
 import { getUserAuthToken } from "../utils/authStorage";
+import PageLoader from "../components/PageLoader";
 
 import {
   ArrowRight,
@@ -245,6 +246,15 @@ function Dashboard() {
     },
   ];
 
+  if (loading) {
+    return (
+      <PageLoader
+        title="Loading student dashboard"
+        subtitle="Fetching dictation, transcription, categories, and practice data..."
+      />
+    );
+  }
+
   return (
     <div className="mx-auto max-w-7xl text-white">
       <div className="mx-auto max-w-7xl space-y-5">
@@ -394,9 +404,11 @@ function Dashboard() {
           </div>
 
           {leaderboardLoading ? (
-            <div className="sas-card mt-4 p-4 text-sm text-slate-400">
-              Loading scoreboard...
-            </div>
+            <PageLoader
+              compact
+              title="Loading scoreboard"
+              subtitle="Collecting latest student ranks and scores..."
+            />
           ) : leaderboard.length === 0 ? (
             <div className="sas-card mt-4 p-4 text-sm text-slate-400">
               Scores will appear after students submit tests.
