@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, Database, Download, Globe, RotateCcw, Save, Settings, ShieldCheck } from 'lucide-react';
+import { Bell, Database, Download, Globe, Loader2, RotateCcw, Save, Send, Settings, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   defaultAdminSettings,
@@ -13,6 +13,7 @@ import { getAdminAuthToken } from '../../utils/authStorage';
 const AdminSettings = () => {
   const [settings, setSettings] = useState(defaultAdminSettings);
   const [loading, setLoading] = useState(false);
+  const [announcementLoading, setAnnouncementLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -91,6 +92,47 @@ const AdminSettings = () => {
       setMessage(error.response?.data?.message || 'Error saving settings.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const publishAnnouncement = async () => {
+    setAnnouncementLoading(true);
+    setMessage('');
+
+    try {
+      const text = String(settings.announcementText || '').trim();
+      if (!text) {
+        setMessage('Announcement text is required.');
+        return;
+      }
+
+      const token = getAdminAuthToken();
+      if (!token) {
+        setMessage('Admin session expired. Please login again.');
+        return;
+      }
+
+      const res = await API.put(
+        '/announcements',
+        {
+          enabled: true,
+          text,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const nextSettings = saveAdminSettings({
+        ...settings,
+        announcementEnabled: true,
+        announcementText: res.data?.announcement?.text || text,
+      });
+
+      setSettings(nextSettings);
+      setMessage('Announcement published. Students will see it in notifications.');
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Error publishing announcement.');
+    } finally {
+      setAnnouncementLoading(false);
     }
   };
 
@@ -175,6 +217,15 @@ const AdminSettings = () => {
           <ToggleField label="Email notifications" name="emailNotifications" checked={settings.emailNotifications} onChange={handleChange} />
           <ToggleField label="Show announcement" name="announcementEnabled" checked={settings.announcementEnabled} onChange={handleChange} />
           <TextAreaField label="Announcement text" name="announcementText" value={settings.announcementText} maxLength={1000} onChange={handleChange} />
+          <button
+            type="button"
+            onClick={publishAnnouncement}
+            disabled={announcementLoading || !String(settings.announcementText || '').trim()}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {announcementLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            {announcementLoading ? 'Publishing...' : 'Submit Announcement'}
+          </button>
         </SettingsPanel>
       </div>
 

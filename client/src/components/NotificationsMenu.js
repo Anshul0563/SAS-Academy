@@ -56,7 +56,9 @@ function NotificationsMenu({ storageKey = "sasReadNotifications" }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const notificationId = announcement?._id || "";
+  const notificationId = announcement
+    ? `${announcement._id || "announcement"}:${announcement.updatedAt || ""}`
+    : "";
   const hasUnread = Boolean(
     notificationId && !readNotificationIds.includes(notificationId),
   );
