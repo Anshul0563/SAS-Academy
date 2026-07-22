@@ -110,13 +110,13 @@ const AdminLayout = () => {
 
         <div className="border-b border-white/10 p-5 flex items-center gap-3">
           <img
-            src="/logo.png"
-            alt="SAS Academy"
-            className="h-10 w-10 rounded-2xl border border-white/10 bg-white/[0.06] object-contain p-1.5"
+            src="/logo-icon.png"
+            alt="LEXORA"
+            className="h-10 w-10 rounded-full border border-amber-300/30 bg-black object-contain"
           />
           <div>
             <h1 className="text-lg font-semibold text-white">
-              SAS Admin
+              LEXORA Admin
             </h1>
             <p className="text-xs text-slate-500">Control Center</p>
           </div>
@@ -153,7 +153,7 @@ const AdminLayout = () => {
 
         <div className="absolute bottom-6 left-6 right-6">
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-            <p className="text-xs text-slate-500">SAS Academy</p>
+            <p className="text-xs text-slate-500">LEXORA</p>
           </div>
         </div>
       </div>
@@ -180,6 +180,11 @@ const AdminLayout = () => {
               >
                 {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
+              <img
+                src="/logo-icon.png"
+                alt="LEXORA"
+                className="h-10 w-10 shrink-0 rounded-full border border-amber-300/30 bg-black object-contain"
+              />
               <div className="min-w-0">
                 <p className="sas-kicker hidden sm:block">Admin</p>
                 <div className="truncate text-sm font-semibold capitalize text-white sm:text-base">

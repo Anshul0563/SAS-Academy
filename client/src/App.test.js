@@ -3,6 +3,6 @@ import App from './App';
 
 test('renders login screen', () => {
   render(<App />);
-  expect(screen.getByText(/SAS Academy/i)).toBeInTheDocument();
+  expect(screen.getByText(/LEXORA/i)).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
 });

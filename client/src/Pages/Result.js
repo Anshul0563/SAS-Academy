@@ -528,7 +528,7 @@ function Result() {
     if (!data) return;
 
     const lines = [
-      "SAS Academy Result",
+      "LEXORA Result",
 
       `Status: ${data.saved ? "Saved" : "Not saved"}`,
 
@@ -555,7 +555,7 @@ function Result() {
 
     link.href = url;
 
-    link.download = "sas-academy-result.txt";
+    link.download = "lexora-result.txt";
 
     link.click();
 

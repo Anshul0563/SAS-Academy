@@ -71,12 +71,12 @@ function Layout() {
 
                     <div className="px-5 py-5 flex items-center gap-3 border-b border-white/10">
                         <img
-                            src="/logo.png"
-                            alt="SAS Academy"
-                            className="h-10 w-10 rounded-2xl border border-white/10 bg-white/[0.06] object-contain p-1.5"
+                            src="/logo-icon.png"
+                            alt="LEXORA"
+                            className="h-10 w-10 rounded-full border border-amber-300/30 bg-black object-contain"
                         />
                         <div>
-                            <div className="text-lg font-semibold text-white">SAS Academy</div>
+                            <div className="text-lg font-semibold text-white">LEXORA</div>
                             <div className="text-xs text-slate-500">Practice Console</div>
                         </div>
                     </div>
@@ -157,6 +157,11 @@ function Layout() {
                             >
                                 <Menu size={19} />
                             </button>
+                            <img
+                                src="/logo-icon.png"
+                                alt="LEXORA"
+                                className="h-10 w-10 shrink-0 rounded-full border border-amber-300/30 bg-black object-contain"
+                            />
                             <div>
                                 <p className="sas-kicker hidden sm:block">Workspace</p>
                                 <h1 className="truncate text-sm font-semibold capitalize text-white sm:text-base">

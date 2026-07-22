@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-    Search,
-    Play,
-    Eye,
-    Clock,
-    Tag,
     BookOpen,
-    Loader2
+    Clock,
+    Eye,
+    Loader2,
+    Play,
+    Search,
+    Tag
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const getDisplayDuration = (test) => {
     const duration = Number(test?.duration);
@@ -87,7 +87,7 @@ function TranscriptionList() {
 
                     <div className="flex items-center gap-2 text-emerald-200">
                         <Tag size={16} />
-                        Medical • Legal
+                        Steno  • Legal
                     </div>
 
                 </div>

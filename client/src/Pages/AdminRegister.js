@@ -72,10 +72,10 @@ function AdminRegister() {
 
                 <div className="mb-7 flex items-center gap-3">
                     <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.06]">
-                        <img src="/logo.png" alt="SAS Academy" className="h-8 w-8 object-contain" />
+                        <img src="/logo-icon.png" alt="LEXORA" className="h-8 w-8 rounded-full object-contain" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-semibold text-white">SAS Academy</h1>
+                        <h1 className="text-xl font-semibold text-white">LEXORA</h1>
                         <p className="text-sm text-slate-400">Admin Register</p>
                     </div>
                 </div>

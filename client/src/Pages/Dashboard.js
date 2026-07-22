@@ -695,7 +695,7 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <Mail size={16} className="text-amber-200" />
-            support@sasacademy.in
+            support@lexora.in
           </div>
         </section>
       </div>

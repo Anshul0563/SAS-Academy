@@ -40,9 +40,9 @@ function PageLoader({
             className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.07] p-2 shadow-[0_18px_46px_rgba(34,211,238,0.16)]"
           >
             <img
-              src="/logo.png"
-              alt="SAS Academy"
-              className="h-full w-full rounded-xl object-contain"
+              src="/logo-icon.png"
+              alt="LEXORA"
+              className="h-full w-full rounded-full object-contain"
             />
           </motion.div>
         </div>

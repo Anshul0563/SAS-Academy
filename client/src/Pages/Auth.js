@@ -97,10 +97,10 @@ function Auth() {
           <div className="mx-auto w-full max-w-[360px]">
               <div className="mb-5 flex items-center gap-3 text-left">
                 <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-white/15 bg-white/[0.08] shadow-[0_18px_48px_rgba(34,211,238,0.14)]">
-                  <img src="/logo.png" alt="SAS Academy" className="h-11 w-11 rounded-full object-contain" />
+                  <img src="/logo-icon.png" alt="LEXORA" className="h-11 w-11 rounded-full object-contain" />
                 </div>
                 <div className="min-w-0">
-                  <h1 className="text-xl font-semibold leading-none text-white">SAS Academy</h1>
+                  <h1 className="text-xl font-semibold leading-none text-white">LEXORA</h1>
                   <p className="mt-1.5 text-sm text-slate-400">Student Panel</p>
                 </div>
               </div>

@@ -222,7 +222,7 @@ function TypingLearning() {
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
                 Practice, simulation, lessons, analytics, and coaching in one
-                SAS Academy workspace.
+                LEXORA workspace.
               </p>
             </div>
 
@@ -343,7 +343,7 @@ function DashboardPanel({ progress, leaderboard, stats, onStart }) {
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
-              SAS Academy Typing Lab
+              LEXORA Typing Lab
             </p>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl">

@@ -27,7 +27,7 @@ const sendEmail = async (to, subject, text, isHtml = false) => {
 
 // Send Reset OTP Email
 const sendResetOtpEmail = async (to, otp) => {
-    const subject = "Reset Your Password - SAS Academy";
+    const subject = "Reset Your Password - LEXORA";
     const html = `
         <!DOCTYPE html>
         <html>
@@ -47,7 +47,7 @@ const sendResetOtpEmail = async (to, otp) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <div class="logo">🔐 SAS Academy</div>
+                    <div class="logo">🔐 LEXORA</div>
                 </div>
                 
                 <div class="content">
@@ -68,7 +68,7 @@ const sendResetOtpEmail = async (to, otp) => {
                 </div>
                 
                 <div class="footer">
-                    <p>&copy; 2026 SAS Academy. All rights reserved.</p>
+                    <p>&copy; 2026 LEXORA. All rights reserved.</p>
                     <p>This is an automated email. Please do not reply.</p>
                 </div>
             </div>

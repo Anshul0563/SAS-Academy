@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sas-academy-eta.vercel.app/sitemap.xml
+Sitemap: https://lexora.in/sitemap.xml

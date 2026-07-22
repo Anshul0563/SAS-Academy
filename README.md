@@ -1,6 +1,6 @@
-# SAS Academy
+# LEXORA
 
-SAS Academy is a MERN typing practice app with transcription, dictation, typing settings, WPM scoring, and admin tools.
+LEXORA is a MERN typing practice app with transcription, dictation, typing settings, WPM scoring, and admin tools.
 
 ## Production Build
 
@@ -121,4 +121,4 @@ SEO metadata lives in:
 - `client/public/robots.txt`
 - `client/public/sitemap.xml`
 
-Before launch, replace `https://sasacademy.in` with your final live domain if it differs.
+Before launch, replace `https://lexora.in` with your final live domain if it differs.

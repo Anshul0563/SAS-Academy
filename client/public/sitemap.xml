@@ -3,22 +3,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://sas-academy-eta.vercel.app/</loc>
+    <loc>https://lexora.in/</loc>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://sas-academy-eta.vercel.app/dashboard</loc>
+    <loc>https://lexora.in/dashboard</loc>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://sas-academy-eta.vercel.app/transcription</loc>
+    <loc>https://lexora.in/transcription</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://sas-academy-eta.vercel.app/dictations</loc>
+    <loc>https://lexora.in/dictations</loc>
     <priority>0.8</priority>
   </url>
 

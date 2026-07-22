@@ -14,7 +14,7 @@ export const defaultUserSettings = {
 };
 
 export const defaultAdminSettings = {
-  siteName: "SAS Academy",
+  siteName: "LEXORA",
   announcementEnabled: false,
   announcementText: "",
   emailNotifications: true,
