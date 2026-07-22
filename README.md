@@ -27,7 +27,7 @@ Set these production values:
 ```bash
 MONGO_URI=your-mongodb-uri
 JWT_SECRET=your-long-random-secret
-CLIENT_URLS=https://your-domain.com
+CLIENT_URLS=https://lexora-zeta-seven.vercel.app,https://your-domain.com
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
@@ -111,6 +111,9 @@ For Vercel:
 - Build command: `npm run build`
 - Output directory: `build`
 - `client/vercel.json` handles SPA rewrites and headers.
+- Set `REACT_APP_API_URL=https://sas-academy-1ruh.onrender.com` in the Production environment and redeploy. The client also has this production fallback, but the environment variable makes the deployment configuration explicit.
+
+For Render, set `CLIENT_URLS=https://lexora-zeta-seven.vercel.app` and redeploy the API. CORS is applied before every API route and permits the local React development origins as well. Authentication uses bearer tokens rather than cookies, so cross-site credentials are intentionally disabled.
 
 ## SEO
 

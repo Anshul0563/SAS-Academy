@@ -5,6 +5,7 @@ const cors = require("cors");
 const dns = require("dns");
 
 const connectDB = require("./config/db");
+const { createCorsOptions } = require("./config/cors");
 
 //  Routes
 const authRoutes = require("./routes/authRoutes");
@@ -31,26 +32,7 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const defaultClientUrls = [
-  "http://localhost:3000",
-  "http://localhost:3002",
-  "http://localhost:5173",
-  "http://127.0.0.1:3000",
-  "https://sas-academy-eta.vercel.app",
-];
-const allowedOrigins = (
-  process.env.CLIENT_URLS || defaultClientUrls.join(",")
-)
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
-const isAllowedOrigin = (origin) => {
-  if (!origin) return true;
-  if (allowedOrigins.includes(origin)) return true;
-
-  return /^https:\/\/sas-academy-[a-z0-9-]+\.vercel\.app$/.test(origin);
-};
+const corsOptions = createCorsOptions();
 
 const requiredEnv = ["MONGO_URI", "JWT_SECRET"];
 const missingEnv = requiredEnv.filter((key) => !process.env[key]);
@@ -59,19 +41,6 @@ if (missingEnv.length > 0) {
     `Missing required environment variables: ${missingEnv.join(", ")}`,
   );
 }
-
-const corsOptions = {
-  origin(origin, callback) {
-    if (isAllowedOrigin(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(null, false);
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
 
 //  IMPORTANT: Middleware FIRST
 app.use(cors(corsOptions));
