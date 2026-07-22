@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import API from "../api/axios";
-import { getUserAuthToken } from "../utils/authStorage";
 import PageLoader from "../components/PageLoader";
+import { getUserAuthToken } from "../utils/authStorage";
 
 import {
   ArrowRight,
@@ -691,7 +691,7 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <Phone size={16} className="text-sky-300" />
-            +91 8178844795
+            +91 9718176159
           </div>
           <div className="flex items-center gap-2">
             <Mail size={16} className="text-amber-200" />
